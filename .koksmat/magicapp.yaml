@@ -1,0 +1,243 @@
+name: mix
+type: magicservice
+organisation: magicbutton
+magicappversion: v0.0.1
+description: A simple app to manage users, groups and memberships
+
+baseattributes:
+  urlrecord:
+    &recordAttributesWithURL # Id + Created + Updated + CreatedBy + UpdatedBy are implicit
+    - name: tenant
+      type: string
+      required: true
+    - name: name
+      type: string
+      required: true
+    - name: description
+      type: string
+      required: false
+    - name: url
+      type: string
+      required: true
+  record:
+    &recordAttributes # Id + Created + Updated + CreatedBy + UpdatedBy are implicit
+    - name: tenant
+      type: string
+      required: true
+    - name: name
+      type: string
+      required: true
+    - name: description
+      type: string
+      required: false
+
+entities:
+  connection: &connection
+    name: connection
+
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: connectionstring
+        type: string
+        required: false
+
+  transformer: &transformer
+    name: transformer
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: code
+        type: string
+        required: false
+
+  dataset: &dataset
+    name: dataset
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: connection
+        type: reference
+        entity: *connection
+        required: true
+      - name: transformer
+        type: reference
+        entity: *transformer
+        required: true
+
+  column: &column
+    name: column
+    parent: *dataset
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: datatype
+        type: string
+        required: true
+      - name: sortorder
+        type: string
+        required: false
+
+  mapper: &mapper
+    name: mapper
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: source
+        type: reference
+        entity: *column
+        required: true
+      - name: transformation
+        type: reference
+        entity: *transformer
+        required: true
+      - name: target
+        type: reference
+        entity: *column
+        required: true
+
+  transformation: &transformation
+    name: transformation
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: input
+        type: reference
+        entity: *connection
+        required: false
+
+      - name: mapping
+        type: array
+        entity: *mapper
+        required: false
+
+      - name: output
+        type: reference
+        entity: *dataset
+        required: false
+
+    processlog: &processlog
+      name: processlog
+      baselineattributes: *recordAttributes
+      additionalattributes:
+        - name: transformation
+          type: reference
+          entity: *transformation
+          required: true
+        - name: status
+          type: string
+          required: true
+        - name: message
+          type: string
+          required: false
+
+models:
+  itemMethods: &itemMethods
+    - name: read
+      description: Read a single item
+      parameters:
+        - name: id
+          description: The id of the item
+          type: int
+          required: true
+      returns:
+        type: object
+
+    - name: create
+      description: Create a new item
+      parameters:
+        - name: item
+          description: The item to create
+          type: object
+          required: true
+      returns:
+        type: object
+    - name: update
+      description: Update an existing item
+      parameters:
+        - name: item
+          description: The item to update
+          type: object
+          required: true
+      returns:
+        type: object
+
+    - name: delete
+      description: Delete an existing item
+      parameters:
+        - name: id
+          description: The id of the item
+          type: int
+          required: true
+      returns:
+        type: void
+    - name: search
+      description: Search for items
+      parameters:
+        - name: query
+          description: The search query
+          type: string
+          required: true
+
+      returns:
+        type: page
+
+services:
+  - name: connection
+    description: Manage connections
+    entity:
+      type: connection
+      model: connection
+      objectname: Connection
+      entity: *connection
+    methods: *itemMethods
+
+  - name: transformer
+    description: Manage transformers
+    entity:
+      type: transformer
+      model: transformer
+      objectname: Transformer
+      entity: *transformer
+    methods: *itemMethods
+
+  - name: dataset
+    description: Manage datasets
+    entity:
+      type: dataset
+      model: dataset
+      objectname: Dataset
+      entity: *dataset
+    methods: *itemMethods
+
+  - name: column
+    description: Manage columns
+    entity:
+      type: column
+      model: column
+      objectname: Column
+      entity: *column
+    methods: *itemMethods
+
+  - name: mapper
+    description: Manage mappers
+    entity:
+      type: mapper
+      model: mapper
+      objectname: Mapper
+      entity: *mapper
+    methods: *itemMethods
+
+  - name: transformation
+    description: Manage transformations
+    entity:
+      type: transformation
+      model: transformation
+      objectname: Transformation
+
+      entity: *transformation
+
+    methods: *itemMethods
+
+  - name: processlog
+    description: Manage process logs
+    entity:
+      type: processlog
+      model: processlog
+      objectname: ProcessLog
+      entity: *processlog
+    methods: *itemMethods
