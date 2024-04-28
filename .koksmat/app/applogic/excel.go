@@ -6,21 +6,6 @@ import (
 	"github.com/tealeg/xlsx/v3"
 )
 
-type Cell struct {
-	Row    int
-	Column int
-	Value  string
-}
-
-type Row struct {
-	Cells []Cell
-}
-
-type Sheet struct {
-	Name string
-	Rows []Row
-}
-
 func SheetNames(filename string) ([]string, error) {
 	// open an existing file
 	wb, err := xlsx.OpenFile(filename)
