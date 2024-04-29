@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func ConvertExcelToSQL(filename string, sheetName string, namespace string, batchsize int) error {
+func ConvertExcelToSQL(filename string, sheetName string, namespace string, tablename string, batchsize int) error {
 	log.Println("Converting Excel to SQL")
 	sheet, err := ReadSheet(filename, sheetName)
 	if err != nil {
@@ -14,9 +14,9 @@ func ConvertExcelToSQL(filename string, sheetName string, namespace string, batc
 		return err
 	}
 
-	createtablesql := SheetToInsertCreateTable(sheet, namespace)
+	createtablesql := SheetToInsertCreateTable(sheet, namespace, tablename)
 
-	os.WriteFile(namespace+"."+sheetName+".createtablesql.sql", []byte(createtablesql), 0644)
+	os.WriteFile(namespace+"."+tablename+".createtablesql.sql", []byte(createtablesql), 0644)
 	log.Println("Creation SQL file created")
 	batch := 0
 
@@ -24,9 +24,9 @@ func ConvertExcelToSQL(filename string, sheetName string, namespace string, batc
 
 	for startIndex < len(sheet.Rows) {
 		log.Println("Creating batch", batch)
-		inserttablesql := SheetToInsertCreateBatch(sheet, namespace, startIndex, startIndex+batchsize)
+		inserttablesql := SheetToInsertCreateBatch(sheet, namespace, tablename, startIndex, startIndex+batchsize)
 
-		err = os.WriteFile(fmt.Sprintf(namespace+"."+sheetName+".inserttablesql_%d.sql", batch), []byte(inserttablesql), 0644)
+		err = os.WriteFile(fmt.Sprintf(namespace+"."+tablename+".inserttablesql_%d.sql", batch), []byte(inserttablesql), 0644)
 		if err != nil {
 			log.Println("Error writing file", err)
 			return err

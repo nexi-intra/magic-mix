@@ -16,7 +16,7 @@ func TestSQLCreateAndInsert(t *testing.T) {
 	}
 	assert.NotNil(t, sheet)
 
-	createtablesql := SheetToInsertCreateTable(sheet, "test")
+	createtablesql := SheetToInsertCreateTable(sheet, "test", sheetname)
 
 	os.WriteFile("createtablesql.sql", []byte(createtablesql), 0644)
 	batch := 0
@@ -24,7 +24,7 @@ func TestSQLCreateAndInsert(t *testing.T) {
 	startIndex := 1 + (batchsize * batch)
 
 	for startIndex < len(sheet.Rows) {
-		inserttablesql := SheetToInsertCreateBatch(sheet, "test", startIndex, startIndex+batchsize)
+		inserttablesql := SheetToInsertCreateBatch(sheet, "test", sheetname, startIndex, startIndex+batchsize)
 
 		os.WriteFile(fmt.Sprintf("inserttablesql_%d.sql", batch), []byte(inserttablesql), 0644)
 		batch++

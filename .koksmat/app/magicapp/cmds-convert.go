@@ -29,13 +29,14 @@ func RegisterConvertCmd() {
 	toSQLcmd := &cobra.Command{
 		Use:   "sql [excelfilename] [sheetname] [namespace]",
 		Short: "Transform the data to SQL",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		Run: func(cmd *cobra.Command, args []string) {
 			excelfilename := args[0]
 			sheetname := args[1]
 			namespace := args[2]
-			batchsize := 3000
-			applogic.ConvertExcelToSQL(excelfilename, sheetname, namespace, batchsize)
+			tablename := args[3]
+			batchsize := 1000
+			applogic.ConvertExcelToSQL(excelfilename, sheetname, namespace, tablename, batchsize)
 		},
 	}
 	toCmd.AddCommand(toSQLcmd)

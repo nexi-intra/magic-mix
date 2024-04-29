@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func SheetToInsertCreateTable(sheet *Sheet, namespace string) string {
+func SheetToInsertCreateTable(sheet *Sheet, namespace string, tablename string) string {
 
 	var sql = fmt.Sprintf(`
 	/*
@@ -22,11 +22,11 @@ func SheetToInsertCreateTable(sheet *Sheet, namespace string) string {
 CREATE TABLE IF NOT EXISTS "%s"."%s"
 (
     id SERIAL PRIMARY KEY,
-	`, namespace, namespace, sheet.Name, namespace, sheet.Name)
+	`, namespace, namespace, tablename, namespace, tablename)
 
 	for i, cell := range sheet.Rows[0].Cells {
 
-		sql += fmt.Sprintf(`"col%s (column %d)" character varying COLLATE pg_catalog."default"
+		sql += fmt.Sprintf(`"%s (column %d)" character varying COLLATE pg_catalog."default"
 	`, cell.Value, i)
 
 		if i < (len(sheet.Rows[0].Cells) - 1) {
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS "%s"."%s"
 
 }
 
-func SheetToInsertCreateBatch(sheet *Sheet, namespace string, startIndex int, endIndex int) string {
+func SheetToInsertCreateBatch(sheet *Sheet, namespace string, tablename string, startIndex int, endIndex int) string {
 
 	var sql = `
 	/*
@@ -55,10 +55,10 @@ func SheetToInsertCreateBatch(sheet *Sheet, namespace string, startIndex int, en
 	
 INSERT INTO "%s"."%s"
 (id,	
-`, namespace, sheet.Name)
+`, namespace, tablename)
 	for i, cell := range sheet.Rows[0].Cells {
 
-		sql += fmt.Sprintf(`"col%s (column %d)"
+		sql += fmt.Sprintf(`"%s (column %d)"
 		`, cell.Value, i)
 
 		if i < (len(sheet.Rows[0].Cells) - 1) {
