@@ -27,7 +27,7 @@ func RegisterConvertCmd() {
 	excelCmd.AddCommand(toCmd)
 
 	toSQLcmd := &cobra.Command{
-		Use:   "sql [excelfilename] [sheetname] [namespace]",
+		Use:   "sql excelfilename sheetname namespace [tablename]",
 		Short: "Transform the data to SQL",
 		Args:  cobra.ExactArgs(4),
 		Run: func(cmd *cobra.Command, args []string) {
