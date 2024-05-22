@@ -38,7 +38,7 @@
             "mode": "auto",
             "cwd": "${workspaceFolder}/.koksmat/app",
             "program": "${workspaceFolder}/.koksmat/app",
-            "args": ["from","excel","to","sql","/Users/nielsgregersjohansen/kitchens/magic-devices/.koksmat/workdir/devices.xlsx","FullKpi","ccc","1000"]
+            "args": ["from","excel","to","sql","/Users/nielsgregersjohansen/kitchens/magic-devices/.koksmat/workdir/devicekpi.xlsx","tables","devicekpi_tables"]
         }, 
         {
             "name": "Web",

@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func SheetToInsertCreateTable(sheet *Sheet, namespace string, tablename string) string {
-
+func SheetToInsertCreateTable(sheet *Sheet, tablename string) string {
+	namespace := "excelimport"
 	var sql = fmt.Sprintf(`
 	/*
 	Create script
@@ -15,9 +15,9 @@ func SheetToInsertCreateTable(sheet *Sheet, namespace string, tablename string) 
 	
 
 
-	CREATE SCHEMA IF NOT EXISTS "%s"
-    AUTHORIZATION ps_user;
--- DROP TABLE IF EXISTS "%s"."%s";
+CREATE SCHEMA IF NOT EXISTS "%s";
+
+DROP TABLE IF EXISTS "%s"."%s";
 
 CREATE TABLE IF NOT EXISTS "%s"."%s"
 (
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS "%s"."%s"
 
 }
 
-func SheetToInsertCreateBatch(sheet *Sheet, namespace string, tablename string, startIndex int, endIndex int) string {
-
+func SheetToInsertCreateBatch(sheet *Sheet, tablename string, startIndex int, endIndex int) string {
+	namespace := "excelimport"
 	var sql = `
 	/*
 	Insert script
@@ -97,6 +97,7 @@ INSERT INTO "%s"."%s"
 		}
 	}
 
+	sql = strings.TrimSuffix(sql, ",")
 	sql += ";"
 	return sql
 
