@@ -10,7 +10,7 @@ package transformermodel
 import (
 	"encoding/json"
 	"time"
-    
+    // 
 )
 
 func UnmarshalTransformer(data []byte) (Transformer, error) {
@@ -26,9 +26,10 @@ func (r *Transformer) Marshal() ([]byte, error) {
 type Transformer struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
     Code string `json:"code"`
 

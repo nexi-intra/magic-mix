@@ -47,7 +47,7 @@ if (len(payload.Args) < 2) {
 
 
     
-    result,err := dataset.DatasetRead(StrToInt(payload.Args[1]))
+    result,err := dataset.DatasetRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
         ServiceResponseError(req, fmt.Sprintf("Error calling DatasetRead: %s", err))
@@ -133,7 +133,7 @@ if (len(payload.Args) < 2) {
 }
 
 
-            err :=  dataset.DatasetDelete(StrToInt(payload.Args[1]))
+            err :=  dataset.DatasetDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
                 ServiceResponseError(req, fmt.Sprintf("Error calling DatasetDelete: %s", err))

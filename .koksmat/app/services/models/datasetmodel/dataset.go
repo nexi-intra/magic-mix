@@ -10,7 +10,7 @@ package datasetmodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-mix/database/databasetypes"
+    // "github.com/magicbutton/magic-mix/database/databasetypes"
 )
 
 func UnmarshalDataset(data []byte) (Dataset, error) {
@@ -26,12 +26,13 @@ func (r *Dataset) Marshal() ([]byte, error) {
 type Dataset struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
-    Connection databasetypes.Reference `json:"connection"`
-    Transformer databasetypes.Reference `json:"transformer"`
+    Connection_id int `json:"connection_id"`
+    Transformer_id int `json:"transformer_id"`
 
 }
 

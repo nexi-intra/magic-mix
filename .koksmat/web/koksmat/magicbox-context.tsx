@@ -2,6 +2,8 @@
 import { IPublicClientApplication } from "@azure/msal-browser";
 
 import { createContext } from "react";
+import { Result } from "./httphelper";
+import { MagicRequest } from "./magicservices";
 export interface Session {
   user: User;
   expires: string;
@@ -16,7 +18,14 @@ export interface User {
   id: string;
   roles: string[];
 }
-
+export type ServiceCallLogEntry = {
+  transactionId: string;
+  calledTimestamp: Date;
+  responedTimestamp: Date;
+  request: MagicRequest;
+  servicename: string;
+  response: Result<any>;
+};
 export type AuthSource = "MSAL" | "SharePoint" | "";
 export type MagicboxContextType = {
   session?: Session;
@@ -38,6 +47,11 @@ export type MagicboxContextType = {
   authSource: AuthSource;
   transactionId: string;
   setTransactionId: (transactionId: string) => void;
+  servicecalllog: ServiceCallLogEntry[];
+  logServiceCall: (request: ServiceCallLogEntry) => void;
+  clearServiceCallLog: () => void;
+  showTracer: boolean;
+  setShowTracer: (showTracer: boolean) => void;
 };
 export const MagicboxContext = createContext<MagicboxContextType>({
   session: {
@@ -73,6 +87,18 @@ export const MagicboxContext = createContext<MagicboxContextType>({
   authSource: "",
   transactionId: "",
   setTransactionId: function (transactionId: string): void {
+    throw new Error("Function not implemented.");
+  },
+  servicecalllog: [],
+
+  clearServiceCallLog: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  logServiceCall: function (request: ServiceCallLogEntry): void {
+    throw new Error("Function not implemented.");
+  },
+  showTracer: false,
+  setShowTracer: function (showTracer: boolean): void {
     throw new Error("Function not implemented.");
   },
 });

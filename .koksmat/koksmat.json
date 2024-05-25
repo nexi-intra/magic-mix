@@ -1,13 +1,13 @@
 {
   "version": {
     "minor": 0,
-    "build": 2,
-    "patch": 2,
+    "build": 3,
+    "patch": 3,
     "major": 0
   },
   "appname": "magic-mix",
   "dnsprod": "magicboxes.intra.nexigroup.com",
   "dnstest": "magicboxes-test.intra.nexigroup.com",
   "imagename": "ghcr.io/magicbutton/magic-mix",
-  "port": 4341
+  "port": 4348
 }

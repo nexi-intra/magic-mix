@@ -7,16 +7,21 @@ keep: false
 */   
 
 
-
+-- sure sild
 
 CREATE TABLE public.column
 (
     id SERIAL PRIMARY KEY,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by character varying COLLATE pg_catalog."default"  ,
+
     updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying COLLATE pg_catalog."default" ,
+
     deleted_at timestamp with time zone
     ,dataset_id int  
     ,tenant character varying COLLATE pg_catalog."default"  NOT NULL
+    ,searchindex character varying COLLATE pg_catalog."default"  NOT NULL
     ,name character varying COLLATE pg_catalog."default"  NOT NULL
     ,description character varying COLLATE pg_catalog."default" 
     ,datatype character varying COLLATE pg_catalog."default"  NOT NULL

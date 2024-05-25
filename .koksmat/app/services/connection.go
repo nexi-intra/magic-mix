@@ -47,7 +47,7 @@ if (len(payload.Args) < 2) {
 
 
     
-    result,err := connection.ConnectionRead(StrToInt(payload.Args[1]))
+    result,err := connection.ConnectionRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
         ServiceResponseError(req, fmt.Sprintf("Error calling ConnectionRead: %s", err))
@@ -133,7 +133,7 @@ if (len(payload.Args) < 2) {
 }
 
 
-            err :=  connection.ConnectionDelete(StrToInt(payload.Args[1]))
+            err :=  connection.ConnectionDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
                 ServiceResponseError(req, fmt.Sprintf("Error calling ConnectionDelete: %s", err))

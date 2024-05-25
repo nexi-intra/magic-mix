@@ -47,7 +47,7 @@ if (len(payload.Args) < 2) {
 
 
     
-    result,err := transformer.TransformerRead(StrToInt(payload.Args[1]))
+    result,err := transformer.TransformerRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
         ServiceResponseError(req, fmt.Sprintf("Error calling TransformerRead: %s", err))
@@ -133,7 +133,7 @@ if (len(payload.Args) < 2) {
 }
 
 
-            err :=  transformer.TransformerDelete(StrToInt(payload.Args[1]))
+            err :=  transformer.TransformerDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
                 ServiceResponseError(req, fmt.Sprintf("Error calling TransformerDelete: %s", err))

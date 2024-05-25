@@ -1,29 +1,26 @@
-/* 
+/*
 File have been automatically created. To prevent the file from getting overwritten
-set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
+set the Front Matter property ´´keep´´ to ´´true´´ syntax for the code snippet
 ---
 keep: false
 ---
 */
-//generator:  noma3
+//generator:  noma3.read.v2
 package transformer
-// noma2    
+
 import (
-	"log"
-    "errors"
+    "log"
+    "strconv"
+    "github.com/magicbutton/magic-mix/applogic"
+    "github.com/magicbutton/magic-mix/database"
     "github.com/magicbutton/magic-mix/services/models/transformermodel"
-    )
 
+)
 
-func TransformerRead(id int ) (*transformermodel.Transformer,error) {
-log.Println("Calling TransformerRead")
-    
-    
-    
-    return nil,errors.New("Not implemented")
+func TransformerRead(arg0 string) (*transformermodel.Transformer, error) {
+    id,_ := strconv.Atoi(arg0)
+    log.Println("Calling Transformerread")
 
-
-
+    return applogic.Read[database.Transformer, transformermodel.Transformer](id, applogic.MapTransformerOutgoing)
 
 }
-    

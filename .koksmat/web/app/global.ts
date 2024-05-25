@@ -1,4 +1,4 @@
-export const APPNAME = "files";
+export const APPNAME = "mix";
 export const MSAL = {
   clientId: "3a8bf549-eb49-4c60-912b-bb30cd964574",
 

@@ -47,7 +47,7 @@ if (len(payload.Args) < 2) {
 
 
     
-    result,err := transformation.TransformationRead(StrToInt(payload.Args[1]))
+    result,err := transformation.TransformationRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
         ServiceResponseError(req, fmt.Sprintf("Error calling TransformationRead: %s", err))
@@ -133,7 +133,7 @@ if (len(payload.Args) < 2) {
 }
 
 
-            err :=  transformation.TransformationDelete(StrToInt(payload.Args[1]))
+            err :=  transformation.TransformationDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
                 ServiceResponseError(req, fmt.Sprintf("Error calling TransformationDelete: %s", err))

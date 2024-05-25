@@ -18,7 +18,6 @@ export interface AppMap {
     services: Service[]
 }
 export const pagemap : AppMap = {
-  "name": "mix",
   "services": [
     {
       "endpoints": [
@@ -160,6 +159,7 @@ export const pagemap : AppMap = {
       ],
       "name": "processlog"
     }
-  ]
+  ],
+  "name": "mix"
 }
 

@@ -47,7 +47,7 @@ if (len(payload.Args) < 2) {
 
 
     
-    result,err := processlog.ProcessLogRead(StrToInt(payload.Args[1]))
+    result,err := processlog.ProcessLogRead(payload.Args[1])
     if (err != nil) {
         log.Println("Error", err)
         ServiceResponseError(req, fmt.Sprintf("Error calling ProcessLogRead: %s", err))
@@ -133,7 +133,7 @@ if (len(payload.Args) < 2) {
 }
 
 
-            err :=  processlog.ProcessLogDelete(StrToInt(payload.Args[1]))
+            err :=  processlog.ProcessLogDelete(payload.Args[1])
             if (err != nil) {
                 log.Println("Error", err)
                 ServiceResponseError(req, fmt.Sprintf("Error calling ProcessLogDelete: %s", err))

@@ -5,13 +5,12 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
-//version: pølsevogn1
+//version: pølsevogn2
 package database
 
 import (
 	"time"
-            "github.com/magicbutton/magic-mix/database/databasetypes"
-
+    
 	"github.com/uptrace/bun"
 )
 
@@ -20,14 +19,17 @@ type Mapper struct {
 
 	ID             int     `bun:"id,pk,autoincrement"`
 	CreatedAt      time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	CreatedBy      string `bun:"created_by,"`
 	UpdatedAt      time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	UpdatedBy      string `bun:"updated_by,"`
 	DeletedAt      time.Time `bun:",soft_delete,nullzero"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
-    Description string `json:"description"`
-    Source databasetypes.Reference `json:"source"`
-    Transformation databasetypes.Reference `json:"transformation"`
-    Target databasetypes.Reference `json:"target"`
+        Tenant string `bun:"tenant"`
+    Searchindex string `bun:"searchindex"`
+    Name string `bun:"name"`
+    Description string `bun:"description"`
+    Source_id int `bun:"source_id"`
+    Transformation_id int `bun:"transformation_id"`
+    Target_id int `bun:"target_id"`
 
 }
 

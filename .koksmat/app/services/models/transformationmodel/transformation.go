@@ -10,7 +10,7 @@ package transformationmodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-mix/database/databasetypes"
+    // "github.com/magicbutton/magic-mix/database/databasetypes"
 )
 
 func UnmarshalTransformation(data []byte) (Transformation, error) {
@@ -26,12 +26,13 @@ func (r *Transformation) Marshal() ([]byte, error) {
 type Transformation struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
-    Input databasetypes.Reference `json:"input"`
-    Output databasetypes.Reference `json:"output"`
+    Input_id int `json:"input_id"`
+    Output_id int `json:"output_id"`
 
 }
 

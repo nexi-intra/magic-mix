@@ -10,7 +10,7 @@ package processlogmodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-mix/database/databasetypes"
+    // "github.com/magicbutton/magic-mix/database/databasetypes"
 )
 
 func UnmarshalProcessLog(data []byte) (ProcessLog, error) {
@@ -26,11 +26,12 @@ func (r *ProcessLog) Marshal() ([]byte, error) {
 type ProcessLog struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
-    Transformation databasetypes.Reference `json:"transformation"`
+    Transformation_id int `json:"transformation_id"`
     Status string `json:"status"`
     Message string `json:"message"`
 

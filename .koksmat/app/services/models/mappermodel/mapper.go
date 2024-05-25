@@ -10,7 +10,7 @@ package mappermodel
 import (
 	"encoding/json"
 	"time"
-    "github.com/magicbutton/magic-mix/database/databasetypes"
+    // "github.com/magicbutton/magic-mix/database/databasetypes"
 )
 
 func UnmarshalMapper(data []byte) (Mapper, error) {
@@ -26,13 +26,14 @@ func (r *Mapper) Marshal() ([]byte, error) {
 type Mapper struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
-    Source databasetypes.Reference `json:"source"`
-    Transformation databasetypes.Reference `json:"transformation"`
-    Target databasetypes.Reference `json:"target"`
+    Source_id int `json:"source_id"`
+    Transformation_id int `json:"transformation_id"`
+    Target_id int `json:"target_id"`
 
 }
 

@@ -10,7 +10,7 @@ package connectionmodel
 import (
 	"encoding/json"
 	"time"
-    
+    // 
 )
 
 func UnmarshalConnection(data []byte) (Connection, error) {
@@ -26,9 +26,10 @@ func (r *Connection) Marshal() ([]byte, error) {
 type Connection struct {
     ID        int    `json:"id"`
     CreatedAt time.Time `json:"created_at"`
+    CreatedBy string `json:"created_by"`
     UpdatedAt time.Time `json:"updated_at"`
-        Tenant string `json:"tenant"`
-    Name string `json:"name"`
+    UpdatedBy string `json:"updated_by"`
+        Name string `json:"name"`
     Description string `json:"description"`
     Connectionstring string `json:"connectionstring"`
 

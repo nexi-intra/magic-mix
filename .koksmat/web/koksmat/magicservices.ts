@@ -30,21 +30,28 @@ export async function run<T>(
   let serviceCallResult: Result<any>;
 
   try {
+    const connectionString = process.env.NATS ?? "nats://127.0.0.1:4222";
     nc = await connect({
-      servers: [process.env.NATS ?? "nats://127.0.0.1:4222"],
+      servers: [connectionString],
     });
-
     const payload = JSON.stringify(req);
+
     const sc = StringCodec();
     const encodedPayload = sc.encode(payload);
     const response = await nc
       .request(subject, encodedPayload, { timeout: timeout * 1000 })
       .catch((error) => {
+        console.log("connecting to NATS", connectionString);
+        console.log("subject", subject);
+        console.log("payload", payload);
+
+        console.error("Error", error);
         hasError = true;
         errorMessage = (error as any).message;
       });
     if (response) {
       serviceCallResult = JSON.parse(sc.decode(response.data));
+
       errorMessage = serviceCallResult.errorMessage ?? "Unknown error";
       hasError = serviceCallResult.hasError;
       if (!hasError) {
