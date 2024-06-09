@@ -22,7 +22,7 @@ export async function getWeather() {
         const msg = sc.decode(m.data);
         weatherUI.append(<div>{msg}</div>);
         if (msg === "done") {
-          weatherUI.done(<div>It's a sunny day!</div>);
+          weatherUI.done(<div>It&apos;s a sunny day!</div>);
           break;
         }
       }
