@@ -28,9 +28,9 @@ export interface TransformationItem  {
 export const TransformationSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
-    input_id : z.number(), 
-    output_id : z.number(), 
+    description : z.string().optional(), 
+    input_id : z.number().optional(), 
+    output_id : z.number().optional(), 
 
 });
 

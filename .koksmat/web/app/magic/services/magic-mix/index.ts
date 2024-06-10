@@ -158,6 +158,26 @@ export const pagemap : AppMap = {
         }
       ],
       "name": "processlog"
+    },
+    {
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ],
+      "name": "importdata"
     }
   ],
   "name": "mix"

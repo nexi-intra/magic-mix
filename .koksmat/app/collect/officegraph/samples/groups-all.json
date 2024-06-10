@@ -1,0 +1,13 @@
+{
+  "parentUrl": "https://graph.microsoft.com/v1.0/groups?$select=id,creationOptions,displayName,groupTypes,mail,securityEnabled,visibility,onPremisesDomainName,membershipRule",
+  "childUrls": [
+    {
+      "url": "https://graph.microsoft.com/v1.0/groups/%s/owners?$select=userPrincipalName,id",
+      "prefix": "owners"
+    },
+    {
+      "url": "https://graph.microsoft.com/v1.0/groups/%s/members?$select=userPrincipalName,id",
+      "prefix": "members"
+    }
+  ]
+}

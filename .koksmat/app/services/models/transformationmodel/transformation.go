@@ -5,7 +5,7 @@ set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 keep: false
 ---
 */   
-//GenerateGoModel v1
+//GenerateGoModel v2
 package transformationmodel
 import (
 	"encoding/json"

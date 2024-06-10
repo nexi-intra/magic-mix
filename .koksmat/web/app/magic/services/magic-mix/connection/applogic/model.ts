@@ -27,8 +27,8 @@ export interface ConnectionItem  {
 export const ConnectionSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
-    connectionstring : z.string(), 
+    description : z.string().optional(), 
+    connectionstring : z.string().optional(), 
 
 });
 

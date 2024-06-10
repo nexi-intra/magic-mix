@@ -28,9 +28,9 @@ export interface ColumnItem  {
 export const ColumnSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
+    description : z.string().optional(), 
     datatype : z.string(), 
-    sortorder : z.string(), 
+    sortorder : z.string().optional(), 
 
 });
 

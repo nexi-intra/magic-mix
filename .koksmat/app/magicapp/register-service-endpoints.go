@@ -20,4 +20,5 @@ func RegisterServiceEndpoints(root micro.Group) {
         root.AddEndpoint("mapper", micro.HandlerFunc(services.HandleMapperRequests))
         root.AddEndpoint("transformation", micro.HandlerFunc(services.HandleTransformationRequests))
         root.AddEndpoint("processlog", micro.HandlerFunc(services.HandleProcessLogRequests))
+        root.AddEndpoint("importdata", micro.HandlerFunc(services.HandleImportDataRequests))
     }

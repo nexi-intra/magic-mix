@@ -27,8 +27,8 @@ export interface TransformerItem  {
 export const TransformerSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
-    code : z.string(), 
+    description : z.string().optional(), 
+    code : z.string().optional(), 
 
 });
 

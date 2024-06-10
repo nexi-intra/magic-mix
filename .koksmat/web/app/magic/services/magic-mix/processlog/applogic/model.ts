@@ -29,10 +29,10 @@ export interface ProcessLogItem  {
 export const ProcessLogSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
+    description : z.string().optional(), 
     transformation_id : z.number(), 
     status : z.string(), 
-    message : z.string(), 
+    message : z.string().optional(), 
 
 });
 

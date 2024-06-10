@@ -28,7 +28,7 @@ export interface DatasetItem  {
 export const DatasetSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
+    description : z.string().optional(), 
     connection_id : z.number(), 
     transformer_id : z.number(), 
 

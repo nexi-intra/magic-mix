@@ -1,0 +1,9 @@
+{
+  "parentUrl": "https://graph.microsoft.com/v1.0/sites",
+  "childUrls": [
+    {
+      "url": "https://graph.microsoft.com/v1.0/sites/%s/permissions",
+      "prefix": "permissions"
+    }
+  ]
+}

@@ -29,7 +29,7 @@ export interface MapperItem  {
 export const MapperSchema = z.object({  
    
         name : z.string(), 
-    description : z.string(), 
+    description : z.string().optional(), 
     source_id : z.number(), 
     transformation_id : z.number(), 
     target_id : z.number(), 

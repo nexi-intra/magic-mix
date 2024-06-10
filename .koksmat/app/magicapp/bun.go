@@ -2,11 +2,11 @@ package magicapp
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/viper"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/uptrace/bun/extra/bundebug"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/stdlib"
@@ -14,6 +14,8 @@ import (
 )
 
 func OpenDatabase() {
+	dir, _ := os.Getwd()
+	log.Println("Current directory", dir)
 	utils.Setup("./.env")
 
 	dsn := viper.GetString("POSTGRES_DB")
@@ -25,6 +27,6 @@ func OpenDatabase() {
 	config.PreferSimpleProtocol = true
 	sqldb := stdlib.OpenDB(*config)
 	utils.Db = bun.NewDB(sqldb, pgdialect.New())
-	utils.Db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+	//utils.Db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
 
 }

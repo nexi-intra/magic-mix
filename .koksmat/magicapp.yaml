@@ -244,20 +244,39 @@ entities:
         entity: *dataset
         required: false
 
-    processlog: &processlog
-      name: processlog
-      baselineattributes: *recordAttributes
-      additionalattributes:
-        - name: transformation
-          type: reference
-          entity: *transformation
-          required: true
-        - name: status
-          type: string
-          required: true
-        - name: message
-          type: string
-          required: false
+  processlog: &processlog
+    name: processlog
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: transformation
+        type: reference
+        entity: *transformation
+        required: true
+      - name: status
+        type: string
+        required: true
+      - name: message
+        type: string
+        required: false
+
+  user: &user
+    name: user
+    description: User
+    baselineattributes: *recordAttributesWithURL
+    additionalattributes:
+      - name: email
+        type: string
+        required: true
+
+  importdata: &importdata
+    name: importdata
+    description: Import
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: data
+        type: json
+        hidden: false
+        required: true
 
 models:
   itemMethods: &itemMethods
@@ -374,4 +393,13 @@ services:
       model: processlog
       objectname: ProcessLog
       entity: *processlog
+    methods: *itemMethods
+
+  - name: importdata
+    description: Import data
+    entity:
+      type: importdata
+      model: importdata
+      objectname: ImportData
+      entity: *importdata
     methods: *itemMethods
