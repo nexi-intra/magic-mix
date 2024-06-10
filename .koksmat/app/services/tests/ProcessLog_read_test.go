@@ -16,7 +16,7 @@ keep: false
     
     func TestProcessLogread(t *testing.T) {
                     
-            result,err := processlog.ProcessLogRead(-1)
+            result,err := processlog.ProcessLogRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

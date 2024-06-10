@@ -17,7 +17,7 @@ keep: false
     func TestConnectiondelete(t *testing.T) {
                 // noma4.1.1
         
-        err := connection.ConnectionDelete(-1)
+        err := connection.ConnectionDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

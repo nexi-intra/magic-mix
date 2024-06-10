@@ -16,7 +16,7 @@ keep: false
     
     func TestConnectionread(t *testing.T) {
                     
-            result,err := connection.ConnectionRead(-1)
+            result,err := connection.ConnectionRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

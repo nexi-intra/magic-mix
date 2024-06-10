@@ -16,7 +16,7 @@ keep: false
     
     func TestDatasetread(t *testing.T) {
                     
-            result,err := dataset.DatasetRead(-1)
+            result,err := dataset.DatasetRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

@@ -17,7 +17,7 @@ keep: false
     func TestTransformationdelete(t *testing.T) {
                 // noma4.1.1
         
-        err := transformation.TransformationDelete(-1)
+        err := transformation.TransformationDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

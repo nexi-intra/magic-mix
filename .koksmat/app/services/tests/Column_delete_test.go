@@ -17,7 +17,7 @@ keep: false
     func TestColumndelete(t *testing.T) {
                 // noma4.1.1
         
-        err := column.ColumnDelete(-1)
+        err := column.ColumnDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

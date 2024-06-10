@@ -16,7 +16,7 @@ keep: false
     
     func TestImportDataread(t *testing.T) {
                     
-            result,err := importdata.ImportDataRead(-1)
+            result,err := importdata.ImportDataRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

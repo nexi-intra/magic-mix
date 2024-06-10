@@ -17,7 +17,7 @@ keep: false
     func TestDatasetdelete(t *testing.T) {
                 // noma4.1.1
         
-        err := dataset.DatasetDelete(-1)
+        err := dataset.DatasetDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

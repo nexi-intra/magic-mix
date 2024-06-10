@@ -17,7 +17,7 @@ keep: false
     func TestMapperdelete(t *testing.T) {
                 // noma4.1.1
         
-        err := mapper.MapperDelete(-1)
+        err := mapper.MapperDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

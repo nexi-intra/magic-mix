@@ -16,7 +16,7 @@ keep: false
     
     func TestMapperread(t *testing.T) {
                     
-            result,err := mapper.MapperRead(-1)
+            result,err := mapper.MapperRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

@@ -16,7 +16,7 @@ keep: false
     
     func TestTransformationread(t *testing.T) {
                     
-            result,err := transformation.TransformationRead(-1)
+            result,err := transformation.TransformationRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

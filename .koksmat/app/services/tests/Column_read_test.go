@@ -16,7 +16,7 @@ keep: false
     
     func TestColumnread(t *testing.T) {
                     
-            result,err := column.ColumnRead(-1)
+            result,err := column.ColumnRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

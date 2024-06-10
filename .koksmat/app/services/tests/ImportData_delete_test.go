@@ -17,7 +17,7 @@ keep: false
     func TestImportDatadelete(t *testing.T) {
                 // noma4.1.1
         
-        err := importdata.ImportDataDelete(-1)
+        err := importdata.ImportDataDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }

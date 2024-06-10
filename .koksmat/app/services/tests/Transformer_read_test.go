@@ -16,7 +16,7 @@ keep: false
     
     func TestTransformerread(t *testing.T) {
                     
-            result,err := transformer.TransformerRead(-1)
+            result,err := transformer.TransformerRead("")
             if err != nil {
                 t.Errorf("Error %s", err)
             }

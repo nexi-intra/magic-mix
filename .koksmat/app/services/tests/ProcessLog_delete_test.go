@@ -17,7 +17,7 @@ keep: false
     func TestProcessLogdelete(t *testing.T) {
                 // noma4.1.1
         
-        err := processlog.ProcessLogDelete(-1)
+        err := processlog.ProcessLogDelete("")
         if err != nil {
             t.Errorf("Error %s", err)
         }
