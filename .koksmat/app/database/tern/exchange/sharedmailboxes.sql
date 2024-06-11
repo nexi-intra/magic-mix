@@ -1,0 +1,1 @@
+CREATE VIEW "exchange"."sharedmailboxes" AS SELECT 1 

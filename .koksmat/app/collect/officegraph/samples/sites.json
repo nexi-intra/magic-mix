@@ -1,9 +1,15 @@
 {
-  "parentUrl": "https://graph.microsoft.com/v1.0/sites",
+  "parentUrl": "https://graph.microsoft.com/beta/sites",
   "childUrls": [
     {
-      "url": "https://graph.microsoft.com/v1.0/sites/%s/permissions",
-      "prefix": "permissions"
+      "url": "https://graph.microsoft.com/v1.0/sites/%s/pages",
+      "prefix": "pages",
+      "childChildUrls": [
+        {
+          "url": "https://graph.microsoft.com/v1.0/sites/%s/analytics?$select=itemActivityStats,id&$expand=*,allTime",
+          "prefix": "analytics"
+        }
+      ]
     }
   ]
 }

@@ -29,7 +29,8 @@ func FetchGraphData(maxPages int, url string, accessToken string) (string, error
 			return "", fmt.Errorf("failed to create request: %v", err)
 		}
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
-
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Accept", "*/*")
 		resp, err := client.Do(req)
 		if err != nil {
 			return "", fmt.Errorf("request failed: %v", err)

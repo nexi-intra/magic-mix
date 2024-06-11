@@ -1,4 +1,5 @@
-drop schema if exists "azure" cascade;
+drop schema if exists "azure"
+-- cascade;
 
 CREATE SCHEMA "azure";
 
