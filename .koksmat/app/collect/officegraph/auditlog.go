@@ -195,6 +195,9 @@ func GetAuditLogs(batchID string, startTime time.Time, endTime time.Time) error 
 		if auditLogQueryStatus.Status == "running" {
 			break
 		}
+		if auditLogQueryStatus.Status == "succeeded" {
+			break
+		}
 		log.Println("Status is", auditLogQueryStatus.Status, " ...waiting 5 seconds for audit log query to start")
 
 		time.Sleep(time.Second * 5)

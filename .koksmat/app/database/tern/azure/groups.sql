@@ -1,5 +1,5 @@
--- sdfds
-CREATE VIEW "azure"."groups" AS SELECT
+CREATE OR REPLACE VIEW "azure"."groups" AS
+SELECT
     name,
     data_element ->> 'id' AS id,
     data_element ->> 'displayName' AS displayName,
@@ -8,11 +8,9 @@ CREATE VIEW "azure"."groups" AS SELECT
     data_element ->> 'membershipRule' AS membershipRule,
     data_element ->> 'onPremisesDomainName' AS onPremisesDomainName,
     data_element ->> 'securityEnabled' AS securityEnabled,
-    data_element ->> 'visibility' AS visibility
+    data_element ->> 'visibility' AS visibility,
+    data_element ->> 'creationOptions' AS creationOptions
 
-
-FROM
-    importdata,
-    jsonb_array_elements (data) AS data_element
+FROM importdata, jsonb_array_elements(data) AS data_element
 WHERE
     name LIKE 'groups-all/parents.json';

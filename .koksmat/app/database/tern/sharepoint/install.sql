@@ -3,4 +3,5 @@ drop schema if exists "sharepoint";
 
 CREATE SCHEMA "sharepoint";
 
-{{ template "sharedmailboxes.sql".}} 
+{{ template "pageviews.sql".}} 
+{{ template "sites.sql".}} 
