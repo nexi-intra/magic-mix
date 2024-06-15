@@ -82,7 +82,7 @@ func ConvertExcelToSQLJson(excelFilename string, outputFolder string) error {
 			// Create a map to store the row data
 			row := sheet.Rows[startIndex]
 			rowData := make(map[string]interface{})
-
+			rowData["rownumber"] = startIndex + 1
 			// Iterate through the cells of the row
 			for cellIndex, cell := range row.Cells {
 				// Get the value of the cell

@@ -28,6 +28,7 @@ func UploadBatch(rootPath string) {
 	inserter := func(filePath string, chunk *string) error {
 		log.Println("Uploading", filePath, len(*chunk), "bytes")
 		//return nil
+
 		_, importErr := importdata.ImportDataCreate(importdatamodel.ImportData{
 			Name:        filePath,
 			Description: "Imported file",
