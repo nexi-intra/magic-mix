@@ -1,7 +1,8 @@
 "use client";
-import { cn } from "@/koksmat/utils";
-import { AppMap } from "../services/magic-mix";
+import { cn } from "@/app/koksmat/utils";
+import { AppMap } from "../services/magic-people";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export function TestServicesNavigator(props: {
   appMap: AppMap;
@@ -16,31 +17,18 @@ export function TestServicesNavigator(props: {
           return a.name.localeCompare(b.name);
         })
         .map((service) => {
+          const href = `/magic/services/${appName}/${service.name}`;
           return (
             <div key={service.name}>
-              <div className="text-xl my-2">{service.name}</div>
-              <ul className="ml-2">
-                {service.endpoints
-                  .sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                  })
-                  .map((endpoint) => {
-                    const href = `/magic/services/${appName}/${service.name}/${endpoint.name}`;
-                    return (
-                      <li key={endpoint.name}>
-                        <a
-                          className={cn(
-                            "hover:underline",
-                            pathname === href ? "font-bold" : ""
-                          )}
-                          href={href}
-                        >
-                          {endpoint.name}
-                        </a>
-                      </li>
-                    );
-                  })}
-              </ul>
+              <Link
+                className={cn(
+                  "hover:underline",
+                  pathname === href ? "font-bold" : ""
+                )}
+                href={href}
+              >
+                {service.name}
+              </Link>
             </div>
           );
         })}

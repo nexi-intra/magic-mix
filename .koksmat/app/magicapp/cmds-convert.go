@@ -1,6 +1,8 @@
 package magicapp
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 
 	"github.com/magicbutton/magic-mix/applogic"
@@ -40,5 +42,20 @@ func RegisterConvertCmd() {
 	}
 	toCmd.AddCommand(toSQLcmd)
 
+	toJSONcmd := &cobra.Command{
+		Use:   "json excelfilename jsonfilename",
+		Short: "Transform the file to json",
+		Args:  cobra.ExactArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			excelfilename := args[0]
+			jsonfilename := args[1]
+
+			err := applogic.ConvertExcelToSQLJson(excelfilename, jsonfilename)
+			if err != nil {
+				log.Fatal(err)
+			}
+		},
+	}
+	toCmd.AddCommand(toJSONcmd)
 	utils.RootCmd.AddCommand(convertCmd)
 }

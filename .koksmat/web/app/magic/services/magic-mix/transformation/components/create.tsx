@@ -6,7 +6,7 @@ keep: false
 ---
 */ 
     "use client";
-    import { useService } from "@/koksmat/useservice";
+    import { useService } from "@/app/koksmat/useservice";
     import { useState } from "react";
     import {TransformationForm} from "./form";
     

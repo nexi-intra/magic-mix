@@ -101,6 +101,9 @@ func AuditLogQuerySetup(authToken string, startTime, endTime time.Time) (*AuditL
 	}
 	queryResponse := AuditLogQueryResponse{}
 	err = json.Unmarshal(responseBody, &queryResponse)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response body: %v", err)
+	}
 	log.Println("Response Id: ", queryResponse.ID)
 	return &queryResponse, nil
 
@@ -137,6 +140,10 @@ func AuditLogQueryRead(authToken string, queryID string) (*AuditLogQueryResponse
 	}
 	queryResponse := AuditLogQueryResponse{}
 	err = json.Unmarshal(body, &queryResponse)
+	if err != nil {
+		fmt.Printf("Error unmarshalling response body: %v\n", err)
+		return nil, err
+	}
 	// log.Println("Response Id: ", queryResponse.ID)
 	// log.Println("Status: ", queryResponse.Status)
 	return &queryResponse, nil
@@ -170,6 +177,10 @@ func GetAuditLogs(batchID string, startTime time.Time, endTime time.Time) error 
 			return err
 		}
 		output, err := json.MarshalIndent(auditLogQuery, "", "  ")
+		if err != nil {
+			log.Println("Error marshalling audit log query", err)
+			return err
+		}
 		os.WriteFile(parentFilename, output, 0644)
 	} else {
 		parent, err := os.ReadFile(parentFilename)
@@ -202,33 +213,45 @@ func GetAuditLogs(batchID string, startTime time.Time, endTime time.Time) error 
 
 		time.Sleep(time.Second * 5)
 	}
-
-	log.Println("AuditLog query started")
+	log.Println("AuditLog query download starting in 5 seconds")
+	time.Sleep(time.Second * 5)
+	log.Println("AuditLog query download starting")
 	url := fmt.Sprintf("https://graph.microsoft.com/beta/security/auditLog/queries/%s/records", auditLogQuery.ID)
+	retries := 0
+	for {
+		data, err := Download(url, authToken, 10000)
+		if err != nil {
+			log.Println("Error downloading data", err)
+			return err
+		}
+		if data != nil {
+			if err := os.WriteFile(filename, []byte(*data), 0644); err != nil {
+				log.Println("Writing parent data", err)
+				return err
+			}
+			break
+		}
+		log.Println("Retrying download in 5 seconds")
+		time.Sleep(time.Second * 5)
+		retries++
+		if retries > 5 {
+			log.Println("Too many retries")
+			return fmt.Errorf("too many retries")
 
-	data, err := Download(url, authToken, 1000)
-	if err != nil {
-		log.Println("Error downloading data", err)
-		return err
-	}
-
-	if err := os.WriteFile(filename, []byte(*data), 0644); err != nil {
-		log.Println("Writing parent data", err)
-		return err
+		}
 	}
 	return nil
 }
 
-func GetAuditLogsForADayByTheHour(batchID string, day time.Time) error {
+func GetAuditLogsForADay(batchID string, day time.Time) error {
 
-	for h := 0; h < 24; h++ {
-		from := day.Add(time.Duration(h) * time.Hour)
-		to := day.Add(time.Duration(h+1)*time.Hour - 1*time.Second)
-		err := GetAuditLogs(batchID, from, to)
-		if err != nil {
-			log.Println("Error getting audit logs", err)
-			return err
-		}
+	from := day
+	to := day.Add(time.Duration(24)*time.Hour - 1*time.Second)
+	err := GetAuditLogs(batchID, from, to)
+	if err != nil {
+		log.Println("Error getting audit logs", err)
+		return err
 	}
+
 	return nil
 }

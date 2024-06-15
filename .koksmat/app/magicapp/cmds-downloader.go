@@ -73,7 +73,7 @@ magic-mix download auditlog auditlogs 2024 12 1
 			day := utils.StrToInt(args[3])
 			var date = time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 			log.Println("Preparing download of audit logs", batchID)
-			err := officegraph.GetAuditLogsForADayByTheHour(batchID, date)
+			err := officegraph.GetAuditLogsForADay(batchID, date)
 			if err != nil {
 				log.Fatal("Error downloading audit logs", err)
 			}

@@ -2,8 +2,8 @@
     "use client";
 
     import { Input } from "@/components/ui/input";
-import { useService } from "@/koksmat/useservice";
-import { useSQLSelect } from "@/koksmat/usesqlselect";
+import { useService } from "@/app/koksmat/useservice";
+import { useSQLSelect } from "@/app/koksmat/usesqlselect";
 import { set } from "date-fns";
 import { tr } from "date-fns/locale";
 import { useMemo, useState } from "react";

@@ -1,7 +1,6 @@
 package move
 
 import (
-	"context"
 	"fmt"
 	"log"
 
@@ -23,22 +22,4 @@ func GetConnectionString(name string) (*string, error) {
 	}
 
 	return &connectionRecord.Items[0].Connectionstring, nil
-}
-
-func SyncPageViews2(fromName string, toName string) error {
-	ctx := context.Background()
-
-	fromConnection, err := GetConnectionString(fromName)
-	if err != nil {
-		return err
-	}
-
-	toConnection, err := GetConnectionString(toName)
-	if err != nil {
-		return err
-	}
-	if err := SyncPageViews(ctx, *fromConnection, *toConnection); err != nil {
-		log.Fatalf("failed to sync pageviews: %v", err)
-	}
-	return err
 }

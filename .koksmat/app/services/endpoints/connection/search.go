@@ -9,14 +9,17 @@ keep: false
 package connection
 
 import (
-	"github.com/magicbutton/magic-mix/applogic"
-	"github.com/magicbutton/magic-mix/database"
-	"github.com/magicbutton/magic-mix/services/models/connectionmodel"
-	. "github.com/magicbutton/magic-mix/utils"
+    "log"
+
+    "github.com/magicbutton/magic-mix/applogic"
+    "github.com/magicbutton/magic-mix/database"
+    "github.com/magicbutton/magic-mix/services/models/connectionmodel"
+    . "github.com/magicbutton/magic-mix/utils"
 )
 
 func ConnectionSearch(query string) (*Page[connectionmodel.Connection], error) {
+    log.Println("Calling Connectionsearch")
 
-	return applogic.Search[database.Connection, connectionmodel.Connection]("searchindex", query, applogic.MapConnectionOutgoing)
+    return applogic.Search[database.Connection, connectionmodel.Connection]("searchindex", query, applogic.MapConnectionOutgoing)
 
 }

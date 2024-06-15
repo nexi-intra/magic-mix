@@ -7,7 +7,7 @@ keep: false
 */ 
 "use client";
 // piratos
-import { useService } from "@/koksmat/useservice";
+import { useService } from "@/app/koksmat/useservice";
 import { useState } from "react";
 import {ProcessLogForm} from "./form";
 

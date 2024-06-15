@@ -15,8 +15,12 @@ import fs from "fs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MagicDevProvider } from "./contextprovider";
+import { useContext } from "react";
+import { MagicboxContext } from "@/app/koksmat/magicbox-context";
+import Tracer from "@/app/koksmat/components/tracer";
 
 export default function Layout(props: { children: any }) {
+  const magicbox = useContext(MagicboxContext);
   const { children } = props;
 
   return (
@@ -57,7 +61,13 @@ export default function Layout(props: { children: any }) {
             </MenubarMenu>
           </Menubar>
         </div>
-        {children}
+        <div className="flex">
+          <div className="hidden md:block"></div>
+          <div className="grow">{children}</div>
+          <div className="hidden md:block">
+            {magicbox.showTracer && <Tracer />}
+          </div>
+        </div>
       </div>
     </MagicDevProvider>
   );

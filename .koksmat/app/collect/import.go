@@ -25,20 +25,21 @@ func EnumerateFiles(root string, callback func(path string) error) error {
 }
 
 func UploadBatch(rootPath string) {
-	callback := func(filePath string) error {
-		log.Println("Uploading", filePath)
-		data, err := os.ReadFile(filePath)
-		if err != nil {
-			log.Fatal("could not read file: %w", err)
-		}
-
+	inserter := func(filePath string, chunk *string) error {
+		log.Println("Uploading", filePath, len(*chunk), "bytes")
+		//return nil
 		_, importErr := importdata.ImportDataCreate(importdatamodel.ImportData{
 			Name:        filePath,
 			Description: "Imported file",
 
-			Data: string(data),
+			Data: chunk,
 		})
 		return importErr
+	}
+
+	callback := func(filePath string) error {
+		//log.Println("Uploading", filePath)
+		return LoadJSON(filePath, inserter)
 	}
 
 	if err := EnumerateFiles(rootPath, callback); err != nil {

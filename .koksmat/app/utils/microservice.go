@@ -2,15 +2,19 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 
 	"github.com/nats-io/nats.go/micro"
 )
 
 type ServiceRequest struct {
-	Args    []string `json:"args"`
-	Body    string   `json:"body"`
-	Channel string   `json:"channel"`
-	Timeout int      `json:"timeout"`
+	Args          []string `json:"args"`
+	Body          string   `json:"body"`
+	Channel       string   `json:"channel"`
+	Timeout       int      `json:"timeout"`
+	TransactionID string   `json:"transactionID"`
+	Token         string   `json:"token"`
 }
 
 type ServiceResponseModel struct {
@@ -48,4 +52,20 @@ func ServiceResponseError(req micro.Request, errorMessage string) {
 		ErrorMessage: errorMessage,
 		Data:         "",
 	})
+}
+func ProcessAppRequest[T interface{}](req micro.Request, process func([]string) (*T, error)) {
+
+	var payload ServiceRequest
+	_ = json.Unmarshal([]byte(req.Data()), &payload)
+	args := payload.Args[1:]
+	result, err := process(args)
+	if err != nil {
+		log.Println("Error", err)
+		ServiceResponseError(req, fmt.Sprintf("%s", err))
+
+		return
+	}
+
+	ServiceResponse(req, result)
+
 }

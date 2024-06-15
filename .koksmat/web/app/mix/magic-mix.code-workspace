@@ -1,0 +1,29 @@
+{
+  "folders": [
+	{
+		"path": "../../../.."
+	},
+	{
+		"path": "../../../../../magic-files"
+	},
+	{
+		"path": "../../../../../365admin-publish"
+	},
+	{
+		"path": "../../../../../meeting-infrastructure"
+	},
+	{
+		"path": "../../../../../magic-master"
+	},
+	{
+		"path": "../../../../../koksmat-cli"
+	},
+	{
+		"path": "../../../../../chatgpt-sample1"
+	},
+	{
+		"path": "../../../../../magic-people"
+	}
+],
+  "settings": {}
+}
