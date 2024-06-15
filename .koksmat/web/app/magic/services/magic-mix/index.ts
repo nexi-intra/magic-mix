@@ -18,8 +18,10 @@ export interface AppMap {
     services: Service[]
 }
 export const pagemap : AppMap = {
+  "name": "mix",
   "services": [
     {
+      "name": "connection",
       "endpoints": [
         {
           "name": "read"
@@ -36,10 +38,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "connection"
+      ]
     },
     {
+      "name": "transformer",
       "endpoints": [
         {
           "name": "read"
@@ -56,10 +58,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "transformer"
+      ]
     },
     {
+      "name": "dataset",
       "endpoints": [
         {
           "name": "read"
@@ -76,10 +78,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "dataset"
+      ]
     },
     {
+      "name": "column",
       "endpoints": [
         {
           "name": "read"
@@ -96,10 +98,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "column"
+      ]
     },
     {
+      "name": "mapper",
       "endpoints": [
         {
           "name": "read"
@@ -116,10 +118,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "mapper"
+      ]
     },
     {
+      "name": "transformation",
       "endpoints": [
         {
           "name": "read"
@@ -136,10 +138,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "transformation"
+      ]
     },
     {
+      "name": "processlog",
       "endpoints": [
         {
           "name": "read"
@@ -156,10 +158,10 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "processlog"
+      ]
     },
     {
+      "name": "importdata",
       "endpoints": [
         {
           "name": "read"
@@ -176,10 +178,28 @@ export const pagemap : AppMap = {
         {
           "name": "search"
         }
-      ],
-      "name": "importdata"
+      ]
+    },
+    {
+      "name": "sql",
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ]
     }
-  ],
-  "name": "mix"
+  ]
 }
 
