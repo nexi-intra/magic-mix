@@ -129,15 +129,15 @@ func InsertIntoImportTable(ctx context.Context, db *sql.DB, batchName, jsonData 
 	return nil
 }
 
-func GetBactchNotSynced(sourceDB *sql.DB, targetDB *sql.DB, tableName string) ([]string, error) {
+func GetBatchNotSynced(sourceDB *sql.DB, targetDB *sql.DB, fromTableName string, toTableName string) ([]string, error) {
 
 	// Extract batch names
-	mixerBatchNames, err := GetDistinctValues(sourceDB, tableName, "batchname")
+	mixerBatchNames, err := GetDistinctValues(sourceDB, fromTableName, "batchname")
 	if err != nil {
 		return nil, err
 	}
 
-	filesBatchNames, err := GetDistinctValues(targetDB, tableName, "batchname")
+	filesBatchNames, err := GetDistinctValues(targetDB, toTableName, "batchname")
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +155,11 @@ func GetBactchNotSynced(sourceDB *sql.DB, targetDB *sql.DB, tableName string) ([
 	return unSyncedBatchNames, nil
 }
 
-func Move(fromDatabase string, toDatabase string, tableName string) error {
+type MoveOptions struct {
+	dryRun bool
+}
+
+func Move(fromDatabase string, toDatabase string, fromTableName string, toTableName string, options *MoveOptions) error {
 	fromConnection, err := GetConnectionString(fromDatabase)
 	if err != nil {
 		return err
@@ -177,12 +181,17 @@ func Move(fromDatabase string, toDatabase string, tableName string) error {
 	}
 	defer destDB.Close()
 
-	batchNamestoSync, err := GetBactchNotSynced(sourceDB, destDB, tableName)
+	batchNamestoSync, err := GetBatchNotSynced(sourceDB, destDB, fromTableName, toTableName)
 	if err != nil {
 		return err
 	}
-
-	return CopyData(batchNamestoSync, sourceDB, tableName, destDB)
+	if options != nil && options.dryRun {
+		log.Println("Dry run mode")
+		log.Println("Batches to sync", batchNamestoSync)
+		return nil
+	}
+	//return nil
+	return CopyData(batchNamestoSync, sourceDB, fromTableName, destDB)
 
 }
 
@@ -242,7 +251,7 @@ func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, d
 		if err != nil {
 			return fmt.Errorf("Committing batch %s: %w", batchName, err)
 		}
-		return nil
+		//return nil
 	}
 	return nil
 }

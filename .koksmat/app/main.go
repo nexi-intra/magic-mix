@@ -29,6 +29,7 @@ description: Describe the main purpose of this kitchen
 	magicapp.RegisterDownloadCmd()
 	magicapp.RegisterUploadCmd()
 	magicapp.RegisterCombineCmd()
+	magicapp.RegisterMoveCmd()
 	utils.RootCmd.PersistentFlags().BoolVarP(&utils.Verbose, "verbose", "v", false, "verbose output")
 
 	magicapp.Execute(name, "magic-mix", "")
