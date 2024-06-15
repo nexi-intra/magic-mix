@@ -42,14 +42,11 @@ func ReadSheet(filename string, sheetName string) (*Sheet, error) {
 	var row = &Row{}
 	var cellVisitor xlsx.CellVisitorFunc = func(c *xlsx.Cell) error {
 
-		value, err := c.FormattedValue()
-		if err != nil {
-			return err
-		} else {
-			colnumber, rownumber := c.GetCoordinates()
-			row.Cells = append(row.Cells, Cell{Row: rownumber, Column: colnumber, Value: value})
+		value := c.Value
 
-		}
+		colnumber, rownumber := c.GetCoordinates()
+		row.Cells = append(row.Cells, Cell{Row: rownumber, Column: colnumber, Value: value})
+
 		return nil
 	}
 

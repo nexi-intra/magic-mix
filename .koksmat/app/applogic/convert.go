@@ -70,6 +70,9 @@ func ConvertExcelToSQLJson(excelFilename string, outputFolder string) error {
 	// Iterate through each sheet
 	for _, sh := range file.Sheets {
 		log.Println("Converting sheet", sh.Name)
+		if sh.Name == "table NEXI" {
+			log.Println("Debug sheet", sh.Name)
+		}
 		sheet, err := ReadSheet(excelFilename, sh.Name)
 		if err != nil {
 			return err
