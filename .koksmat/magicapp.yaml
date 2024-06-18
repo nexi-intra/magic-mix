@@ -288,6 +288,48 @@ entities:
       - name: schema
         type: json
         required: false
+  job: &job
+    name: job
+    description: Job
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: status
+        type: string
+        required: true
+      - name: startat
+        type: datetime
+        required: false
+      - name: startedAt
+        type: datetime
+        required: false
+      - name: completedAt
+        type: datetime
+        required: false
+      - name: maxduration
+        type: int
+        required: false
+      - name: script
+        type: string
+        required: false
+      - name: data
+        type: json
+        required: false
+  schedule: &schedule
+    name: schedule
+    description: Schedule
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: cron
+        type: string
+        required: true
+      - name: job
+        type: reference
+        entity: *job
+        required: true
+      - name: data
+        type: json
+        required: false
+
 models:
   itemMethods: &itemMethods
     - name: read
@@ -421,4 +463,22 @@ services:
       model: sql
       objectname: SQL
       entity: *sql
+    methods: *itemMethods
+
+  - name: job
+    description: Manage jobs
+    entity:
+      type: job
+      model: job
+      objectname: Job
+      entity: *job
+    methods: *itemMethods
+
+  - name: schedule
+    description: Manage schedules
+    entity:
+      type: schedule
+      model: schedule
+      objectname: Schedule
+      entity: *schedule
     methods: *itemMethods

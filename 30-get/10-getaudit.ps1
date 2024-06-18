@@ -36,6 +36,11 @@ Set-Location $workdir
 # magic-mix download auditlog audit 2024 6 9
 # magic-mix download auditlog audit 2024 6 10
 # magic-mix download auditlog audit 2024 6 11
-magic-mix download auditlog audit 2024 6 12
+# magic-mix download auditlog audit 2024 6 12
+# magic-mix download auditlog audit 2024 6 13
+# magic-mix download auditlog audit 2024 6 14
+# magic-mix download auditlog audit 2024 6 15
+# magic-mix download auditlog audit 2024 6 16
+
 
 

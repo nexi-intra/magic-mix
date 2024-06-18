@@ -199,6 +199,46 @@ export const pagemap : AppMap = {
           "name": "search"
         }
       ]
+    },
+    {
+      "name": "job",
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ]
+    },
+    {
+      "name": "schedule",
+      "endpoints": [
+        {
+          "name": "read"
+        },
+        {
+          "name": "create"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        },
+        {
+          "name": "search"
+        }
+      ]
     }
   ]
 }

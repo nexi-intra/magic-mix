@@ -60,6 +60,8 @@ foreach ($hubsite in $hubsitesResponse) {
     $hubsites += $hubsiteData
 }
 
-
+$outfile = join-path $workdir "hubsites.json"
 ConvertTo-Json  -InputObject $hubsites -Depth 10
-| Out-File -FilePath (join-path $workdir "hubsites.json") -Encoding:utf8NoBOM
+| Out-File -FilePath $outfile -Encoding:utf8NoBOM
+
+magic-files import $outfile

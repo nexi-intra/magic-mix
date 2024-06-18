@@ -86,7 +86,25 @@
             "args": ["from","excel","to","json","devicekpi.xlsx","devicekpi"]
         }, 
         {
-            "name": "Web",
+            "name": "sql query",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",
+            "args": ["sql","query","files","select 1"]
+        }, 
+        {
+            "name": "sql exec",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",
+            "args": ["sql","exec","files","delete from importdata where name='asdf12ssdf' "]
+        }, 
+        {
+            "name": "Web magic-mix",
             "type": "node-terminal",
             "request": "launch",
             "cwd": "${workspaceFolder}/.koksmat/web",

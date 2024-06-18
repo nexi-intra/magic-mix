@@ -7,7 +7,8 @@ output: hubsite-spokes-pages.json
 ---#>
 param (
 
-    [string]$HubSiteId = "b80f09f2-c5e5-4f69-9944-33e8fe18a96c"
+    # [string]$HubSiteId = "b80f09f2-c5e5-4f69-9944-33e8fe18a96c"
+    [string]$HubSiteId = "6221ec92-dbe8-4a0a-b533-3f9cdf5bbc13"
 )
 
 if ($null -eq $env:WORKDIR ) {

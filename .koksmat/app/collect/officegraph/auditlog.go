@@ -225,16 +225,18 @@ func GetAuditLogs(batchID string, startTime time.Time, endTime time.Time) error 
 			return err
 		}
 		if data != nil {
-			if err := os.WriteFile(filename, []byte(*data), 0644); err != nil {
-				log.Println("Writing parent data", err)
-				return err
+			if *data != "null" {
+				if err := os.WriteFile(filename, []byte(*data), 0644); err != nil {
+					log.Println("Writing parent data", err)
+					return err
+				}
+				break
 			}
-			break
 		}
 		log.Println("Retrying download in 5 seconds")
 		time.Sleep(time.Second * 5)
 		retries++
-		if retries > 5 {
+		if retries > 10 {
 			log.Println("Too many retries")
 			return fmt.Errorf("too many retries")
 

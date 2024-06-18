@@ -1,4 +1,8 @@
+-- View: devicekpi.nexi
 
+-- DROP VIEW devicekpi.kpi;
+
+CREATE OR REPLACE VIEW devicekpi.kpi as 
 select 'w5' as kpi,
        sum(nexi.column_13::integer) as Numerator,
        sum(nexi.column_14::integer) as Denominator
@@ -39,7 +43,7 @@ select 'w7a' as kpi,
        0 as Denominator
 from devicekpi.nexi
 where row_number = 16
-   -- or row_number = 38
+  
    union all
 select 'w7b' as kpi,
        sum(regexp_replace(nexi.column_5, '\D', '', 'g')::integer) as Numerator,
@@ -54,7 +58,7 @@ select 'w2' as kpi,
        sum(intune.column_5::integer) as Denominator
 from devicekpi.intune
 where row_number = 5
-    --or row_number = 37    
+   
 
 
 union all
@@ -64,7 +68,10 @@ select 'cs11' as kpi,
       0 as Denominator
 from devicekpi.spam
 where row_number = 4
-    --or row_number = 37     
-order by kpi
+    
+order by kpi;
 
--- select * from devicekpi.nexi
+
+
+ALTER TABLE devicekpi.kpi
+    OWNER TO pgadmin;

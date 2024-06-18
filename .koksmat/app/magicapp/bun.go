@@ -2,7 +2,6 @@ package magicapp
 
 import (
 	"log"
-	"os"
 
 	"github.com/spf13/viper"
 	"github.com/uptrace/bun"
@@ -14,8 +13,8 @@ import (
 )
 
 func OpenDatabase() {
-	dir, _ := os.Getwd()
-	log.Println("Current directory", dir)
+	//dir, _ := os.Getwd()
+	//log.Println("Current directory", dir)
 	utils.Setup("./.env")
 
 	dsn := viper.GetString("POSTGRES_DB")

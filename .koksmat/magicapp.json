@@ -2435,6 +2435,196 @@
           "required": false
         }
       ]
+    },
+    "job": {
+      "name": "job",
+      "description": "Job",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "displayname": "Tenant",
+          "hidden": true,
+          "required": true
+        },
+        {
+          "name": "searchindex",
+          "type": "string",
+          "displayname": "Search Index",
+          "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+          "hidden": true,
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "displayname": "Name",
+          "required": true
+        },
+        {
+          "name": "description",
+          "displayname": "Description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "startat",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "startedAt",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "completedAt",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "maxduration",
+          "type": "int",
+          "required": false
+        },
+        {
+          "name": "script",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "data",
+          "type": "json",
+          "required": false
+        }
+      ]
+    },
+    "schedule": {
+      "name": "schedule",
+      "description": "Schedule",
+      "baselineattributes": [
+        {
+          "name": "tenant",
+          "type": "string",
+          "displayname": "Tenant",
+          "hidden": true,
+          "required": true
+        },
+        {
+          "name": "searchindex",
+          "type": "string",
+          "displayname": "Search Index",
+          "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+          "hidden": true,
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "displayname": "Name",
+          "required": true
+        },
+        {
+          "name": "description",
+          "displayname": "Description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "additionalattributes": [
+        {
+          "name": "cron",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "job",
+          "type": "reference",
+          "entity": {
+            "name": "job",
+            "description": "Job",
+            "baselineattributes": [
+              {
+                "name": "tenant",
+                "type": "string",
+                "displayname": "Tenant",
+                "hidden": true,
+                "required": true
+              },
+              {
+                "name": "searchindex",
+                "type": "string",
+                "displayname": "Search Index",
+                "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+                "hidden": true,
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "displayname": "Name",
+                "required": true
+              },
+              {
+                "name": "description",
+                "displayname": "Description",
+                "type": "string",
+                "required": false
+              }
+            ],
+            "additionalattributes": [
+              {
+                "name": "status",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "startat",
+                "type": "datetime",
+                "required": false
+              },
+              {
+                "name": "startedAt",
+                "type": "datetime",
+                "required": false
+              },
+              {
+                "name": "completedAt",
+                "type": "datetime",
+                "required": false
+              },
+              {
+                "name": "maxduration",
+                "type": "int",
+                "required": false
+              },
+              {
+                "name": "script",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "data",
+                "type": "json",
+                "required": false
+              }
+            ]
+          },
+          "required": true
+        },
+        {
+          "name": "data",
+          "type": "json",
+          "required": false
+        }
+      ]
     }
   },
   "models": {
@@ -5388,6 +5578,368 @@
             },
             {
               "name": "schema",
+              "type": "json",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "int",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "int",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "job",
+      "description": "Manage jobs",
+      "entity": {
+        "type": "job",
+        "model": "job",
+        "objectname": "Job",
+        "entity": {
+          "name": "job",
+          "description": "Job",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "displayname": "Tenant",
+              "hidden": true,
+              "required": true
+            },
+            {
+              "name": "searchindex",
+              "type": "string",
+              "displayname": "Search Index",
+              "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+              "hidden": true,
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "displayname": "Name",
+              "required": true
+            },
+            {
+              "name": "description",
+              "displayname": "Description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "status",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "startat",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "startedAt",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "completedAt",
+              "type": "datetime",
+              "required": false
+            },
+            {
+              "name": "maxduration",
+              "type": "int",
+              "required": false
+            },
+            {
+              "name": "script",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "data",
+              "type": "json",
+              "required": false
+            }
+          ]
+        }
+      },
+      "methods": [
+        {
+          "name": "read",
+          "description": "Read a single item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "int",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "create",
+          "description": "Create a new item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to create",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "update",
+          "description": "Update an existing item",
+          "parameters": [
+            {
+              "name": "item",
+              "description": "The item to update",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "delete",
+          "description": "Delete an existing item",
+          "parameters": [
+            {
+              "name": "id",
+              "description": "The id of the item",
+              "type": "int",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "search",
+          "description": "Search for items",
+          "parameters": [
+            {
+              "name": "query",
+              "description": "The search query",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "returns": {
+            "type": "page"
+          }
+        }
+      ]
+    },
+    {
+      "name": "schedule",
+      "description": "Manage schedules",
+      "entity": {
+        "type": "schedule",
+        "model": "schedule",
+        "objectname": "Schedule",
+        "entity": {
+          "name": "schedule",
+          "description": "Schedule",
+          "baselineattributes": [
+            {
+              "name": "tenant",
+              "type": "string",
+              "displayname": "Tenant",
+              "hidden": true,
+              "required": true
+            },
+            {
+              "name": "searchindex",
+              "type": "string",
+              "displayname": "Search Index",
+              "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+              "hidden": true,
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "displayname": "Name",
+              "required": true
+            },
+            {
+              "name": "description",
+              "displayname": "Description",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "additionalattributes": [
+            {
+              "name": "cron",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "job",
+              "type": "reference",
+              "entity": {
+                "name": "job",
+                "description": "Job",
+                "baselineattributes": [
+                  {
+                    "name": "tenant",
+                    "type": "string",
+                    "displayname": "Tenant",
+                    "hidden": true,
+                    "required": true
+                  },
+                  {
+                    "name": "searchindex",
+                    "type": "string",
+                    "displayname": "Search Index",
+                    "description": "Search Index is used for concatenating all searchable fields in a single field making in easier to search\n",
+                    "hidden": true,
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "displayname": "Name",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "displayname": "Description",
+                    "type": "string",
+                    "required": false
+                  }
+                ],
+                "additionalattributes": [
+                  {
+                    "name": "status",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "startat",
+                    "type": "datetime",
+                    "required": false
+                  },
+                  {
+                    "name": "startedAt",
+                    "type": "datetime",
+                    "required": false
+                  },
+                  {
+                    "name": "completedAt",
+                    "type": "datetime",
+                    "required": false
+                  },
+                  {
+                    "name": "maxduration",
+                    "type": "int",
+                    "required": false
+                  },
+                  {
+                    "name": "script",
+                    "type": "string",
+                    "required": false
+                  },
+                  {
+                    "name": "data",
+                    "type": "json",
+                    "required": false
+                  }
+                ]
+              },
+              "required": true
+            },
+            {
+              "name": "data",
               "type": "json",
               "required": false
             }
