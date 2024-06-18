@@ -9,17 +9,17 @@ keep: false
 package transformer
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformermodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformermodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func TransformerSearch(query string) (*Page[transformermodel.Transformer], error) {
-    log.Println("Calling Transformersearch")
+	log.Println("Calling Transformersearch")
 
-    return applogic.Search[database.Transformer, transformermodel.Transformer]("searchindex", query, applogic.MapTransformerOutgoing)
+	return applogic.Search[database.Transformer, transformermodel.Transformer]("searchindex", query, applogic.MapTransformerOutgoing)
 
 }

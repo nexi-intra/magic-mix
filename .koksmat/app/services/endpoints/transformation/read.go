@@ -9,18 +9,18 @@ keep: false
 package transformation
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformationmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformationmodel"
 )
 
 func TransformationRead(arg0 string) (*transformationmodel.Transformation, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Transformationread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Transformationread")
 
-    return applogic.Read[database.Transformation, transformationmodel.Transformation](id, applogic.MapTransformationOutgoing)
+	return applogic.Read[database.Transformation, transformationmodel.Transformation](id, applogic.MapTransformationOutgoing)
 
 }

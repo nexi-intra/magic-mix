@@ -159,7 +159,7 @@ type MoveOptions struct {
 	dryRun bool
 }
 
-func Move(fromDatabase string, toDatabase string, fromTableName string, toTableName string, options *MoveOptions) error {
+func Move(fromDatabase string, toDatabase string, fromTableName string, toTableName string, storedProcedure *string, options *MoveOptions) error {
 	fromConnection, err := GetConnectionString(fromDatabase)
 	if err != nil {
 		return err
@@ -191,11 +191,11 @@ func Move(fromDatabase string, toDatabase string, fromTableName string, toTableN
 		return nil
 	}
 	//return nil
-	return CopyData(batchNamestoSync, sourceDB, fromTableName, destDB)
+	return CopyData(batchNamestoSync, sourceDB, fromTableName, destDB, storedProcedure)
 
 }
 
-func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, destDB *sql.DB) error {
+func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, destDB *sql.DB, storedProcedure *string) error {
 	for _, batchName := range batchNamestoSync {
 		tx, err := destDB.BeginTx(context.Background(), nil)
 		if err != nil {
@@ -247,11 +247,22 @@ func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, d
 			}
 
 		}
+		if storedProcedure != nil {
+			log.Println("Executing stored procedure", *storedProcedure)
+			storedProcedureSQL := fmt.Sprintf("CALL %s()", *storedProcedure)
+			_, err = destDB.Exec(storedProcedureSQL)
+
+			if err != nil {
+				err = tx.Rollback()
+				return fmt.Errorf("Error executing stored procedure %s: %w - Rolling back", *storedProcedure, err)
+			}
+		}
+		log.Println("Committing batch", batchName)
 		err = tx.Commit()
 		if err != nil {
 			return fmt.Errorf("Committing batch %s: %w", batchName, err)
 		}
-		//return nil
+
 	}
 	return nil
 }

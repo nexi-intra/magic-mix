@@ -8,8 +8,9 @@ keep: true
 package magicapp
 
 import (
-	"github.com/magicbutton/magic-mix/services"
 	"github.com/nats-io/nats.go/micro"
+
+	"github.com/magicbutton/magic-mix/services"
 )
 
 func RegisterServiceEndpoints(root micro.Group) {

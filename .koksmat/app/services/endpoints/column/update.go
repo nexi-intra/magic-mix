@@ -9,17 +9,16 @@ keep: false
 package column
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/columnmodel"
-
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/columnmodel"
 )
 
 func ColumnUpdate(item columnmodel.Column) (*columnmodel.Column, error) {
-    log.Println("Calling Columnupdate")
+	log.Println("Calling Columnupdate")
 
-    return applogic.Update[database.Column, columnmodel.Column](item.ID,item, applogic.MapColumnIncoming, applogic.MapColumnOutgoing)
+	return applogic.Update[database.Column, columnmodel.Column](item.ID, item, applogic.MapColumnIncoming, applogic.MapColumnOutgoing)
 
 }

@@ -9,17 +9,16 @@ keep: false
 package schedule
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/schedulemodel"
-
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/schedulemodel"
 )
 
 func ScheduleUpdate(item schedulemodel.Schedule) (*schedulemodel.Schedule, error) {
-    log.Println("Calling Scheduleupdate")
+	log.Println("Calling Scheduleupdate")
 
-    return applogic.Update[database.Schedule, schedulemodel.Schedule](item.ID,item, applogic.MapScheduleIncoming, applogic.MapScheduleOutgoing)
+	return applogic.Update[database.Schedule, schedulemodel.Schedule](item.ID, item, applogic.MapScheduleIncoming, applogic.MapScheduleOutgoing)
 
 }

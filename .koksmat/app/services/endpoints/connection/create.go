@@ -9,17 +9,16 @@ keep: false
 package connection
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/connectionmodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/connectionmodel"
 )
 
 func ConnectionCreate(item connectionmodel.Connection) (*connectionmodel.Connection, error) {
-    log.Println("Calling Connectioncreate")
+	log.Println("Calling Connectioncreate")
 
-    return applogic.Create[database.Connection, connectionmodel.Connection](item, applogic.MapConnectionIncoming, applogic.MapConnectionOutgoing)
+	return applogic.Create[database.Connection, connectionmodel.Connection](item, applogic.MapConnectionIncoming, applogic.MapConnectionOutgoing)
 
 }

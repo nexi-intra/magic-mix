@@ -9,17 +9,16 @@ keep: false
 package sql
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/sqlmodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/sqlmodel"
 )
 
 func SQLCreate(item sqlmodel.SQL) (*sqlmodel.SQL, error) {
-    log.Println("Calling SQLcreate")
+	log.Println("Calling SQLcreate")
 
-    return applogic.Create[database.SQL, sqlmodel.SQL](item, applogic.MapSQLIncoming, applogic.MapSQLOutgoing)
+	return applogic.Create[database.SQL, sqlmodel.SQL](item, applogic.MapSQLIncoming, applogic.MapSQLOutgoing)
 
 }

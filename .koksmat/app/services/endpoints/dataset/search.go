@@ -9,17 +9,17 @@ keep: false
 package dataset
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/datasetmodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/datasetmodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func DatasetSearch(query string) (*Page[datasetmodel.Dataset], error) {
-    log.Println("Calling Datasetsearch")
+	log.Println("Calling Datasetsearch")
 
-    return applogic.Search[database.Dataset, datasetmodel.Dataset]("searchindex", query, applogic.MapDatasetOutgoing)
+	return applogic.Search[database.Dataset, datasetmodel.Dataset]("searchindex", query, applogic.MapDatasetOutgoing)
 
 }

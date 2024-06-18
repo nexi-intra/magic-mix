@@ -9,18 +9,18 @@ keep: false
 package connection
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/connectionmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/connectionmodel"
 )
 
 func ConnectionRead(arg0 string) (*connectionmodel.Connection, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Connectionread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Connectionread")
 
-    return applogic.Read[database.Connection, connectionmodel.Connection](id, applogic.MapConnectionOutgoing)
+	return applogic.Read[database.Connection, connectionmodel.Connection](id, applogic.MapConnectionOutgoing)
 
 }

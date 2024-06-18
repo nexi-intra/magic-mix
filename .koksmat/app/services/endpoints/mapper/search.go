@@ -9,17 +9,17 @@ keep: false
 package mapper
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/mappermodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/mappermodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func MapperSearch(query string) (*Page[mappermodel.Mapper], error) {
-    log.Println("Calling Mappersearch")
+	log.Println("Calling Mappersearch")
 
-    return applogic.Search[database.Mapper, mappermodel.Mapper]("searchindex", query, applogic.MapMapperOutgoing)
+	return applogic.Search[database.Mapper, mappermodel.Mapper]("searchindex", query, applogic.MapMapperOutgoing)
 
 }

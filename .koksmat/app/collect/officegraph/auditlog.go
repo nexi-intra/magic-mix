@@ -18,6 +18,7 @@ type AuditLog struct {
 	ActivityDisplayName string    `json:"activityDisplayName"`
 	// Add other fields as needed
 }
+
 type AuditLogQuery struct {
 	Type                string   `json:"@odata.type"`
 	DisplayName         string   `json:"displayName"`

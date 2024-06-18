@@ -8,7 +8,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/tealeg/xlsx/v3"
+	xlsx "github.com/tealeg/xlsx/v3"
 )
 
 func ConvertExcelToSQL(filename string, sheetName string, tablename string, batchsize int) error {
@@ -45,6 +45,7 @@ func ConvertExcelToSQL(filename string, sheetName string, tablename string, batc
 	log.Println("Conversion completed")
 	return nil
 }
+
 func ensureBatchFolderExists(folder string) error {
 	// Check if folder exists
 	_, err := os.Stat(folder)
@@ -56,6 +57,7 @@ func ensureBatchFolderExists(folder string) error {
 	}
 	return nil
 }
+
 func ConvertExcelToSQLJson(excelFilename string, outputFolder string) error {
 	log.Println("Converting Excel to SQL")
 

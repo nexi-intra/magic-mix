@@ -9,17 +9,17 @@ keep: false
 package schedule
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/schedulemodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/schedulemodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func ScheduleSearch(query string) (*Page[schedulemodel.Schedule], error) {
-    log.Println("Calling Schedulesearch")
+	log.Println("Calling Schedulesearch")
 
-    return applogic.Search[database.Schedule, schedulemodel.Schedule]("searchindex", query, applogic.MapScheduleOutgoing)
+	return applogic.Search[database.Schedule, schedulemodel.Schedule]("searchindex", query, applogic.MapScheduleOutgoing)
 
 }

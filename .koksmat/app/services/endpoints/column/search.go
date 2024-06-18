@@ -9,17 +9,17 @@ keep: false
 package column
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/columnmodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/columnmodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func ColumnSearch(query string) (*Page[columnmodel.Column], error) {
-    log.Println("Calling Columnsearch")
+	log.Println("Calling Columnsearch")
 
-    return applogic.Search[database.Column, columnmodel.Column]("searchindex", query, applogic.MapColumnOutgoing)
+	return applogic.Search[database.Column, columnmodel.Column]("searchindex", query, applogic.MapColumnOutgoing)
 
 }

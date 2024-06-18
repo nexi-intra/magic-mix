@@ -1,0 +1,4 @@
+{
+  "parentUrl": "https://graph.microsoft.com/v1.0/groups?$select=id,creationOptions,displayName,groupTypes,mail,securityEnabled,visibility,onPremisesDomainName,membershipRule,resourceProvisioningOptions,resourceBehaviorOptions,classification",
+  "childUrls": []
+}

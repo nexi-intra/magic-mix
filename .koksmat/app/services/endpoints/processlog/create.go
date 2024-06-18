@@ -9,17 +9,16 @@ keep: false
 package processlog
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/processlogmodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/processlogmodel"
 )
 
 func ProcessLogCreate(item processlogmodel.ProcessLog) (*processlogmodel.ProcessLog, error) {
-    log.Println("Calling ProcessLogcreate")
+	log.Println("Calling ProcessLogcreate")
 
-    return applogic.Create[database.ProcessLog, processlogmodel.ProcessLog](item, applogic.MapProcessLogIncoming, applogic.MapProcessLogOutgoing)
+	return applogic.Create[database.ProcessLog, processlogmodel.ProcessLog](item, applogic.MapProcessLogIncoming, applogic.MapProcessLogOutgoing)
 
 }

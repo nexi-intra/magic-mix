@@ -2,7 +2,7 @@
 title: Get Shared Mailboxes
 connection: exchange
 tag: get-shared-mailboxes
-api: post
+
 ---
 
 

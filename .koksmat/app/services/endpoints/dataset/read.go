@@ -9,18 +9,18 @@ keep: false
 package dataset
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/datasetmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/datasetmodel"
 )
 
 func DatasetRead(arg0 string) (*datasetmodel.Dataset, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Datasetread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Datasetread")
 
-    return applogic.Read[database.Dataset, datasetmodel.Dataset](id, applogic.MapDatasetOutgoing)
+	return applogic.Read[database.Dataset, datasetmodel.Dataset](id, applogic.MapDatasetOutgoing)
 
 }

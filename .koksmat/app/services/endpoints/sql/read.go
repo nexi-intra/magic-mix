@@ -9,18 +9,18 @@ keep: false
 package sql
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/sqlmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/sqlmodel"
 )
 
 func SQLRead(arg0 string) (*sqlmodel.SQL, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling SQLread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling SQLread")
 
-    return applogic.Read[database.SQL, sqlmodel.SQL](id, applogic.MapSQLOutgoing)
+	return applogic.Read[database.SQL, sqlmodel.SQL](id, applogic.MapSQLOutgoing)
 
 }

@@ -9,18 +9,18 @@ keep: false
 package column
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/columnmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/columnmodel"
 )
 
 func ColumnRead(arg0 string) (*columnmodel.Column, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Columnread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Columnread")
 
-    return applogic.Read[database.Column, columnmodel.Column](id, applogic.MapColumnOutgoing)
+	return applogic.Read[database.Column, columnmodel.Column](id, applogic.MapColumnOutgoing)
 
 }

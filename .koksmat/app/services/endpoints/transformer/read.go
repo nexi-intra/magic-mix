@@ -9,18 +9,18 @@ keep: false
 package transformer
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformermodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformermodel"
 )
 
 func TransformerRead(arg0 string) (*transformermodel.Transformer, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Transformerread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Transformerread")
 
-    return applogic.Read[database.Transformer, transformermodel.Transformer](id, applogic.MapTransformerOutgoing)
+	return applogic.Read[database.Transformer, transformermodel.Transformer](id, applogic.MapTransformerOutgoing)
 
 }

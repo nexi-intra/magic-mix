@@ -3,27 +3,21 @@
 // -------------------------------------------------------------------
 /*
 ---
-title: Parse Users
+title: Download audit logs
 ---
 */
 package cmds
 
 import (
 	"context"
-	"os"
-	"path"
 
 	"github.com/magicbutton/magic-mix/execution"
 	"github.com/magicbutton/magic-mix/utils"
 )
 
-func AnalyseParseUsersPost(ctx context.Context, body []byte, args []string) (*string, error) {
-	inputErr := os.WriteFile(path.Join(utils.WorkDir("magic-mix"), "userssample.json"), body, 0644)
-	if inputErr != nil {
-		return nil, inputErr
-	}
+func ProcessBatchPost(ctx context.Context, args []string) (*string, error) {
 
-	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-mix", "30-analyse", "10-parse-users.ps1", "")
+	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-mix", "40-process", "12-officegraph.ps1", "", "-batchname", args[0], "-batchdefition", args[1])
 	if pwsherr != nil {
 		return nil, pwsherr
 	}

@@ -51,6 +51,7 @@ func Search[DB interface{}, DOC interface{}](fieldname string, query string, map
 
 	return &page, nil
 }
+
 func Create[DB interface{}, DOC interface{}](item DOC, mapperIncoming func(DOC) DB, mapperOutgoing func(DB) DOC) (*DOC, error) {
 
 	dbItem := mapperIncoming(item)
@@ -62,6 +63,7 @@ func Create[DB interface{}, DOC interface{}](item DOC, mapperIncoming func(DOC) 
 	return &createdItem, nil
 
 }
+
 func Read[DB interface{}, DOC interface{}](id int, mapper func(DB) DOC) (*DOC, error) {
 	dbItem, err := dbhelpers.SelectById[DB](id)
 	if err != nil {

@@ -9,17 +9,17 @@ keep: false
 package processlog
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/processlogmodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/processlogmodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func ProcessLogSearch(query string) (*Page[processlogmodel.ProcessLog], error) {
-    log.Println("Calling ProcessLogsearch")
+	log.Println("Calling ProcessLogsearch")
 
-    return applogic.Search[database.ProcessLog, processlogmodel.ProcessLog]("searchindex", query, applogic.MapProcessLogOutgoing)
+	return applogic.Search[database.ProcessLog, processlogmodel.ProcessLog]("searchindex", query, applogic.MapProcessLogOutgoing)
 
 }

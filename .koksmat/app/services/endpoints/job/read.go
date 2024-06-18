@@ -9,18 +9,18 @@ keep: false
 package job
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/jobmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/jobmodel"
 )
 
 func JobRead(arg0 string) (*jobmodel.Job, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Jobread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Jobread")
 
-    return applogic.Read[database.Job, jobmodel.Job](id, applogic.MapJobOutgoing)
+	return applogic.Read[database.Job, jobmodel.Job](id, applogic.MapJobOutgoing)
 
 }

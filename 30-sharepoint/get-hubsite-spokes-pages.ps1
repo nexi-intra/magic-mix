@@ -2,7 +2,7 @@
 title: Get Hub Site Spokes Pages
 tag: hubsite-spokes-pages
 connection: sharepoint
-api: post
+
 output: hubsite-spokes-pages.json
 ---#>
 param (

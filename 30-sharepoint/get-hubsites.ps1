@@ -1,7 +1,7 @@
 <#---
 title: Get Hub Sites
 tag: hubsites
-api: post
+
 connection: sharepoint
 output: hubsites.json
 ---

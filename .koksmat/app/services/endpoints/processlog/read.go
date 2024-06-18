@@ -9,18 +9,18 @@ keep: false
 package processlog
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/processlogmodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/processlogmodel"
 )
 
 func ProcessLogRead(arg0 string) (*processlogmodel.ProcessLog, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling ProcessLogread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling ProcessLogread")
 
-    return applogic.Read[database.ProcessLog, processlogmodel.ProcessLog](id, applogic.MapProcessLogOutgoing)
+	return applogic.Read[database.ProcessLog, processlogmodel.ProcessLog](id, applogic.MapProcessLogOutgoing)
 
 }

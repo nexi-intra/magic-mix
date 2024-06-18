@@ -44,6 +44,7 @@ type Parent struct {
 	} `json:"siteCollection"`
 	WebURL string `json:"webUrl"`
 }
+
 type FilterFunc func([]byte) bool
 
 type DownloaderOptions struct {
@@ -58,10 +59,12 @@ type DownloadBatchChild struct {
 	Url    string `json:"url"`
 	Prefix string `json:"prefix"`
 }
+
 type DownloadBatchType struct {
 	ParentUrl string               `json:"parentUrl"`
 	ChildUrls []DownloadBatchChild `json:"childUrls"`
 }
+
 type Details struct {
 	ParentId string          `json:"parentId"`
 	Details  json.RawMessage `json:"details"`
@@ -79,6 +82,7 @@ func DownloadBatch(batchID string, batchType DownloadBatchType, options *Downloa
 	}
 
 }
+
 func Downloader(batchID string, parentUrl string, childUrl string, childPrefix string, options *DownloaderOptions) {
 	if options == nil {
 		options = &DownloaderOptions{}

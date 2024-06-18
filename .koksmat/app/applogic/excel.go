@@ -3,7 +3,7 @@ package applogic
 import (
 	"sort"
 
-	"github.com/tealeg/xlsx/v3"
+	xlsx "github.com/tealeg/xlsx/v3"
 )
 
 func SheetNames(filename string) ([]string, error) {

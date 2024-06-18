@@ -9,17 +9,16 @@ keep: false
 package dataset
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/datasetmodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/datasetmodel"
 )
 
 func DatasetCreate(item datasetmodel.Dataset) (*datasetmodel.Dataset, error) {
-    log.Println("Calling Datasetcreate")
+	log.Println("Calling Datasetcreate")
 
-    return applogic.Create[database.Dataset, datasetmodel.Dataset](item, applogic.MapDatasetIncoming, applogic.MapDatasetOutgoing)
+	return applogic.Create[database.Dataset, datasetmodel.Dataset](item, applogic.MapDatasetIncoming, applogic.MapDatasetOutgoing)
 
 }

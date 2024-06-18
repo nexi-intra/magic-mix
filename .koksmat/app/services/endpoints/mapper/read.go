@@ -9,18 +9,18 @@ keep: false
 package mapper
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/mappermodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/mappermodel"
 )
 
 func MapperRead(arg0 string) (*mappermodel.Mapper, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Mapperread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Mapperread")
 
-    return applogic.Read[database.Mapper, mappermodel.Mapper](id, applogic.MapMapperOutgoing)
+	return applogic.Read[database.Mapper, mappermodel.Mapper](id, applogic.MapMapperOutgoing)
 
 }

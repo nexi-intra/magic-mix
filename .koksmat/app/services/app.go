@@ -11,9 +11,10 @@ package services
 import (
 	"encoding/json"
 
+	"github.com/nats-io/nats.go/micro"
+
 	"github.com/magicbutton/magic-mix/services/endpoints/app"
 	. "github.com/magicbutton/magic-mix/utils"
-	"github.com/nats-io/nats.go/micro"
 )
 
 func HandleAppRequests(req micro.Request) {

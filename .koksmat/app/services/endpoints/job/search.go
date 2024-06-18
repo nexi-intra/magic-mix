@@ -9,17 +9,17 @@ keep: false
 package job
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/jobmodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/jobmodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func JobSearch(query string) (*Page[jobmodel.Job], error) {
-    log.Println("Calling Jobsearch")
+	log.Println("Calling Jobsearch")
 
-    return applogic.Search[database.Job, jobmodel.Job]("searchindex", query, applogic.MapJobOutgoing)
+	return applogic.Search[database.Job, jobmodel.Job]("searchindex", query, applogic.MapJobOutgoing)
 
 }

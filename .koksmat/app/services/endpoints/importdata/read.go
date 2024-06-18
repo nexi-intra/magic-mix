@@ -9,18 +9,18 @@ keep: false
 package importdata
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/importdatamodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/importdatamodel"
 )
 
 func ImportDataRead(arg0 string) (*importdatamodel.ImportData, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling ImportDataread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling ImportDataread")
 
-    return applogic.Read[database.ImportData, importdatamodel.ImportData](id, applogic.MapImportDataOutgoing)
+	return applogic.Read[database.ImportData, importdatamodel.ImportData](id, applogic.MapImportDataOutgoing)
 
 }

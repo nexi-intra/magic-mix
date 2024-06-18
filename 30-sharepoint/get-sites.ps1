@@ -1,7 +1,7 @@
 <#---
 title: Get All Sites in Tenant
 tag: allsites
-api: post
+
 connection: sharepoint
 output: allsites.json
 ---

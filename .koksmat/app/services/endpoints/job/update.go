@@ -9,17 +9,16 @@ keep: false
 package job
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/jobmodel"
-
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/jobmodel"
 )
 
 func JobUpdate(item jobmodel.Job) (*jobmodel.Job, error) {
-    log.Println("Calling Jobupdate")
+	log.Println("Calling Jobupdate")
 
-    return applogic.Update[database.Job, jobmodel.Job](item.ID,item, applogic.MapJobIncoming, applogic.MapJobOutgoing)
+	return applogic.Update[database.Job, jobmodel.Job](item.ID, item, applogic.MapJobIncoming, applogic.MapJobOutgoing)
 
 }

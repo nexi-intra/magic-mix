@@ -1,0 +1,9 @@
+{
+  "parentUrl": "https://christianiabpos.sharepoint.com/_api/v2.0/sites",
+  "childUrls": [
+    {
+      "url": "https://christianiabpos.sharepoint.com/_api/v2.0/sites/%s/_api/web/HubSiteData",
+      "prefix": "hub"
+    }
+  ]
+}

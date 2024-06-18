@@ -3,27 +3,21 @@
 // -------------------------------------------------------------------
 /*
 ---
-title: Parse Groups
+title: Download audit logs
 ---
 */
 package cmds
 
 import (
 	"context"
-	"os"
-	"path"
 
 	"github.com/magicbutton/magic-mix/execution"
 	"github.com/magicbutton/magic-mix/utils"
 )
 
-func AnalyseParseGroupsPost(ctx context.Context, body []byte, args []string) (*string, error) {
-	inputErr := os.WriteFile(path.Join(utils.WorkDir("magic-mix"), "InfocastGroups.json"), body, 0644)
-	if inputErr != nil {
-		return nil, inputErr
-	}
+func ProcessAuditPost(ctx context.Context, args []string) (*string, error) {
 
-	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-mix", "30-analyse", "10-parse-groups.ps1", "")
+	result, pwsherr := execution.ExecutePowerShell("john", "*", "magic-mix", "40-process", "10-auditlogs.ps1", "", "-year", args[0], "-month", args[1], "-day", args[2])
 	if pwsherr != nil {
 		return nil, pwsherr
 	}

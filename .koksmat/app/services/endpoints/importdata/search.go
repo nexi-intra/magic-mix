@@ -9,17 +9,17 @@ keep: false
 package importdata
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/importdatamodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/importdatamodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func ImportDataSearch(query string) (*Page[importdatamodel.ImportData], error) {
-    log.Println("Calling ImportDatasearch")
+	log.Println("Calling ImportDatasearch")
 
-    return applogic.Search[database.ImportData, importdatamodel.ImportData]("searchindex", query, applogic.MapImportDataOutgoing)
+	return applogic.Search[database.ImportData, importdatamodel.ImportData]("searchindex", query, applogic.MapImportDataOutgoing)
 
 }

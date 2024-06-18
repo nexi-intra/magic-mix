@@ -9,17 +9,16 @@ keep: false
 package transformation
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformationmodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformationmodel"
 )
 
 func TransformationCreate(item transformationmodel.Transformation) (*transformationmodel.Transformation, error) {
-    log.Println("Calling Transformationcreate")
+	log.Println("Calling Transformationcreate")
 
-    return applogic.Create[database.Transformation, transformationmodel.Transformation](item, applogic.MapTransformationIncoming, applogic.MapTransformationOutgoing)
+	return applogic.Create[database.Transformation, transformationmodel.Transformation](item, applogic.MapTransformationIncoming, applogic.MapTransformationOutgoing)
 
 }

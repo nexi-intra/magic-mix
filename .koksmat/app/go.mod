@@ -5,23 +5,16 @@ go 1.21
 toolchain go1.21.1
 
 require (
-	github.com/friendsofgo/errors v0.9.2
 	github.com/go-chi/jwtauth/v5 v5.3.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
-	github.com/kat-co/vala v0.0.0-20170210184112-42e1d8b61f12
 	github.com/lib/pq v1.10.9
 	github.com/spf13/cobra v1.8.0
 	github.com/swaggest/rest v0.2.61
 	github.com/swaggest/swgui v1.8.0
 	github.com/swaggest/usecase v1.3.1
-	github.com/volatiletech/null/v8 v8.1.2
-	github.com/volatiletech/randomize v0.0.1
-	github.com/volatiletech/sqlboiler/v4 v4.16.2
-	github.com/volatiletech/strmangle v0.0.6
 )
 
 require (
-	github.com/fatih/color v1.16.0 // indirect
 	github.com/frankban/quicktest v1.14.6 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/google/btree v1.0.0 // indirect
@@ -35,8 +28,6 @@ require (
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/nats-io/nkeys v0.4.6 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/peterbourgon/diskv/v3 v3.0.1 // indirect
@@ -44,13 +35,9 @@ require (
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/shabbyrobe/xmlwriter v0.0.0-20200208144257-9fca06d00ffa // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
-	github.com/uptrace/bun/extra/bundebug v1.2.1 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	github.com/volatiletech/inflect v0.0.1 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	mellium.im/sasl v0.3.1 // indirect
 )
 
@@ -109,7 +96,6 @@ require (
 )
 
 require (
-	github.com/dimchansky/utfbom v1.1.1
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/nats-io/nats.go v1.31.0

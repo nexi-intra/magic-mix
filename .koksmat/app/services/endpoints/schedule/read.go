@@ -9,18 +9,18 @@ keep: false
 package schedule
 
 import (
-    "log"
-    "strconv"
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/schedulemodel"
+	"log"
+	"strconv"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/schedulemodel"
 )
 
 func ScheduleRead(arg0 string) (*schedulemodel.Schedule, error) {
-    id,_ := strconv.Atoi(arg0)
-    log.Println("Calling Scheduleread")
+	id, _ := strconv.Atoi(arg0)
+	log.Println("Calling Scheduleread")
 
-    return applogic.Read[database.Schedule, schedulemodel.Schedule](id, applogic.MapScheduleOutgoing)
+	return applogic.Read[database.Schedule, schedulemodel.Schedule](id, applogic.MapScheduleOutgoing)
 
 }

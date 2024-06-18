@@ -43,6 +43,7 @@ func TestDownloadOfficeGroupsAndOwners(t *testing.T) {
 	Downloader("groups-1", "https://graph.microsoft.com/v1.0/groups", "https://graph.microsoft.com/v1.0//groups/%s/owners", "owners", options)
 	Downloader("groups-1", "https://graph.microsoft.com/v1.0/groups", "https://graph.microsoft.com/v1.0//groups/%s/members", "members", options)
 }
+
 func TestDownloadOfficeGroupsAndOwners2(t *testing.T) {
 	options := &DownloaderOptions{
 		MaxPages: 10000,

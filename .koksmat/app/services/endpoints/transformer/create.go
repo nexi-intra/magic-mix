@@ -9,17 +9,16 @@ keep: false
 package transformer
 
 import (
-    "log"
-   
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformermodel"
+	"log"
 
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformermodel"
 )
 
 func TransformerCreate(item transformermodel.Transformer) (*transformermodel.Transformer, error) {
-    log.Println("Calling Transformercreate")
+	log.Println("Calling Transformercreate")
 
-    return applogic.Create[database.Transformer, transformermodel.Transformer](item, applogic.MapTransformerIncoming, applogic.MapTransformerOutgoing)
+	return applogic.Create[database.Transformer, transformermodel.Transformer](item, applogic.MapTransformerIncoming, applogic.MapTransformerOutgoing)
 
 }

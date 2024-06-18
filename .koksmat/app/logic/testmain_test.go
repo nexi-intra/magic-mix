@@ -6,11 +6,11 @@ import (
 	"testing"
 
 	"github.com/spf13/viper"
-
-	"github.com/magicbutton/magic-mix/utils"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+
+	"github.com/magicbutton/magic-mix/utils"
 )
 
 func TestMain(m *testing.M) {

@@ -9,17 +9,17 @@ keep: false
 package transformation
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/transformationmodel"
-    . "github.com/magicbutton/magic-mix/utils"
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/transformationmodel"
+	. "github.com/magicbutton/magic-mix/utils"
 )
 
 func TransformationSearch(query string) (*Page[transformationmodel.Transformation], error) {
-    log.Println("Calling Transformationsearch")
+	log.Println("Calling Transformationsearch")
 
-    return applogic.Search[database.Transformation, transformationmodel.Transformation]("searchindex", query, applogic.MapTransformationOutgoing)
+	return applogic.Search[database.Transformation, transformationmodel.Transformation]("searchindex", query, applogic.MapTransformationOutgoing)
 
 }

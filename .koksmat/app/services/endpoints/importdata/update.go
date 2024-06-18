@@ -9,17 +9,16 @@ keep: false
 package importdata
 
 import (
-    "log"
+	"log"
 
-    "github.com/magicbutton/magic-mix/applogic"
-    "github.com/magicbutton/magic-mix/database"
-    "github.com/magicbutton/magic-mix/services/models/importdatamodel"
-
+	"github.com/magicbutton/magic-mix/applogic"
+	"github.com/magicbutton/magic-mix/database"
+	"github.com/magicbutton/magic-mix/services/models/importdatamodel"
 )
 
 func ImportDataUpdate(item importdatamodel.ImportData) (*importdatamodel.ImportData, error) {
-    log.Println("Calling ImportDataupdate")
+	log.Println("Calling ImportDataupdate")
 
-    return applogic.Update[database.ImportData, importdatamodel.ImportData](item.ID,item, applogic.MapImportDataIncoming, applogic.MapImportDataOutgoing)
+	return applogic.Update[database.ImportData, importdatamodel.ImportData](item.ID, item, applogic.MapImportDataIncoming, applogic.MapImportDataOutgoing)
 
 }

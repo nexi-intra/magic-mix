@@ -1,8 +1,6 @@
 package magicapp
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
 
 	"github.com/magicbutton/magic-mix/cmds"
@@ -15,7 +13,7 @@ func RegisterCmds() {
 	healthCmd := &cobra.Command{
 		Use:   "health",
 		Short: "Health",
-		Long:  `Describe the main purpose of this kitchen`,
+		Long:  ``,
 	}
 	HealthPingPostCmd := &cobra.Command{
 		Use:   "ping  pong",
@@ -43,92 +41,41 @@ func RegisterCmds() {
 	healthCmd.AddCommand(HealthCoreversionPostCmd)
 
 	utils.RootCmd.AddCommand(healthCmd)
-	usecasesCmd := &cobra.Command{
-		Use:   "usecases",
-		Short: "Use Cases",
-		Long:  `Describe the main purpose of this kitchen`,
-	}
-	UsecasesGetGroupsPostCmd := &cobra.Command{
-		Use:   "get-groups ",
-		Short: "Get Groups",
+	processCmd := &cobra.Command{
+		Use:   "process",
+		Short: "Process",
 		Long:  ``,
-		Args:  cobra.MinimumNArgs(0),
+	}
+	ProcessAuditPostCmd := &cobra.Command{
+		Use:   "audit  year month day",
+		Short: "Download audit logs",
+		Long:  `Download audit logs from the auditlog service`,
+		Args:  cobra.MinimumNArgs(3),
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := cmd.Context()
 
-			cmds.UsecasesGetGroupsPost(ctx, args)
+			cmds.ProcessAuditPost(ctx, args)
 		},
 	}
-	usecasesCmd.AddCommand(UsecasesGetGroupsPostCmd)
-	UsecasesGetSegmentsPostCmd := &cobra.Command{
-		Use:   "get-segments ",
-		Short: "Get Segments",
-		Long:  ``,
-		Args:  cobra.MinimumNArgs(0),
+	processCmd.AddCommand(ProcessAuditPostCmd)
+	ProcessBatchPostCmd := &cobra.Command{
+		Use:   "batch  batchname batchdefition",
+		Short: "Download audit logs",
+		Long:  `Download audit logs from the auditlog service`,
+		Args:  cobra.MinimumNArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := cmd.Context()
 
-			cmds.UsecasesGetSegmentsPost(ctx, args)
+			cmds.ProcessBatchPost(ctx, args)
 		},
 	}
-	usecasesCmd.AddCommand(UsecasesGetSegmentsPostCmd)
-	UsecasesGetUserPostCmd := &cobra.Command{
-		Use:   "get-user  userid",
-		Short: "Get  User",
-		Long:  ``,
-		Args:  cobra.MinimumNArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			ctx := cmd.Context()
+	processCmd.AddCommand(ProcessBatchPostCmd)
 
-			cmds.UsecasesGetUserPost(ctx, args)
-		},
-	}
-	usecasesCmd.AddCommand(UsecasesGetUserPostCmd)
-
-	utils.RootCmd.AddCommand(usecasesCmd)
-	analyseCmd := &cobra.Command{
-		Use:   "analyse",
-		Short: "30-analyse",
-		Long:  `Describe the main purpose of this kitchen`,
-	}
-	AnalyseParseGroupsPostCmd := &cobra.Command{
-		Use:   "parse-groups ",
-		Short: "Parse Groups",
-		Long:  ``,
-		Args:  cobra.MinimumNArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
-			ctx := cmd.Context()
-			body, err := os.ReadFile(args[0])
-			if err != nil {
-				panic(err)
-			}
-
-			cmds.AnalyseParseGroupsPost(ctx, body, args)
-		},
-	}
-	analyseCmd.AddCommand(AnalyseParseGroupsPostCmd)
-	AnalyseParseUsersPostCmd := &cobra.Command{
-		Use:   "parse-users ",
-		Short: "Parse Users",
-		Long:  ``,
-		Args:  cobra.MinimumNArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
-			ctx := cmd.Context()
-			body, err := os.ReadFile(args[0])
-			if err != nil {
-				panic(err)
-			}
-
-			cmds.AnalyseParseUsersPost(ctx, body, args)
-		},
-	}
-	analyseCmd.AddCommand(AnalyseParseUsersPostCmd)
-
-	utils.RootCmd.AddCommand(analyseCmd)
+	utils.RootCmd.AddCommand(processCmd)
 	provisionCmd := &cobra.Command{
 		Use:   "provision",
 		Short: "Provision",
-		Long:  `Describe the main purpose of this kitchen`,
+		Long:  ``,
 	}
 	ProvisionAppdeployproductionPostCmd := &cobra.Command{
 		Use:   "appdeployproduction ",

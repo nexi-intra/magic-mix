@@ -53,6 +53,7 @@ func ServiceResponseError(req micro.Request, errorMessage string) {
 		Data:         "",
 	})
 }
+
 func ProcessAppRequest[T interface{}](req micro.Request, process func([]string) (*T, error)) {
 
 	var payload ServiceRequest
