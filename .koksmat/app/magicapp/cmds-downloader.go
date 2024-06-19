@@ -57,22 +57,42 @@ the format of batchfile.json is
 	}
 
 	downloadAuditLog := &cobra.Command{
-		Use:   "auditlog [destination folder] [year] [month] [day]",
-		Short: "Download audit logs for a given day, a file will be created for each hour",
+		Use:   "auditlog [destination folder] [[year]] [[month]] [[day]]",
+		Short: "Download audit logs for a given day",
+		Long:  "Download audit logs for a given day. If year, month and day are not provided, yesterday is used.",
 		Example: `
+
+magic-mix download auditlog auditlogs 	
+
 magic-mix download auditlog auditlogs 2024 12 1		
 
-
-
 		`,
-		Args: cobra.ExactArgs(4),
+		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+
 			batchID := args[0]
-			year := utils.StrToInt(args[1])
-			month := time.Month(utils.StrToInt(args[2]))
-			day := utils.StrToInt(args[3])
+			var year int
+			var month time.Month
+			var day int
+			if len(args) == 1 {
+				yesterday := time.Now().AddDate(0, 0, -1)
+				year = yesterday.Year()
+				month = yesterday.Month()
+				day = yesterday.Day()
+
+				log.Println("Preparing download of audit logs for yesterday")
+			} else {
+				if len(args) != 4 {
+					log.Fatal("You need to specify year, month and day")
+				}
+				year = utils.StrToInt(args[1])
+				month = time.Month(utils.StrToInt(args[2]))
+				day = utils.StrToInt(args[3])
+				log.Println("Preparing download of audit logs for a given day")
+
+			}
 			var date = time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
-			log.Println("Preparing download of audit logs", batchID)
+
 			err := officegraph.GetAuditLogsForADay(batchID, date)
 			if err != nil {
 				log.Fatal("Error downloading audit logs", err)
