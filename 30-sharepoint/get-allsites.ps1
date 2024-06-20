@@ -1,9 +1,10 @@
 <#---
 title: Get All Sites in Tenant
-tag: allsites
+tag: sharepoint-allsites
 
 connection: sharepoint
 output: allsites.json
+api:post
 ---
 #>
 
@@ -39,7 +40,7 @@ foreach ($site in $sites) {
             Status                  = $site.Status
             IsTeamsConnected        = $site.IsTeamsConnected
             IsTeamsChannelConnected = $site.IsTeamsChannelConnected
-            HusSiteId               = $site.HubSiteId
+            HubSiteId               = $site.HubSiteId
             GroupId                 = $site.GroupId
             IsHubsite               = $site.IsHubsite
             LocaleId                = $site.LocaleId

@@ -1,7 +1,7 @@
 <#---
 title: Web deploy to production
 tag: webdeployproduction
-api: post
+xapi: post
 ---
 
 #>

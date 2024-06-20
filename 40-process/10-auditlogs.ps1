@@ -2,7 +2,7 @@
 title: Download audit logs
 description: Download audit logs from the auditlog service
 tag: audit
-api: post
+xapi: post
 ---#>
 
 param (

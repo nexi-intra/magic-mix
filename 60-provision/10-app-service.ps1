@@ -1,7 +1,7 @@
 <#---
 title: App deploy to production
 tag: appdeployproduction
-api: post
+xapi: post
 ---
 #>
 

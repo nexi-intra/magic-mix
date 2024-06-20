@@ -40,6 +40,10 @@ if (Test-Path $batchname) {
     Remove-Item -Path $batchname -Recurse -Force
 }
 
+magic-mix move mix files sharepoint.sites containers insert_sharepoint_sites
+return
+throw "Not implemented"
+
 
 magic-mix download batch $batchname $jsonFile
 magic-mix sql exec mix "delete from importdata where name ilike '$batchname/%'"

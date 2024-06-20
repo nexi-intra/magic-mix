@@ -4,7 +4,7 @@ SELECT
     data_element  ->> 'Title' AS Title,
     data_element  ->> 'GroupId' AS GroupId,
     data_element  ->> 'LocaleId' AS LocaleId,
-    data_element  ->> 'HusSiteId' AS HusSiteId,
+    data_element  ->> 'HubSiteId' AS HusSiteId,
     data_element  ->> 'IsTeamsChannelConnected' AS IsTeamsChannelConnected,
     data_element  ->> 'IsHubsite' AS IsHubsite,
     data_element  ->> 'IsTeamsConnected' AS IsTeamsConnected,

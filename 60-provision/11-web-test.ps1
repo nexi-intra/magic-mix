@@ -1,7 +1,7 @@
 <#---
 title: Web deploy to Test
 tag: webdeploytest
-api: post
+xapi: post
 ---
 
 #>
