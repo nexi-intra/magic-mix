@@ -41,4 +41,23 @@ func RegisterCmds() {
 	healthCmd.AddCommand(HealthCoreversionPostCmd)
 
 	utils.RootCmd.AddCommand(healthCmd)
+	extractCmd := &cobra.Command{
+		Use:   "extract",
+		Short: "Extract",
+		Long:  ``,
+	}
+	ExtractHubsiteSpokesPagesPostCmd := &cobra.Command{
+		Use:   "hubsite-spokes-pages ",
+		Short: "Get Hub Site Spokes Pages",
+		Long:  ``,
+		Args:  cobra.MinimumNArgs(0),
+		Run: func(cmd *cobra.Command, args []string) {
+			ctx := cmd.Context()
+
+			cmds.ExtractHubsiteSpokesPagesPost(ctx, args)
+		},
+	}
+	extractCmd.AddCommand(ExtractHubsiteSpokesPagesPostCmd)
+
+	utils.RootCmd.AddCommand(extractCmd)
 }

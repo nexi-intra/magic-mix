@@ -56,7 +56,7 @@ func ExecutePowerShell(authentication string, authorization string, kitchen stri
 		reader := bufio.NewReader(pipe)
 		line, err := reader.ReadString('\n')
 		for err == nil {
-			//log.Print(line)
+			log.Print(line)
 			combinedOutput = append(combinedOutput, []byte(line)...)
 			line, err = reader.ReadString('\n')
 		}
@@ -68,5 +68,5 @@ func ExecutePowerShell(authentication string, authorization string, kitchen stri
 		return "", errors.New("Could not run PowerShell script")
 	}
 
-	return string(combinedOutput), nil
+	return "done", nil
 }

@@ -1,10 +1,9 @@
 <#---
-title: Get All Sites in Tenant
-tag: sharepoint-allsites
+title: Get All Sites
+tag: allsites
 
 connection: sharepoint
 output: allsites.json
-api:post
 ---
 #>
 
@@ -28,7 +27,7 @@ $allsites = @()
 foreach ($site in $sites) {
     try {
         $allsites += @{
-            SiteId                  = $site.Id
+          
             Url                     = $site.Url
             Title                   = $site.Title
             Owner                   = $site.Owner
@@ -42,7 +41,6 @@ foreach ($site in $sites) {
             IsTeamsChannelConnected = $site.IsTeamsChannelConnected
             HubSiteId               = $site.HubSiteId
             GroupId                 = $site.GroupId
-            IsHubsite               = $site.IsHubsite
             LocaleId                = $site.LocaleId
             RelatedGroupId          = $site.RelatedGroupId
         }
