@@ -39,6 +39,8 @@ func HandleAppRequests(req micro.Request) {
 
 	case "select":
 		ProcessAppRequest(req, app.Select)
+	case "query":
+		ProcessAppRequest(req, app.Select2)
 	case "dictionary":
 		ProcessAppRequest(req, app.Dictionary)
 	default:
