@@ -18,6 +18,7 @@ AS $BODY$
 DECLARE
     v_id INTEGER;
     v_hard BOOLEAN;
+     v_rows_updated INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -36,6 +37,12 @@ BEGIN
             updated_at = CURRENT_TIMESTAMP,
             updated_by = p_actor_name
         WHERE id = v_id;
+        
+        GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
+    
+        IF v_rows_updated < 1 THEN
+            RAISE EXCEPTION 'No records updated. transformer ID % not found', v_id ;
+        END IF;
     END IF;
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
@@ -49,6 +56,22 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
+    /*
+###MAGICAPP-START##
+{
+    "version": "v0.0.1",
+    "action": "delete",
+    "input" : {
+  "type": "object",
+  "properties": {
+   "id": { "type": "number" },
+    "hard": { "type": "boolean" }
+}
+    }
+
+##MAGICAPP-END##
+*/
 END;
 $BODY$
 ;
+

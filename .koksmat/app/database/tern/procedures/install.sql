@@ -52,4 +52,12 @@ CREATE SCHEMA "proc";{{ template "connection_create_proc.sql".}}
 {{ template "schedule_update_proc.sql".}} 
 {{ template "schedule_delete_proc.sql".}} 
 {{ template "schedule_undo_delete_proc.sql".}} 
+{{ template "permission_create_proc.sql".}} 
+{{ template "permission_update_proc.sql".}} 
+{{ template "permission_delete_proc.sql".}} 
+{{ template "permission_undo_delete_proc.sql".}} 
+{{ template "role_create_proc.sql".}} 
+{{ template "role_update_proc.sql".}} 
+{{ template "role_delete_proc.sql".}} 
+{{ template "role_undo_delete_proc.sql".}} 
 

@@ -8,7 +8,7 @@ keep: false
 
 -- karry sild
 
-CREATE OR REPLACE PROCEDURE proc.undo_delete_connection(
+CREATE OR REPLACE PROCEDURE proc.undo_delete_permission(
     p_actor_name VARCHAR,
     p_params JSONB
 )
@@ -24,7 +24,7 @@ BEGIN
     v_id := p_params->>'id';
     
         
-    UPDATE public.connection
+    UPDATE public.permission
     SET deleted_at = NULL,
         updated_at = CURRENT_TIMESTAMP,
         updated_by = p_actor_name
@@ -33,11 +33,11 @@ BEGIN
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
         'searchindex', '',
-        'name', 'undo_delete_connection',
+        'name', 'undo_delete_permission',
         'status', 'success',
         'description', '',
-        'action', 'undo_delete_connection',
-        'entity', 'connection',
+        'action', 'undo_delete_permission',
+        'entity', 'permission',
         'entityid', -1,
         'actor', p_actor_name,
         'metadata', p_params

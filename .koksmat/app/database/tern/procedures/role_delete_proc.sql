@@ -9,7 +9,7 @@ keep: false
 
 -- krydder sild
 
-CREATE OR REPLACE PROCEDURE proc.delete_transformation(
+CREATE OR REPLACE PROCEDURE proc.delete_role(
     p_actor_name VARCHAR,
     p_params JSONB
 )
@@ -28,11 +28,11 @@ BEGIN
     v_hard := p_params->>'hard';
   
     IF v_hard THEN
-     DELETE FROM public.transformation
+     DELETE FROM public.role
         WHERE id = v_id;
        
     ELSE
-        UPDATE public.transformation
+        UPDATE public.role
         SET deleted_at = CURRENT_TIMESTAMP,
             updated_at = CURRENT_TIMESTAMP,
             updated_by = p_actor_name
@@ -41,17 +41,17 @@ BEGIN
         GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
     
         IF v_rows_updated < 1 THEN
-            RAISE EXCEPTION 'No records updated. transformation ID % not found', v_id ;
+            RAISE EXCEPTION 'No records updated. role ID % not found', v_id ;
         END IF;
     END IF;
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
         'searchindex', '',
-        'name', 'delete_transformation',
+        'name', 'delete_role',
         'status', 'success',
         'description', '',
-        'action', 'delete_transformation',
-        'entity', 'transformation',
+        'action', 'delete_role',
+        'entity', 'role',
         'entityid', -1,
         'actor', p_actor_name,
         'metadata', p_params

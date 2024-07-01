@@ -8,56 +8,7 @@ keep: false
 
 
 -- tomat sild
-/*
----
-title: Create connection
-description: Create a new connection
-keep: false
-sensivity: private
-gdpr: high
 
----
-
-# Create connection
-
-
-
-
-`json input example
-{
-    "name": "John Doe",
-    "description": "A person",
-    "tenant": "default",
-    "searchindex": "default"
-}
-`
-`json output example
-{
-    "id": 1
-}
-
-`json zod schema
-{
-    "name": {
-        "type": "string",
-        "description": "Name of the entity"
-    },
-    "description": {
-        "type": "string",
-        "description": "Description of the entity"
-    },
-    "tenant": {
-        "type": "string",
-        "description": "Tenant of the entity"
-    },
-    "searchindex": {
-        "type": "string",
-        "description": "Search index of the entity"
-    }
-}
-`
-
-*/
 CREATE OR REPLACE PROCEDURE proc.create_connection(
     p_actor_name VARCHAR,
     p_params JSONB,
@@ -66,7 +17,8 @@ CREATE OR REPLACE PROCEDURE proc.create_connection(
 LANGUAGE plpgsql
 AS $BODY$
 DECLARE
-    v_tenant VARCHAR COLLATE pg_catalog."default" ;
+       v_rows_updated INTEGER;
+v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
@@ -126,3 +78,25 @@ BEGIN
 END;
 $BODY$
 ;
+
+/*
+###MAGICAPP-START##
+{
+    "version": "v0.0.1",
+    "action": "create",
+    "input" : {
+  "type": "object",
+  "properties": {
+  
+    "tenant": { "type": "string" },
+    "searchindex": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "connectionstring": { "type": "string" }
+}
+    }
+
+##MAGICAPP-END##
+*/
+
+

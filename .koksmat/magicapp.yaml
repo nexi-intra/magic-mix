@@ -208,6 +208,30 @@ entities:
       - name: data
         type: json
         required: false
+  permission: &permission
+    name: permission
+    description: Permission
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: resource
+        type: string
+        required: true
+      - name: action
+        type: string
+        required: true
+  role: &role
+    name: role
+    description: Role
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: users
+        type: array
+        entity: *user
+        required: false
+      - name: permissions
+        type: array
+        entity: *permission
+        required: false
 
 models:
   itemMethods: &itemMethods
@@ -360,4 +384,22 @@ services:
       model: schedule
       objectname: Schedule
       entity: *schedule
+    methods: *itemMethods
+
+  - name: permission
+    description: Manage permissions
+    entity:
+      type: permission
+      model: permission
+      objectname: Permission
+      entity: *permission
+    methods: *itemMethods
+
+  - name: role
+    description: Manage roles
+    entity:
+      type: role
+      model: role
+      objectname: Role
+      entity: *role
     methods: *itemMethods

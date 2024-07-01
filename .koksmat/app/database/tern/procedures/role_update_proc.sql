@@ -9,7 +9,7 @@ keep: false
 
 -- sherry sild
 
-CREATE OR REPLACE PROCEDURE proc.update_sql(
+CREATE OR REPLACE PROCEDURE proc.update_role(
     p_actor_name VARCHAR,
     p_params JSONB
 )
@@ -22,8 +22,6 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
-    v_query VARCHAR;
-    v_schema JSONB;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -34,36 +32,32 @@ BEGIN
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
     v_description := p_params->>'description';
-    v_query := p_params->>'query';
-    v_schema := p_params->>'schema';
          
     
         
-    UPDATE public.sql
+    UPDATE public.role
     SET updated_by = p_actor_name,
         updated_at = CURRENT_TIMESTAMP,
         tenant = v_tenant,
         searchindex = v_searchindex,
         name = v_name,
-        description = v_description,
-        query = v_query,
-        schema = v_schema
+        description = v_description
     WHERE id = v_id;
 
     GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
     
     IF v_rows_updated < 1 THEN
-        RAISE EXCEPTION 'No records updated. sql ID % not found', v_id ;
+        RAISE EXCEPTION 'No records updated. role ID % not found', v_id ;
     END IF;
 
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
         'searchindex', '',
-        'name', 'update_sql',
+        'name', 'update_role',
         'status', 'success',
         'description', '',
-        'action', 'update_sql',
-        'entity', 'sql',
+        'action', 'update_role',
+        'entity', 'role',
         'entityid', -1,
         'actor', p_actor_name,
         'metadata', p_params
@@ -81,9 +75,7 @@ BEGIN
     "tenant": { "type": "string" },
     "searchindex": { "type": "string" },
     "name": { "type": "string" },
-    "description": { "type": "string" },
-    "query": { "type": "string" },
-    "schema": { "type": "object" }
+    "description": { "type": "string" }
 }
     }
 

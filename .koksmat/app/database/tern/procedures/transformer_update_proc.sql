@@ -17,7 +17,8 @@ LANGUAGE plpgsql
 AS $BODY$
 DECLARE
     v_id INTEGER;
-    v_tenant VARCHAR COLLATE pg_catalog."default" ;
+       v_rows_updated INTEGER;
+v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
@@ -27,6 +28,7 @@ DECLARE
 
     
 BEGIN
+    v_id := p_params->>'id';
     v_tenant := p_params->>'tenant';
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
@@ -45,6 +47,11 @@ BEGIN
         code = v_code
     WHERE id = v_id;
 
+    GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
+    
+    IF v_rows_updated < 1 THEN
+        RAISE EXCEPTION 'No records updated. transformer ID % not found', v_id ;
+    END IF;
 
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
@@ -58,6 +65,28 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
+    /*
+###MAGICAPP-START##
+{
+    "version": "v0.0.1",
+    "action": "update",
+    "input" : {
+  "type": "object",
+  "properties": {
+   "id": { "type": "number" },
+  
+    "tenant": { "type": "string" },
+    "searchindex": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "code": { "type": "string" }
+}
+    }
+
+##MAGICAPP-END##
+*/
 END;
 $BODY$
 ;
+
+

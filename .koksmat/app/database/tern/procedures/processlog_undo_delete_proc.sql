@@ -42,6 +42,20 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
+    /*
+###MAGICAPP-START##
+{
+    "version": "v0.0.1",
+    "action": "undo_delete",
+    "input" : {
+    "type": "object",
+    "properties": {
+    "id": { "type": "number" }
+}
+    }
+##MAGICAPP-END##
+*/
 END;
 $BODY$
 ;
+
