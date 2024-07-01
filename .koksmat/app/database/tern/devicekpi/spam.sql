@@ -8,7 +8,7 @@ CREATE OR REPLACE VIEW devicekpi.spam
  
 
      r.value ->> 'SPAM (column 2)'::text AS column_2,
-     r.value ->> ' (column 3)'::text AS column_3,
+     r.value ->> ' (column 3)'::text AS column_3
      
      
    
