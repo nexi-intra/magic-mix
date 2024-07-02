@@ -71,8 +71,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-    /*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "update",
@@ -90,9 +89,8 @@ BEGIN
     "message": { "type": "string" }
 }
     }
-
-##MAGICAPP-END##
-*/
+}
+##MAGICAPP-END##*/
 END;
 $BODY$
 ;

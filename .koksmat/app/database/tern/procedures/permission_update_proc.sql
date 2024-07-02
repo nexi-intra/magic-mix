@@ -23,7 +23,9 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
     v_resource VARCHAR;
-    v_action VARCHAR;
+    v_deny BOOLEAN;
+    v_veto BOOLEAN;
+    v_priority INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -35,7 +37,9 @@ BEGIN
     v_name := p_params->>'name';
     v_description := p_params->>'description';
     v_resource := p_params->>'resource';
-    v_action := p_params->>'action';
+    v_deny := p_params->>'deny';
+    v_veto := p_params->>'veto';
+    v_priority := p_params->>'priority';
          
     
         
@@ -47,7 +51,9 @@ BEGIN
         name = v_name,
         description = v_description,
         resource = v_resource,
-        action = v_action
+        deny = v_deny,
+        veto = v_veto,
+        priority = v_priority
     WHERE id = v_id;
 
     GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
@@ -68,8 +74,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-    /*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "update",
@@ -83,12 +88,13 @@ BEGIN
     "name": { "type": "string" },
     "description": { "type": "string" },
     "resource": { "type": "string" },
-    "action": { "type": "string" }
+    "deny": { "type": "boolean" },
+    "veto": { "type": "boolean" },
+    "priority": { "type": "number" }
 }
     }
-
-##MAGICAPP-END##
-*/
+}
+##MAGICAPP-END##*/
 END;
 $BODY$
 ;

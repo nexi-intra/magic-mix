@@ -208,6 +208,30 @@ entities:
       - name: data
         type: json
         required: false
+  auditlog: &auditlog
+    name: auditlog
+    displayname: Audit Log
+    description: Audit Log
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: action
+        type: string
+        required: true
+      - name: status
+        type: string
+        required: true
+      - name: entity
+        type: string
+        required: true
+      - name: entityid
+        type: string
+        required: true
+      - name: actor
+        type: string
+        required: true
+      - name: metadata
+        type: json
+        required: false
   permission: &permission
     name: permission
     description: Permission
@@ -216,22 +240,64 @@ entities:
       - name: resource
         type: string
         required: true
-      - name: action
-        type: string
+      - name: deny
+        type: boolean
+        required: true
+      - name: veto
+        type: boolean
+        required: true
+      - name: priority
+        type: int
         required: true
   role: &role
     name: role
     description: Role
     baselineattributes: *recordAttributes
     additionalattributes:
-      - name: users
-        type: array
-        entity: *user
-        required: false
       - name: permissions
         type: array
         entity: *permission
         required: false
+      - name: connection
+        type: reference
+        entity: *connection
+        required: false
+  accessholder: &accessholder
+    name: accessholder
+    description: Access Holder
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: roles
+        type: array
+        entity: *role
+        required: false
+      - name: accesskey
+        type: string
+        required: false
+  environmenttype: &environmenttype
+    name: environmenttype
+    description: Environment Type
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: environment
+        type: string
+        required: true
+  database: &database
+    name: database
+    description: Database
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: connection
+        type: reference
+        entity: *connection
+        required: true
+      - name: server
+        type: string
+        required: true
+      - name: environment
+        type: reference
+        entity: *environmenttype
+        required: true
 
 models:
   itemMethods: &itemMethods
@@ -386,13 +452,22 @@ services:
       entity: *schedule
     methods: *itemMethods
 
-  - name: permission
-    description: Manage permissions
+  - name: auditlog
+    description: Manage audit logs
     entity:
-      type: permission
-      model: permission
-      objectname: Permission
-      entity: *permission
+      type: auditlog
+      model: auditlog
+      objectname: AuditLog
+      entity: *auditlog
+    methods: *itemMethods
+
+  - name: user
+    description: Manage users
+    entity:
+      type: user
+      model: user
+      objectname: User
+      entity: *user
     methods: *itemMethods
 
   - name: role
@@ -402,4 +477,40 @@ services:
       model: role
       objectname: Role
       entity: *role
+    methods: *itemMethods
+
+  - name: permission
+    description: Manage permissions
+    entity:
+      type: permission
+      model: permission
+      objectname: Permission
+      entity: *permission
+    methods: *itemMethods
+
+  - name: accessholder
+    description: Manage access holders
+    entity:
+      type: accessholder
+      model: accessholder
+      objectname: AccessHolder
+      entity: *accessholder
+    methods: *itemMethods
+
+  - name: environmenttype
+    description: Manage environment types
+    entity:
+      type: environmenttype
+      model: environmenttype
+      objectname: EnvironmentType
+      entity: *environmenttype
+    methods: *itemMethods
+
+  - name: database
+    description: Manage databases
+    entity:
+      type: database
+      model: database
+      objectname: Database
+      entity: *database
     methods: *itemMethods

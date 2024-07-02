@@ -22,6 +22,7 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
+    v_connection_id INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -30,6 +31,7 @@ BEGIN
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
     v_description := p_params->>'description';
+    v_connection_id := p_params->>'connection_id';
          
 
     INSERT INTO public.role (
@@ -41,7 +43,8 @@ BEGIN
         tenant,
         searchindex,
         name,
-        description
+        description,
+        connection_id
     )
     VALUES (
         DEFAULT,
@@ -52,7 +55,8 @@ BEGIN
         v_tenant,
         v_searchindex,
         v_name,
-        v_description
+        v_description,
+        v_connection_id
     )
     RETURNING id INTO p_id;
 
@@ -68,15 +72,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-
-    -- Call the create_auditlog procedure
-    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
-END;
-$BODY$
-;
-
-/*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "create",
@@ -87,11 +83,20 @@ $BODY$
     "tenant": { "type": "string" },
     "searchindex": { "type": "string" },
     "name": { "type": "string" },
-    "description": { "type": "string" }
+    "description": { "type": "string" },
+    "connection_id": { "type": "number" }
 }
     }
+}
 
-##MAGICAPP-END##
-*/
+##MAGICAPP-END##*/
+
+    -- Call the create_auditlog procedure
+    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
+END;
+$BODY$
+;
+
+
 
 

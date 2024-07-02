@@ -22,6 +22,7 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
+    v_connection_id INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -32,6 +33,7 @@ BEGIN
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
     v_description := p_params->>'description';
+    v_connection_id := p_params->>'connection_id';
          
     
         
@@ -41,7 +43,8 @@ BEGIN
         tenant = v_tenant,
         searchindex = v_searchindex,
         name = v_name,
-        description = v_description
+        description = v_description,
+        connection_id = v_connection_id
     WHERE id = v_id;
 
     GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
@@ -62,8 +65,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-    /*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "update",
@@ -75,12 +77,12 @@ BEGIN
     "tenant": { "type": "string" },
     "searchindex": { "type": "string" },
     "name": { "type": "string" },
-    "description": { "type": "string" }
+    "description": { "type": "string" },
+    "connection_id": { "type": "number" }
 }
     }
-
-##MAGICAPP-END##
-*/
+}
+##MAGICAPP-END##*/
 END;
 $BODY$
 ;

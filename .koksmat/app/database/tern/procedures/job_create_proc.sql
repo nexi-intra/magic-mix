@@ -96,15 +96,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-
-    -- Call the create_auditlog procedure
-    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
-END;
-$BODY$
-;
-
-/*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "create",
@@ -125,8 +117,16 @@ $BODY$
     "data": { "type": "object" }
 }
     }
+}
 
-##MAGICAPP-END##
-*/
+##MAGICAPP-END##*/
+
+    -- Call the create_auditlog procedure
+    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
+END;
+$BODY$
+;
+
+
 
 

@@ -23,7 +23,9 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
     v_resource VARCHAR;
-    v_action VARCHAR;
+    v_deny BOOLEAN;
+    v_veto BOOLEAN;
+    v_priority INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -33,7 +35,9 @@ BEGIN
     v_name := p_params->>'name';
     v_description := p_params->>'description';
     v_resource := p_params->>'resource';
-    v_action := p_params->>'action';
+    v_deny := p_params->>'deny';
+    v_veto := p_params->>'veto';
+    v_priority := p_params->>'priority';
          
 
     INSERT INTO public.permission (
@@ -47,7 +51,9 @@ BEGIN
         name,
         description,
         resource,
-        action
+        deny,
+        veto,
+        priority
     )
     VALUES (
         DEFAULT,
@@ -60,7 +66,9 @@ BEGIN
         v_name,
         v_description,
         v_resource,
-        v_action
+        v_deny,
+        v_veto,
+        v_priority
     )
     RETURNING id INTO p_id;
 
@@ -76,15 +84,7 @@ BEGIN
         'actor', p_actor_name,
         'metadata', p_params
     );
-
-    -- Call the create_auditlog procedure
-    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
-END;
-$BODY$
-;
-
-/*
-###MAGICAPP-START##
+/*###MAGICAPP-START##
 {
     "version": "v0.0.1",
     "action": "create",
@@ -97,11 +97,21 @@ $BODY$
     "name": { "type": "string" },
     "description": { "type": "string" },
     "resource": { "type": "string" },
-    "action": { "type": "string" }
+    "deny": { "type": "boolean" },
+    "veto": { "type": "boolean" },
+    "priority": { "type": "number" }
 }
     }
+}
 
-##MAGICAPP-END##
-*/
+##MAGICAPP-END##*/
+
+    -- Call the create_auditlog procedure
+    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
+END;
+$BODY$
+;
+
+
 
 

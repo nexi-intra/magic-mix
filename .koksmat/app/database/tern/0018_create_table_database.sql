@@ -9,7 +9,7 @@ keep: false
 
 -- sure sild
 
-CREATE TABLE public.permission
+CREATE TABLE public.database
 (
     id SERIAL PRIMARY KEY,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -23,16 +23,27 @@ CREATE TABLE public.permission
     ,searchindex character varying COLLATE pg_catalog."default"  NOT NULL
     ,name character varying COLLATE pg_catalog."default"  NOT NULL
     ,description character varying COLLATE pg_catalog."default" 
-    ,resource character varying COLLATE pg_catalog."default"  NOT NULL
-    ,action character varying COLLATE pg_catalog."default"  NOT NULL
+    ,connection_id int   NOT NULL
+    ,server character varying COLLATE pg_catalog."default"  NOT NULL
+    ,environment_id int   NOT NULL
 
 
 );
 
-
+                ALTER TABLE IF EXISTS public.database
+                ADD FOREIGN KEY (connection_id)
+                REFERENCES public.connection (id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+                NOT VALID;                ALTER TABLE IF EXISTS public.database
+                ADD FOREIGN KEY (environment_id)
+                REFERENCES public.environmenttype (id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+                NOT VALID;
 
 
 ---- create above / drop below ----
 
-DROP TABLE public.permission;
+DROP TABLE public.database;
 
