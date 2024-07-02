@@ -71,7 +71,7 @@ spec:
   selector:
     matchLabels:
       app: $appname-app
-  replicas: 1
+  replicas: 5
   template:
     metadata:
       labels:
