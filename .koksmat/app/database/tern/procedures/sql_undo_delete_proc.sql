@@ -44,13 +44,16 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "undo_delete",
-    "input" : {
-    "type": "object",
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
+  "type": "object",
+
+    "title": "Restore SQL",
+  "description": "Restore operation",
     "properties": {
     "id": { "type": "number" }
-}
+
     }
 }
 ##MAGICAPP-END##*/

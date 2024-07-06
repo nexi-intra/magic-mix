@@ -86,21 +86,41 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "create",
-    "input" : {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
+  "title": "Create Permission",
+  "description": "Create operation",
+
   "properties": {
   
-    "tenant": { "type": "string" },
-    "searchindex": { "type": "string" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "resource": { "type": "string" },
-    "deny": { "type": "boolean" },
-    "veto": { "type": "boolean" },
-    "priority": { "type": "number" }
-}
+    "tenant": { 
+    "type": "string",
+    "description":"" },
+    "searchindex": { 
+    "type": "string",
+    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
+    "name": { 
+    "type": "string",
+    "description":"" },
+    "description": { 
+    "type": "string",
+    "description":"" },
+    "resource": { 
+    "type": "string",
+    "description":"" },
+    "deny": { 
+    "type": "boolean",
+    "description":"" },
+    "veto": { 
+    "type": "boolean",
+    "description":"" },
+    "priority": { 
+    "type": "number",
+    "description":"" }
+
     }
 }
 

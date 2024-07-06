@@ -67,19 +67,31 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "update",
-    "input" : {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
   "properties": {
-   "id": { "type": "number" },
+    "title": "Update User",
+  "description": "Update operation",
   
-    "tenant": { "type": "string" },
-    "searchindex": { "type": "string" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "email": { "type": "string" }
-}
+    "tenant": { 
+    "type": "string",
+    "description":"" },
+    "searchindex": { 
+    "type": "string",
+    "description":"" },
+    "name": { 
+    "type": "string",
+    "description":"" },
+    "description": { 
+    "type": "string",
+    "description":"" },
+    "email": { 
+    "type": "string",
+    "description":"" }
+
     }
 }
 ##MAGICAPP-END##*/

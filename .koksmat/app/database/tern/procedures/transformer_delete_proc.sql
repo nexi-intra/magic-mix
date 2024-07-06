@@ -58,14 +58,17 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "delete",
-    "input" : {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
+  "title": "Delete Transformer",
+  "description": "Delete operation",
   "properties": {
    "id": { "type": "number" },
     "hard": { "type": "boolean" }
-}
+
     }
 }
 ##MAGICAPP-END##*/

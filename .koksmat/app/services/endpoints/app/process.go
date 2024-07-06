@@ -73,7 +73,7 @@ func call(procName string, who string, payload json.RawMessage) (string, error) 
 
 }
 
-func Work(args []string) (*SelectResponse, error) {
+func Process(args []string) (*SelectResponse, error) {
 	if len(args) < 3 {
 		return nil, fmt.Errorf("Expected arguments")
 	}

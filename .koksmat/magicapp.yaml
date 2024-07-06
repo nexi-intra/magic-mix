@@ -534,3 +534,12 @@ services:
       objectname: Database
       entity: *database
     methods: *itemMethods
+
+  - name: request
+    description: Manage requests
+    entity:
+      type: request
+      model: request
+      objectname: Request
+      entity: *request
+    methods: *itemMethods

@@ -73,21 +73,37 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "update",
-    "input" : {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
   "properties": {
-   "id": { "type": "number" },
+    "title": "Update Mapper",
+  "description": "Update operation",
   
-    "tenant": { "type": "string" },
-    "searchindex": { "type": "string" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "source_id": { "type": "number" },
-    "transformation_id": { "type": "number" },
-    "target_id": { "type": "number" }
-}
+    "tenant": { 
+    "type": "string",
+    "description":"" },
+    "searchindex": { 
+    "type": "string",
+    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
+    "name": { 
+    "type": "string",
+    "description":"" },
+    "description": { 
+    "type": "string",
+    "description":"" },
+    "source_id": { 
+    "type": "number",
+    "description":"" },
+    "transformation_id": { 
+    "type": "number",
+    "description":"" },
+    "target_id": { 
+    "type": "number",
+    "description":"" }
+
     }
 }
 ##MAGICAPP-END##*/

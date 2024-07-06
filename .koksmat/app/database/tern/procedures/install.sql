@@ -80,4 +80,8 @@ CREATE SCHEMA "proc";{{ template "connection_create_proc.sql".}}
 {{ template "database_update_proc.sql".}} 
 {{ template "database_delete_proc.sql".}} 
 {{ template "database_undo_delete_proc.sql".}} 
+{{ template "request_create_proc.sql".}} 
+{{ template "request_update_proc.sql".}} 
+{{ template "request_delete_proc.sql".}} 
+{{ template "request_undo_delete_proc.sql".}} 
 

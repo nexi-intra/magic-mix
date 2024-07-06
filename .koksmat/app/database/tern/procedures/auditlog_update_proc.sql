@@ -82,24 +82,46 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "update",
-    "input" : {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
   "properties": {
-   "id": { "type": "number" },
+    "title": "Update AuditLog",
+  "description": "Update operation",
   
-    "tenant": { "type": "string" },
-    "searchindex": { "type": "string" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "action": { "type": "string" },
-    "status": { "type": "string" },
-    "entity": { "type": "string" },
-    "entityid": { "type": "string" },
-    "actor": { "type": "string" },
-    "metadata": { "type": "object" }
-}
+    "tenant": { 
+    "type": "string",
+    "description":"" },
+    "searchindex": { 
+    "type": "string",
+    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
+    "name": { 
+    "type": "string",
+    "description":"" },
+    "description": { 
+    "type": "string",
+    "description":"" },
+    "action": { 
+    "type": "string",
+    "description":"" },
+    "status": { 
+    "type": "string",
+    "description":"" },
+    "entity": { 
+    "type": "string",
+    "description":"" },
+    "entityid": { 
+    "type": "string",
+    "description":"" },
+    "actor": { 
+    "type": "string",
+    "description":"" },
+    "metadata": { 
+    "type": "object",
+    "description":"" }
+
     }
 }
 ##MAGICAPP-END##*/

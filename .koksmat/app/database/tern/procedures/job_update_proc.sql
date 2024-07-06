@@ -85,25 +85,49 @@ BEGIN
     );
 /*###MAGICAPP-START##
 {
-    "version": "v0.0.1",
-    "action": "update",
-    "input" : {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://booking.services.koksmat.com/.schema.json",
+   
   "type": "object",
+
   "properties": {
-   "id": { "type": "number" },
+    "title": "Update Job",
+  "description": "Update operation",
   
-    "tenant": { "type": "string" },
-    "searchindex": { "type": "string" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "status": { "type": "string" },
-    "startat": { "type": "string" },
-    "startedAt": { "type": "string" },
-    "completedAt": { "type": "string" },
-    "maxduration": { "type": "number" },
-    "script": { "type": "string" },
-    "data": { "type": "object" }
-}
+    "tenant": { 
+    "type": "string",
+    "description":"" },
+    "searchindex": { 
+    "type": "string",
+    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
+    "name": { 
+    "type": "string",
+    "description":"" },
+    "description": { 
+    "type": "string",
+    "description":"" },
+    "status": { 
+    "type": "string",
+    "description":"" },
+    "startat": { 
+    "type": "string",
+    "description":"" },
+    "startedAt": { 
+    "type": "string",
+    "description":"" },
+    "completedAt": { 
+    "type": "string",
+    "description":"" },
+    "maxduration": { 
+    "type": "number",
+    "description":"" },
+    "script": { 
+    "type": "string",
+    "description":"" },
+    "data": { 
+    "type": "object",
+    "description":"" }
+
     }
 }
 ##MAGICAPP-END##*/
