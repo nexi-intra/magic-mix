@@ -298,6 +298,26 @@ entities:
         type: reference
         entity: *environmenttype
         required: true
+  request: &request
+    name: request
+    description: Request
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: application
+        type: string
+        required: true
+      - name: method
+        type: string
+        required: true
+      - name: route
+        type: string
+        required: true
+      - name: headers
+        type: json
+        required: false
+      - name: body
+        type: json
+        required: false
 
 models:
   itemMethods: &itemMethods

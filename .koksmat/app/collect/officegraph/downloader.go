@@ -31,6 +31,8 @@ var (
 	tokenValidTime time.Duration
 )
 
+const DEBUG = false
+
 type Parent struct {
 	CreatedDateTime time.Time `json:"createdDateTime"`
 	DisplayName     string    `json:"displayName"`
@@ -272,13 +274,31 @@ func getParents(batchID string, parentUrl string, filter FilterFunc) []string {
 	token := getToken()
 	batchFolder := batchID
 	filename := filepath.Join(batchFolder, "parents.json")
-	if fileExists(filename) {
+	// Check if parents data already exists, then it has been downloaded before
+	// and we can use it.
+
+	// this trick is primarily made for making the debugging faster
+
+	if DEBUG && fileExists(filename) {
 
 		fileData, err := os.ReadFile(filename)
 		if err != nil {
 			log.Fatal("Reading parents data from file", err)
 		}
 		parents := &[]Parent{}
+
+		// log.Println("Raw", string(fileData))
+
+		// listinfo := &SharePointListInfo{}
+		// json.Unmarshal(fileData, listinfo)
+		// if listinfo != nil {
+		// 	log.Println("List info", listinfo)
+		// 	// if (listinfo.ParentReference.SiteID != "") {
+		// 	// 	parentIds := []string{listinfo.ParentReference.SiteID}
+		// 	// 	return parentIds
+		// 	// }
+		// }
+
 		marsshallErr := json.Unmarshal(fileData, parents)
 		if marsshallErr != nil {
 			log.Fatal("Unmarshalling parents data", marsshallErr)

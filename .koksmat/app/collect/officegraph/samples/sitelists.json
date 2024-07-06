@@ -1,0 +1,15 @@
+{
+  "parentUrl": "https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/nexiintra-country-it:/lists",
+  "childUrls": [
+    {
+      "url": "https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/nexiintra-country-it:/lists/%s/items?$expand=fields",
+      "prefix": "listitems",
+      "childChildUrls": [
+        {
+          "url": "https://graph.microsoft.com/v1.0/sites/%s/lists/%s/items",
+          "prefix": "items"
+        }
+      ]
+    }
+  ]
+}

@@ -64,9 +64,16 @@ func FetchGraphData(maxPages int, url string, accessToken string) (string, error
 		var result GraphResponse
 		err = json.Unmarshal(body, &result)
 		if err != nil {
+
 			return "", fmt.Errorf("failed to parse response: %v", err)
 		}
+		if result.Value == nil {
+			var singleResult interface{}
+			err = json.Unmarshal(body, &singleResult)
+			allData = append(allData, singleResult)
+			break
 
+		}
 		allData = append(allData, result.Value...)
 
 		if result.NextLink == "" {

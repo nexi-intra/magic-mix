@@ -70,3 +70,4 @@ func ProcessAppRequest[T interface{}](req micro.Request, process func([]string) 
 	ServiceResponse(req, result)
 
 }
+
