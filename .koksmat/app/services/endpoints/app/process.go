@@ -24,8 +24,8 @@ type Result struct {
 	Data string `json:"data"`
 }
 
-func call(procName string, who string, payload json.RawMessage) (string, error) {
-	connectionString := viper.GetString("POSTGRES_DB")
+func call(connectionString string, procName string, who string, payload json.RawMessage) (string, error) {
+	//
 
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
@@ -85,9 +85,10 @@ func Process(args []string) (*SelectResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	connectionString := viper.GetString("POSTGRES_DB")
 	upn := claims["upn"].(string)
-
-	rows, err := call(args[0], upn, json.RawMessage(args[2]))
+	log.Println("Process", args[0], upn, json.RawMessage(args[2]))
+	rows, err := call(connectionString, args[0], upn, json.RawMessage(args[2]))
 	if err != nil {
 		return nil, err
 	}

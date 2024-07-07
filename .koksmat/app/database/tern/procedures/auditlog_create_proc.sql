@@ -2,7 +2,7 @@
 File have been automatically created. To prevent the file from getting overwritten
 set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 ---
-keep: false
+keep: true
 ---
 */   
 
@@ -17,8 +17,7 @@ CREATE OR REPLACE PROCEDURE proc.create_auditlog(
 LANGUAGE plpgsql
 AS $BODY$
 DECLARE
-       v_rows_updated INTEGER;
-v_tenant VARCHAR COLLATE pg_catalog."default" ;
+    v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
@@ -80,72 +79,7 @@ BEGIN
     )
     RETURNING id INTO p_id;
 
-       p_auditlog_params := jsonb_build_object(
-        'tenant', '',
-        'searchindex', '',
-        'name', 'create_auditlog',
-        'status', 'success',
-        'description', '',
-        'action', 'create_auditlog',
-        'entity', 'auditlog',
-        'entityid', -1,
-        'actor', p_actor_name,
-        'metadata', p_params
-    );
-/*###MAGICAPP-START##
-{
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://booking.services.koksmat.com/.schema.json",
-   
-  "type": "object",
-
-  "title": "Create AuditLog",
-  "description": "Create operation",
-
-  "properties": {
-  
-    "tenant": { 
-    "type": "string",
-    "description":"" },
-    "searchindex": { 
-    "type": "string",
-    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
-    "name": { 
-    "type": "string",
-    "description":"" },
-    "description": { 
-    "type": "string",
-    "description":"" },
-    "action": { 
-    "type": "string",
-    "description":"" },
-    "status": { 
-    "type": "string",
-    "description":"" },
-    "entity": { 
-    "type": "string",
-    "description":"" },
-    "entityid": { 
-    "type": "string",
-    "description":"" },
-    "actor": { 
-    "type": "string",
-    "description":"" },
-    "metadata": { 
-    "type": "object",
-    "description":"" }
-
-    }
-}
-
-##MAGICAPP-END##*/
-
-    -- Call the create_auditlog procedure
-    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
+      
 END;
 $BODY$
 ;
-
-
-
-

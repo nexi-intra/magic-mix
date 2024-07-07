@@ -45,6 +45,8 @@ func HandleAppRequests(req micro.Request) {
 		ProcessAppRequest(req, app.Dictionary)
 	case "process":
 		ProcessAppRequest(req, app.Process)
+	case "execute":
+		ProcessAppRequest(req, app.Process2)
 	default:
 		ServiceResponseError(req, "Unknown command")
 	}

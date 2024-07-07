@@ -15,13 +15,6 @@ import (
 
 func RegisterServiceEndpoints(root micro.Group) {
 	root.AddEndpoint("app", micro.HandlerFunc(services.HandleAppRequests))
-	root.AddEndpoint("sql", micro.HandlerFunc(services.HandleSQLRequests))
 	root.AddEndpoint("connection", micro.HandlerFunc(services.HandleConnectionRequests))
-	root.AddEndpoint("transformer", micro.HandlerFunc(services.HandleTransformerRequests))
-	root.AddEndpoint("dataset", micro.HandlerFunc(services.HandleDatasetRequests))
-	root.AddEndpoint("column", micro.HandlerFunc(services.HandleColumnRequests))
-	root.AddEndpoint("mapper", micro.HandlerFunc(services.HandleMapperRequests))
-	root.AddEndpoint("transformation", micro.HandlerFunc(services.HandleTransformationRequests))
-	root.AddEndpoint("processlog", micro.HandlerFunc(services.HandleProcessLogRequests))
 	root.AddEndpoint("importdata", micro.HandlerFunc(services.HandleImportDataRequests))
 }

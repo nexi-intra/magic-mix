@@ -1,51 +1,36 @@
 "use client";
 
-import Process from "@/app/koksmat/process";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+export interface CreateRequestProps {
+  application: string;
+  body: { [key: string]: any };
+  description: string;
+  headers: { [key: string]: any };
+  method: string;
+  name: string;
+  route: string;
+  /**
+   * Search Index is used for concatenating all searchable fields in a single field making in
+   * easier to search
+   */
+  searchindex: string;
+  tenant: string;
+}
 
-export default function CreateRequest() {
-  const [running, setrunning] = useState(false);
-  const [error, seterror] = useState("");
-  const [result, setresult] = useState("");
+import React from "react";
+import ProcessTransaction from "./process";
+
+export default function CreateRequest(props: {
+  transactionid: string;
+  request: CreateRequestProps;
+}) {
+  const { request, transactionid } = props;
   return (
     <div>
-      <Button
-        disabled={running}
-        onClick={() => {
-          setresult("");
-          seterror("");
-          setrunning(true);
-        }}
-      >
-        Set default country
-      </Button>
-      {error && <div className="bg-red-500">Error: {error}</div>}
-      {running && (
-        <div>
-          Processing:
-          <Process
-            servicename="magic-mix.app"
-            processname="user_setcountry"
-            payload={{
-              user_id: 1,
-              country_id: 1,
-            }}
-            onError={(error: any) => {
-              setrunning(false);
-              seterror(error);
-            }}
-            onSuccess={(result: any) => {
-              setrunning(false);
-              if (result.hasError) {
-                seterror(result.errorMessage);
-              } else {
-                setresult(result.data);
-              }
-            }}
-          />
-        </div>
-      )}
+      <ProcessTransaction
+        payload={request}
+        processname="create-request"
+        transactionId={transactionid}
+      />
     </div>
   );
 }

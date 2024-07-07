@@ -1,10 +1,14 @@
 "use client";
+
 import { https } from "@/app/koksmat/httphelper";
 import { MagicboxContext } from "@/app/koksmat/magicbox-context";
 import { run } from "@/app/koksmat/magicservices";
 
 import { useMsal, useAccount } from "@azure/msal-react";
 import { useContext, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { trace } from "console";
+import { set } from "date-fns";
 interface CaseProps {
   scopes: string[];
   title: string;
@@ -24,7 +28,7 @@ export interface ProcessProps {
   onError?: (error: any) => void;
   onSuccess?: (response: any) => void;
 }
-export default function Process(props: ProcessProps) {
+export function Process(props: ProcessProps) {
   const { servicename, processname, payload, onError, onSuccess } = props;
   const { instance, accounts, inProgress } = useMsal();
   const account = useAccount(accounts[0] || {});
@@ -113,4 +117,79 @@ export default function Process(props: ProcessProps) {
     load();
   }, [token]);
   return <div></div>;
+}
+
+export default function ProcessTransaction<T>(props: {
+  processname: string;
+  payload: T;
+  transactionId: string;
+  onSuccess?: (result: any) => void;
+  onError?: (error: any) => void;
+  options?: { suppressError?: boolean; suppressProgress?: boolean };
+}) {
+  const { payload, processname, transactionId } = props;
+  const [running, setrunning] = useState(false);
+  const [error, seterror] = useState("");
+  const [result, setresult] = useState("");
+
+  const doShowError = () => {
+    if (props.options?.suppressError) {
+      return false;
+    }
+    if (error) {
+      return true;
+    }
+    return false;
+  };
+
+  const doShowProgress = () => {
+    if (props.options?.suppressProgress) {
+      return false;
+    }
+    if (running) {
+      return true;
+    }
+    return false;
+  };
+
+  // hack to ensure that the process will run when the transactionId changes
+  useEffect(() => {
+    setrunning(true);
+  }, [transactionId]);
+
+  return (
+    <div>
+      {doShowError() && <div className="bg-red-500">Error: {error}</div>}
+      {running && (
+        <div>
+          <Process
+            servicename="magic-mix.app"
+            processname={processname}
+            payload
+            onError={(error: any) => {
+              setrunning(false);
+              seterror(error);
+              if (props.onError) {
+                props.onError(error);
+              }
+            }}
+            onSuccess={(result: any) => {
+              setrunning(false);
+              if (result.hasError) {
+                seterror(result.errorMessage);
+                if (props.onError) {
+                  props.onError(result.errorMessage);
+                }
+              } else {
+                setresult(result.data);
+                if (props.onSuccess) {
+                  props.onSuccess(result.data);
+                }
+              }
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
 }
