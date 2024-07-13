@@ -318,6 +318,24 @@ entities:
       - name: body
         type: json
         required: false
+  workspace: &workspace
+    name: workspace
+    description: Workspace
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: user
+        type: reference
+        entity: *user
+        required: true
+      - name: key
+        type: string
+        required: true
+      - name: data
+        type: json
+        required: false
+      - name: active
+        type: boolean
+        required: true
 
 models:
   itemMethods: &itemMethods
@@ -543,3 +561,30 @@ services:
       objectname: Request
       entity: *request
     methods: *itemMethods
+
+  - name: workspace
+    description: Manage workspaces
+    entity:
+      type: workspace
+      model: workspace
+      objectname: Workspace
+      entity: *workspace
+    methods: *itemMethods
+    procedures:
+      new:
+        description: Create a new workspace
+        parameters:
+          - name: user
+            description: The user for the workspace
+            type: object
+            required: true
+          - name: key
+            description: The key for the workspace
+            type: string
+            required: true
+          - name: data
+            description: The data for the workspace
+            type: object
+            required: false
+        returns:
+          type: object

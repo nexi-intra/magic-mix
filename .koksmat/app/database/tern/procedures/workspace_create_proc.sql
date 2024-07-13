@@ -2,14 +2,14 @@
 File have been automatically created. To prevent the file from getting overwritten
 set the Front Matter property ´keep´ to ´true´ syntax for the code snippet
 ---
-keep: true
+keep: false
 ---
 */   
 
 
 -- tomat sild
 
-CREATE OR REPLACE PROCEDURE proc.create_user(
+CREATE OR REPLACE PROCEDURE proc.create_workspace(
     p_actor_name VARCHAR,
     p_params JSONB,
     OUT p_id INTEGER
@@ -22,7 +22,10 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_searchindex VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
-    v_email VARCHAR;
+    v_user_id INTEGER;
+    v_key VARCHAR;
+    v_data JSONB;
+    v_active BOOLEAN;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -31,22 +34,26 @@ BEGIN
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
     v_description := p_params->>'description';
-    v_email := p_params->>'email';
+    v_user_id := p_params->>'user_id';
+    v_key := p_params->>'key';
+    v_data := p_params->>'data';
+    v_active := p_params->>'active';
          
 
-    INSERT INTO public.user (
+    INSERT INTO public.workspace (
     id,
     created_at,
     updated_at,
         created_by, 
         updated_by, 
         tenant,
-        -- searchindex,
-
-        url,
+        searchindex,
         name,
         description,
-        email
+        user_id,
+        key,
+        data,
+        active
     )
     VALUES (
         DEFAULT,
@@ -55,22 +62,24 @@ BEGIN
         p_actor_name, 
         p_actor_name,  -- Use the same value for updated_by
         v_tenant,
-        '',
-        -- v_searchindex,
+        v_searchindex,
         v_name,
         v_description,
-        v_email
+        v_user_id,
+        v_key,
+        v_data,
+        v_active
     )
     RETURNING id INTO p_id;
 
        p_auditlog_params := jsonb_build_object(
         'tenant', '',
         'searchindex', '',
-        'name', 'create_user',
+        'name', 'create_workspace',
         'status', 'success',
         'description', '',
-        'action', 'create_user',
-        'entity', 'user',
+        'action', 'create_workspace',
+        'entity', 'workspace',
         'entityid', -1,
         'actor', p_actor_name,
         'metadata', p_params
@@ -82,7 +91,7 @@ BEGIN
    
   "type": "object",
 
-  "title": "Create User",
+  "title": "Create Workspace",
   "description": "Create operation",
 
   "properties": {
@@ -92,15 +101,24 @@ BEGIN
     "description":"" },
     "searchindex": { 
     "type": "string",
-    "description":"" },
+    "description":"Search Index is used for concatenating all searchable fields in a single field making in easier to search\n" },
     "name": { 
     "type": "string",
     "description":"" },
     "description": { 
     "type": "string",
     "description":"" },
-    "email": { 
+    "user_id": { 
+    "type": "number",
+    "description":"" },
+    "key": { 
     "type": "string",
+    "description":"" },
+    "data": { 
+    "type": "object",
+    "description":"" },
+    "active": { 
+    "type": "boolean",
     "description":"" }
 
     }
