@@ -336,7 +336,21 @@ entities:
       - name: active
         type: boolean
         required: true
-
+  sqlquery: &sqlquery
+    name: sqlquery
+    description: SQL Query
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: sql
+        type: string
+        required: true
+      - name: connection
+        type: reference
+        entity: *connection
+        required: true
+      - name: schema
+        type: json
+        required: false
 models:
   itemMethods: &itemMethods
     - name: read
@@ -588,3 +602,12 @@ services:
             required: false
         returns:
           type: object
+
+  - name: sqlquery
+    description: Manage queries
+    entity:
+      type: sqlquery
+      model: sqlquery
+      objectname: SQLQuery
+      entity: *sqlquery
+    methods: *itemMethods

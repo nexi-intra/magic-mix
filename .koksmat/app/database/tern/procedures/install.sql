@@ -89,4 +89,8 @@ CREATE SCHEMA "proc";{{ template "connection_create_proc.sql".}}
 {{ template "workspace_update_proc.sql".}} 
 {{ template "workspace_delete_proc.sql".}} 
 {{ template "workspace_undo_delete_proc.sql".}} 
+{{ template "sqlquery_create_proc.sql".}} 
+{{ template "sqlquery_update_proc.sql".}} 
+{{ template "sqlquery_delete_proc.sql".}} 
+{{ template "sqlquery_undo_delete_proc.sql".}} 
 
