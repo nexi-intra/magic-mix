@@ -42,18 +42,16 @@ func call(connectionString string, procName string, who string, payload json.Raw
 	sqlStatement := fmt.Sprintf(`
 		DO $$
 	DECLARE
-	    p_id INTEGER;
+	    
 	    p_actor_name VARCHAR := '%s';
 	    p_params JSONB := '%s';
 	BEGIN
 	    -- Call the procedure
-	    CALL proc.%s(p_actor_name, p_params, p_id);
+	    CALL proc.%s(p_actor_name, p_params);
 
-	    -- Output the resulting ID
-	    RAISE NOTICE ' ID: %s', p_id;
 	END $$;
 
-		`, who, payloadStr, procName, "%")
+		`, who, payloadStr, procName)
 	//sqlStatement := "call proc.simple_procedure()"
 	log.Println(sqlStatement)
 	x, err := db.Exec(sqlStatement)
