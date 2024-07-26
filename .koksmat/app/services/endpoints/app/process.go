@@ -16,6 +16,7 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/lib/pq"
 	"github.com/magicbutton/magic-mix/utils"
 	"github.com/spf13/viper"
 )
@@ -40,34 +41,34 @@ func call(connectionString string, procName string, who string, payload json.Raw
 	var payloadStr string = string(payload)
 
 	sqlStatement := fmt.Sprintf(`
-		DO $$
-	DECLARE
-	    
-	    p_actor_name VARCHAR := '%s';
-	    p_params JSONB := '%s';
-	BEGIN
-	    -- Call the procedure
-	    CALL proc.%s(p_actor_name, p_params);
-
-	END $$;
-
-		`, who, payloadStr, procName)
+	    SELECT * from  proc.%s('%s', '%s');
+	
+		`, procName, who, payloadStr)
 	//sqlStatement := "call proc.simple_procedure()"
 	log.Println(sqlStatement)
-	x, err := db.Exec(sqlStatement)
+	//x, err := db.Exec(sqlStatement)
+	var pOutput string
+	//query := fmt.Sprintf(`CALL proc.%s($1, $2);SELECT p_output;`, procName)
+	//rows, err := db.Query(query, who, payloadStr)
+	rows, err := db.Query(sqlStatement)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to call stored procedure: %v\n", err)
 		return "", err
 	}
+	defer rows.Close()
 
-	if x != nil {
-		log.Println("Executed successfully", x)
+	// Assuming the output is in the first column of the first row
+	if rows.Next() {
+		if err := rows.Scan(&pOutput); err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to retrieve output: %v\n", err)
+			return "", err
+		}
 	}
 
 	// Wrap the result into a JSON object
 
 	// Scan the JSON into a string variable
-	return `{"OK":true}`, nil
+	return fmt.Sprintf(`{"OK":true,"ID":%s}`, pOutput), nil
 
 }
 
