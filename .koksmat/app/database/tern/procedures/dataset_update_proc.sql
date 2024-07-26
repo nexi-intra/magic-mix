@@ -9,12 +9,13 @@ keep: false
 
 -- sherry sild
 
-CREATE OR REPLACE PROCEDURE proc.update_dataset(
+CREATE OR REPLACE FUNCTION proc.update_dataset(
     p_actor_name VARCHAR,
     p_params JSONB
+   
 )
-LANGUAGE plpgsql
-AS $BODY$
+RETURNS JSONB LANGUAGE plpgsql 
+AS $$
 DECLARE
     v_id INTEGER;
        v_rows_updated INTEGER;
@@ -55,6 +56,7 @@ BEGIN
     IF v_rows_updated < 1 THEN
         RAISE EXCEPTION 'No records updated. dataset ID % not found', v_id ;
     END IF;
+
 
            p_auditlog_params := jsonb_build_object(
         'tenant', '',
@@ -101,8 +103,13 @@ BEGIN
     }
 }
 ##MAGICAPP-END##*/
+
+    return jsonb_build_object(
+    'comment','updated',
+    'id',v_id
+    );
 END;
-$BODY$
+$$ 
 ;
 
 

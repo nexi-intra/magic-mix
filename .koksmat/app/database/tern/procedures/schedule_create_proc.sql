@@ -9,13 +9,13 @@ keep: false
 
 -- tomat sild
 
-CREATE OR REPLACE PROCEDURE proc.create_schedule(
+CREATE OR REPLACE FUNCTION proc.create_schedule(
     p_actor_name VARCHAR,
-    p_params JSONB,
-    OUT p_id INTEGER
+    p_params JSONB
+   
 )
-LANGUAGE plpgsql
-AS $BODY$
+RETURNS JSONB LANGUAGE plpgsql 
+AS $$
 DECLARE
        v_rows_updated INTEGER;
 v_tenant VARCHAR COLLATE pg_catalog."default" ;
@@ -25,6 +25,7 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_cron VARCHAR;
     v_job_id INTEGER;
     v_data JSONB;
+    v_id INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
 
@@ -66,7 +67,7 @@ BEGIN
         v_job_id,
         v_data
     )
-    RETURNING id INTO p_id;
+    RETURNING id INTO v_id;
 
        p_auditlog_params := jsonb_build_object(
         'tenant', '',
@@ -121,8 +122,13 @@ BEGIN
 
     -- Call the create_auditlog procedure
     CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
+
+    return jsonb_build_object(
+    'comment','created',
+    'id',v_id);
+
 END;
-$BODY$
+$$ 
 ;
 
 
