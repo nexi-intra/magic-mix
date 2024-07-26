@@ -351,6 +351,30 @@ entities:
       - name: schema
         type: json
         required: false
+  history: &history
+    name: history
+    description: History
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: owner
+        type: reference
+        entity: *user
+        required: true
+      - name: language
+        type: string
+        required: true
+      - name: shared
+        type: boolean
+        required: true
+      - name: favorite
+        type: boolean
+        required: true
+      - name: code
+        type: string
+        required: true
+      - name: metadata
+        type: json
+        required: false
 models:
   itemMethods: &itemMethods
     - name: read
@@ -610,4 +634,13 @@ services:
       model: sqlquery
       objectname: SQLQuery
       entity: *sqlquery
+    methods: *itemMethods
+
+  - name: history
+    description: Manage history
+    entity:
+      type: history
+      model: history
+      objectname: History
+      entity: *history
     methods: *itemMethods
