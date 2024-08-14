@@ -98,6 +98,7 @@ require (
 )
 
 require (
+	github.com/Knetic/govaluate v3.0.0+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgx/v4 v4.18.3
@@ -109,4 +110,5 @@ require (
 	github.com/uptrace/bun v1.2.1
 	github.com/uptrace/bun/dialect/pgdialect v1.2.1
 	github.com/uptrace/bun/driver/pgdriver v1.2.1
+	sigs.k8s.io/yaml v1.4.0
 )

@@ -50,6 +50,15 @@
             "args": ["download","batch","list-nexiintra-country-it","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/sitelists.json"]
         }, 
         {
+            "name": "Download batch - events-rooms-all",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",                          
+            "args": ["download","batch","events-rooms","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/events-rooms.yaml"]
+        },         
+        {
             "name": "Download batch - office365groups-only",
             "type": "go",
             "request": "launch",

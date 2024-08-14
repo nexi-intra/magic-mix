@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
 
 	"github.com/magicbutton/magic-mix/collect/officegraph"
 	"github.com/magicbutton/magic-mix/utils"
+	"sigs.k8s.io/yaml"
 )
 
 func RegisterDownloadCmd() {
@@ -36,13 +38,33 @@ the format of batchfile.json is
 	]
 }
 
+Alternatively, you can use a YAML file and convert it to JSON on the fly:
+
+magic-mix download batch groups groupdata.yaml
+
+the format of the YAML file is
+
+url: https://graph.microsoft.com/v1.0/groups
+childUrls:
+	- url: https://graph.microsoft.com/v1.0/groups/%s/owners
+	  prefix: owners
+	- url: https://graph.microsoft.com/v1.0/groups/%s/members
+	  prefix: members
+			
 
 		`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			batchID := args[0]
-			batchFile := args[1]
+			batchFile := strings.ToLower(args[1])
 			batchData, err := os.ReadFile(batchFile)
+
+			if strings.HasSuffix(batchFile, ".yaml") {
+				batchData, err = yaml.YAMLToJSON(batchData)
+				if err != nil {
+					log.Fatal("Error converting YAML", err)
+				}
+			}
 			if err != nil {
 				log.Fatal("Reading batch file", err)
 			}
