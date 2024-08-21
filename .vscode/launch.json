@@ -122,6 +122,14 @@
             "args": ["from","excel","to","json","devicekpi.xlsx","devicekpi"]
         }, 
         {
+            "name": "move query",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",
+            "args": ["move","mix","meetings","sharepoint.cava3","importdata"]
+        },         {
             "name": "sql query",
             "type": "go",
             "request": "launch",

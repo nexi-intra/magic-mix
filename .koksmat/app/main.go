@@ -30,6 +30,7 @@ description: Describe the main purpose of this kitchen
 	magicapp.RegisterUploadCmd()
 	magicapp.RegisterCombineCmd()
 	magicapp.RegisterMoveCmd()
+	magicapp.RegisterCopyCmd()
 	magicapp.RegisterSQLCmd()
 	magicapp.RegisterParserCmd()
 	utils.RootCmd.PersistentFlags().BoolVarP(&utils.Verbose, "verbose", "v", false, "verbose output")

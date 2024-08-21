@@ -9,7 +9,7 @@ import (
 
 func RegisterUploadCmd() {
 	natsCmd := &cobra.Command{
-		Use:   "upload [sourcefolder]",
+		Use:   "upload [sourcefolder] ",
 		Short: "Upload a batch",
 		Example: `
 magic-mix upload users	

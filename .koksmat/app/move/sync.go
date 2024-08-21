@@ -191,11 +191,38 @@ func Move(fromDatabase string, toDatabase string, fromTableName string, toTableN
 		return nil
 	}
 	//return nil
-	return CopyData(batchNamestoSync, sourceDB, fromTableName, destDB, storedProcedure)
+	return MoveData(batchNamestoSync, sourceDB, fromTableName, destDB, storedProcedure)
 
 }
 
-func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, destDB *sql.DB, storedProcedure *string) error {
+func Copy(fromDatabase string, toDatabase string, fromTableName string, batchName string) error {
+	fromConnection, err := GetConnectionString(fromDatabase)
+	if err != nil {
+		return err
+	}
+
+	toConnection, err := GetConnectionString(toDatabase)
+	if err != nil {
+		return err
+	}
+	sourceDB, err := sql.Open("postgres", *fromConnection)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer sourceDB.Close()
+
+	destDB, err := sql.Open("postgres", *toConnection)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer destDB.Close()
+
+	//return nil
+	return CopyData(batchName, sourceDB, fromTableName, destDB)
+
+}
+
+func MoveData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, destDB *sql.DB, storedProcedure *string) error {
 	for _, batchName := range batchNamestoSync {
 		tx, err := destDB.BeginTx(context.Background(), nil)
 		if err != nil {
@@ -264,5 +291,67 @@ func CopyData(batchNamestoSync []string, sourceDB *sql.DB, sourceTable string, d
 		}
 
 	}
+	return nil
+}
+
+func CopyData(batchName string, sourceDB *sql.DB, sourceTable string, destDB *sql.DB) error {
+
+	tx, err := destDB.BeginTx(context.Background(), nil)
+	if err != nil {
+		return err
+	}
+	offset := 0
+	log.Println("Reading data for batch", batchName)
+	for {
+		sql := fmt.Sprintf("SELECT  row_to_json(d) as data FROM %s as d WHERE batchname = '%s' LIMIT %d OFFSET %d ", sourceTable, batchName, batchSize, offset)
+		log.Println("Executing", sql)
+		rows, err := sourceDB.Query(sql)
+		if err != nil {
+			return fmt.Errorf("Reading data using %s fails with : %w", sql, err)
+		}
+
+		var records []Record
+		for rows.Next() {
+			var record Record
+			if err := rows.Scan(&record.Data); err != nil {
+				return fmt.Errorf("Scanning data : %w", err)
+			}
+			records = append(records, record)
+		}
+		rows.Close()
+
+		if len(records) == 0 {
+			break
+		}
+		log.Println("Copying", len(records), "rows")
+		jsonData, err := json.Marshal(records)
+		if err != nil {
+			return fmt.Errorf("Marshalling data : %w", err)
+
+		}
+
+		_, err = destDB.Exec(`
+		INSERT INTO public.importdata(
+	id, created_at, created_by, updated_at, updated_by, deleted_at, tenant, searchindex, name, description, data)
+	VALUES (DEFAULT, DEFAULT, '', DEFAULT, '', DEFAULT, '', $1, $2, '', $3)`, batchName, batchName, string(jsonData))
+		if err != nil {
+			return fmt.Errorf("Inserting data : %w", err)
+		}
+
+		offset += batchSize
+
+		if err != nil {
+			err = tx.Rollback()
+			return fmt.Errorf("Rolling back batch %s: %w", batchName, err)
+		}
+
+	}
+
+	log.Println("Committing batch", batchName)
+	err = tx.Commit()
+	if err != nil {
+		return fmt.Errorf("Committing batch %s: %w", batchName, err)
+	}
+
 	return nil
 }
