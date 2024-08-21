@@ -2,15 +2,17 @@
 package officegraph
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
+	"text/template"
 	"time"
 
 	"github.com/magicbutton/magic-mix/collect"
@@ -31,7 +33,7 @@ var (
 	tokenValidTime time.Duration
 )
 
-const DEBUG = false
+const DEBUG = true
 
 type Parent struct {
 	CreatedDateTime time.Time `json:"createdDateTime"`
@@ -68,7 +70,7 @@ type DownloadBatchType struct {
 }
 
 type Details struct {
-	ParentId string          `json:"parentId"`
+	ParentId interface{}     `json:"parentId"`
 	Details  json.RawMessage `json:"details"`
 }
 
@@ -79,7 +81,9 @@ func DownloadBatch(batchID string, batchType DownloadBatchType, options *Downloa
 	}
 	for _, details := range batchType.ChildUrls {
 		Downloader(batchID, batchType.ParentUrl, details.Url, details.Prefix, options)
+		//if !DEBUG {
 		collect.CombineJsonFiles(batchID, details.Prefix, true)
+		//}
 
 	}
 
@@ -115,7 +119,7 @@ func Downloader(batchID string, parentUrl string, childUrl string, childPrefix s
 
 	// Start the initial call to get all sites
 	// Assuming you have a function getAllSites() that returns the list of site IDs
-	allSites := getParents(batchID, parentUrl, options.Filter)
+	allParents := getParents(batchID, parentUrl, options.Filter)
 	if childUrl == "" {
 		log.Println(childPrefix, "No details requests, so done here")
 		return
@@ -124,7 +128,7 @@ func Downloader(batchID string, parentUrl string, childUrl string, childPrefix s
 	go renewTokenPeriodically()
 
 	// Create a channel to send site IDs to workers
-	parents := make(chan string)
+	parentitem := make(chan map[string]interface{})
 
 	// Create a wait group to wait for all workers to finish
 	var wg sync.WaitGroup
@@ -132,15 +136,15 @@ func Downloader(batchID string, parentUrl string, childUrl string, childPrefix s
 	// Start worker goroutines
 	for i := 0; i < options.Concurrency; i++ {
 		wg.Add(1)
-		go worker(i, parents, childUrl, batchFolder, childPrefix, &wg)
+		go worker(i, parentitem, childUrl, batchFolder, childPrefix, &wg)
 	}
 
 	// Send site IDs to the channel
 	go func() {
-		for _, site := range allSites {
-			parents <- site
+		for _, parent := range allParents {
+			parentitem <- parent
 		}
-		close(parents)
+		close(parentitem)
 	}()
 
 	// Wait for all workers to finish
@@ -165,70 +169,67 @@ func fileExists(filename string) bool {
 	return err == nil
 }
 
-func worker(workerId int, key <-chan string, childUrl string, batchFolder string, childPrefix string, wg *sync.WaitGroup) {
+func worker(workerId int, parentItems <-chan map[string]interface{}, childUrl string, batchFolder string, childPrefix string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	for id := range key {
-		filename := filepath.Join(batchFolder, fmt.Sprintf("%s-%s.json", childPrefix, id))
+
+	for parentItem := range parentItems {
+		tmpl, err := template.New("url").Parse(childUrl)
+		if err != nil {
+			panic(err)
+
+		}
+		var b bytes.Buffer
+
+		err = tmpl.Execute(&b, parentItem)
+		if err != nil {
+			panic(err)
+		}
+		url := b.String()
+		fileid := strings.ReplaceAll(url[8:], "/", "-")
+		filename := filepath.Join(batchFolder, fmt.Sprintf("%s-%s.json", childPrefix, fileid))
 		if fileExists(filename) {
 			//fmt.Printf("Worker %d: Permissions already downloaded for site %d\n", id, siteID)
 			continue
 		}
+
 		// Make API call to get details for the site
-		details, err := downloadDetails(childUrl, id)
+		details, err := downloadDetails(url)
 		if err != nil {
-			log.Printf("Error downloading details for  %s: %s\n", id, err)
+			log.Printf("Error downloading details for  %s: %s\n", parentItem, err)
 			continue
 		}
 
 		var temp json.RawMessage
 		if err := json.Unmarshal(details, &temp); err != nil {
-			log.Printf("Error unmarshalling details for  %s: %s\n", id, err)
+			log.Printf("Error unmarshalling details for  %s: %s\n", parentItem, err)
 			continue
 		}
 		detauilsToStore := Details{
-			ParentId: id,
+			ParentId: parentItem,
 			Details:  temp,
 		}
 		// Write permissions to file
 		detailBuf, err := json.MarshalIndent(detauilsToStore, "", "  ")
 		if err := os.WriteFile(filename, detailBuf, 0644); err != nil {
-			log.Printf("Error writing details for  %s to file: %s\n", id, err)
+			log.Printf("Error writing details for  %s to file: %s\n", parentItem, err)
 			continue
 		}
 
-		log.Printf("Worker %d: Details downloaded for  %s\n", workerId, id)
+		log.Printf("Worker %d: Details downloaded for  %s\n", workerId, fileid)
 	}
 }
 
-func downloadDetails(detailsurl string, id string) ([]byte, error) {
-	url := fmt.Sprintf(detailsurl, id)
-	req, err := http.NewRequest("GET", url, nil)
+func downloadDetails(url string) ([]byte, error) {
+
+	//url := fmt.Sprintf(detailsurl, id)
+	body, err := Download(url, authToken, maxPages)
+
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+authToken)
+	return []byte(*body), nil
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusTooManyRequests {
-		// Throttled, delay and retry
-		delay := getRetryAfter(resp.Header)
-		log.Printf("Throttled for  %s, retrying after %d seconds...\n", id, delay)
-		time.Sleep(time.Duration(delay) * time.Second)
-		return downloadDetails(detailsurl, id)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
 }
 
 func getToken() string {
@@ -266,7 +267,7 @@ func getRetryAfter(header http.Header) int {
 	return throttleDelay
 }
 
-func getParents(batchID string, parentUrl string, filter FilterFunc) []string {
+func getParents(batchID string, parentUrl string, filter FilterFunc) []map[string]interface{} {
 	// token, err := getToken("Sites.FullControl.All")
 	// if err != nil {
 	// 	log.Fatal("Getting auth token", err)
@@ -285,37 +286,13 @@ func getParents(batchID string, parentUrl string, filter FilterFunc) []string {
 		if err != nil {
 			log.Fatal("Reading parents data from file", err)
 		}
-		parents := &[]Parent{}
+		var parents []map[string]interface{}
 
-		// log.Println("Raw", string(fileData))
-
-		// listinfo := &SharePointListInfo{}
-		// json.Unmarshal(fileData, listinfo)
-		// if listinfo != nil {
-		// 	log.Println("List info", listinfo)
-		// 	// if (listinfo.ParentReference.SiteID != "") {
-		// 	// 	parentIds := []string{listinfo.ParentReference.SiteID}
-		// 	// 	return parentIds
-		// 	// }
-		// }
-
-		marsshallErr := json.Unmarshal(fileData, parents)
+		marsshallErr := json.Unmarshal(fileData, &parents)
 		if marsshallErr != nil {
 			log.Fatal("Unmarshalling parents data", marsshallErr)
 		}
-		parentIds := []string{}
-		for _, parent := range *parents {
-			if filter != nil {
-				p, _ := json.Marshal(parent)
-
-				if filter(p) {
-					parentIds = append(parentIds, parent.ID)
-				}
-			} else {
-				parentIds = append(parentIds, parent.ID)
-			}
-		}
-		return parentIds
+		return parents
 
 	}
 	log.Println("Downloading parents")
@@ -326,20 +303,13 @@ func getParents(batchID string, parentUrl string, filter FilterFunc) []string {
 	}
 
 	data := []byte(*siteData)
-	parents := &[]Parent{}
-	marsshallErr := json.Unmarshal(data, parents)
+	var parents []map[string]interface{}
+	marsshallErr := json.Unmarshal(data, &parents)
 	if marsshallErr != nil {
 		log.Fatal("Unmarshalling parent data", marsshallErr)
 	}
 
-	if err := os.WriteFile(filename, data, 0644); err != nil {
-		log.Fatal("Writing parent data", err)
-	}
-	parentIds := []string{}
-	for _, parent := range *parents {
-		parentIds = append(parentIds, parent.ID)
-	}
-	return parentIds
+	return parents
 }
 
 func renewTokenPeriodically() {

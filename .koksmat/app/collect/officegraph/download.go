@@ -22,8 +22,8 @@ func FetchGraphData(maxPages int, url string, accessToken string) (string, error
 	client := &http.Client{}
 
 	for i := 0; i < maxPages; i++ {
-		log.Printf("Fetching page %d\n", i+1)
-		log.Printf("URL: %s\n", url)
+		//log.Printf("Fetching page %d\n", i+1)
+		log.Printf("page %d URL: %s\n", i+1, url)
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			return "", fmt.Errorf("failed to create request: %v", err)
@@ -42,6 +42,7 @@ func FetchGraphData(maxPages int, url string, accessToken string) (string, error
 			if retryAfter != "" {
 				retrySeconds, err := strconv.Atoi(retryAfter)
 				if err == nil {
+					log.Println(url, "Throttled. Retrying after", retrySeconds, "seconds")
 					time.Sleep(time.Duration(retrySeconds) * time.Second)
 					i-- // retry the same page
 					continue

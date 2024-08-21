@@ -1,0 +1,7 @@
+parentUrl: https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/cava3:/lists
+childUrls:
+  - url: https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/cava3:/lists/{{.name}}/items?$expand=fields&top=999
+    prefix: lists
+    # childChildUrls:
+    #   - url: https://graph.microsoft.com/v1.0/sites/%s/lists/%s/items
+    #     prefix: items

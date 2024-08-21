@@ -50,13 +50,31 @@
             "args": ["download","batch","list-nexiintra-country-it","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/sitelists.json"]
         }, 
         {
-            "name": "Download batch - events-rooms-all",
+            "name": "Download batch - cava3",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "cwd": "${workspaceFolder}/.koksmat/workdir",
             "program": "${workspaceFolder}/.koksmat/app",                          
-            "args": ["download","batch","events-rooms","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/events-rooms.yaml"]
+            "args": ["download","batch","sharepoint-cava3","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/sharepoint-cava3.yaml"]
+        }, 
+        {
+            "name": "Download batch - roomscalendarview",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",                          
+            "args": ["download","batch","roomscalendarview","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/roomscalendarview.yaml"]
+        },         
+        {
+            "name": "Parse bookings",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",                          
+            "args": ["parse","file","roomscalendarview","${workspaceFolder}/.koksmat/workdir/roomscalendarview/calendarview-2024.json"]
         },         
         {
             "name": "Download batch - office365groups-only",

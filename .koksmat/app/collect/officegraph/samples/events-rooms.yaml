@@ -1,7 +1,0 @@
-parentUrl: https://graph.microsoft.com/v1.0/places/microsoft.graph.room?$top=2000
-params:
-  startDateTime: 2020-01-01T00:00:00Z
-  endDateTime: 2020-12-31T23:59:59Z
-childUrls:
-  - url: https://graph.microsoft.com/v1.0/users/%s/calendarView?startDateTime=2024-08-14T00:00:00Z&endDateTime=2024-08-14T23:59:59Z
-    prefix: calendarview

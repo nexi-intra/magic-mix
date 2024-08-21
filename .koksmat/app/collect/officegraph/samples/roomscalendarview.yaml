@@ -1,0 +1,6 @@
+parentUrl: https://graph.microsoft.com/v1.0/places/microsoft.graph.room?$top=2000
+childUrls:
+  - url: https://graph.microsoft.com/v1.0/users/{{.emailAddress}}/calendar/calendarView?startDateTime=2024-01-01T00:00:00Z&endDateTime=2025-01-01T00:00:00Z&top=500&select=subject,organizer,start,end
+    prefix: calendarview-2024
+  - url: https://graph.microsoft.com/v1.0/users/{{.emailAddress}}/calendar/calendarView?startDateTime=2023-01-01T00:00:00Z&endDateTime=2024-01-01T00:00:00Z&top=500&select=subject,organizer,start,end
+    prefix: calendarview-2023
