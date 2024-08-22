@@ -31,7 +31,7 @@ source: The source table (or view) name.
 
 Page Size: Data is always moved in batches of a maximum of 10,000 records.
 
-Destination Table Requirement: Data will always be copy to a destination table named importdata, the records will be named 'sourcetable'+'tablename' . If the specified destination table (parameter 4) is not named importdata, the task will fail unless a stored procedure (parameter 5) is provided. The purpose of the stored procedure is to take data from the importdata table and move it to the final destination table.
+Destination Table Requirement: Data will always be copy to a destination table named importdata, the records will be named 'sourcetable|tablename' . If the specified destination table (parameter 4) is not named importdata, the task will fail unless a stored procedure (parameter 5) is provided. The purpose of the stored procedure is to take data from the importdata table and move it to the final destination table.
 
 
 `,
@@ -40,7 +40,7 @@ Destination Table Requirement: Data will always be copy to a destination table n
 			from := args[0]
 			to := args[1]
 			source := args[2]
-			batchName := from + "." + source
+			batchName := from + "|" + source
 			OpenDatabase()
 			defer utils.Db.Close()
 			err := move.Copy(from, to, source, batchName)

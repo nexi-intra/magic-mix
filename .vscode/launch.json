@@ -129,7 +129,16 @@
             "cwd": "${workspaceFolder}/.koksmat/workdir",
             "program": "${workspaceFolder}/.koksmat/app",
             "args": ["move","mix","meetings","sharepoint.cava3","importdata"]
-        },         {
+        },  
+        {
+            "name": "copy",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",
+            "args": ["copy","mix","meetings","sharepoint.cava3"]
+        },          {
             "name": "sql query",
             "type": "go",
             "request": "launch",

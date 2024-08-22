@@ -303,7 +303,7 @@ func CopyData(batchName string, sourceDB *sql.DB, sourceTable string, destDB *sq
 	offset := 0
 	log.Println("Reading data for batch", batchName)
 	for {
-		sql := fmt.Sprintf("SELECT  row_to_json(d) as data FROM %s as d WHERE batchname = '%s' LIMIT %d OFFSET %d ", sourceTable, batchName, batchSize, offset)
+		sql := fmt.Sprintf("SELECT  row_to_json(d) as data FROM %s as d  LIMIT %d OFFSET %d ", sourceTable, batchSize, offset)
 		log.Println("Executing", sql)
 		rows, err := sourceDB.Query(sql)
 		if err != nil {

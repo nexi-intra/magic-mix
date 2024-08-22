@@ -1,0 +1,38 @@
+WITH date_hour_series AS (
+    SELECT 
+        resource_id,
+        generate_series('2024-01-01'::timestamp with time zone, '2024-01-31'::timestamp with time zone, interval '1 day') AS date,
+        generate_series(8, 16) AS hour -- Business hours from 8 AM to 4 PM (hour 8 to 16)
+    FROM 
+        (SELECT DISTINCT resource_id FROM booking.utilization WHERE resource_id ILIKE '%dk%') AS resources
+),
+bookings AS (
+    SELECT 
+        resource_id, 
+        start_date::date AS date, -- Cast to date to match the series
+        hour,
+        COUNT(*) * 0.25 AS booked_hours -- each record represents 15 minutes (0.25 hours)
+    FROM 
+        booking.utilization
+    WHERE 
+        resource_id ILIKE 'room-dk%'
+        AND hour > 7 AND hour < 17 
+        AND start_date >= '2024-01-01' AND end_date <= '2024-01-31'
+    GROUP BY 
+        resource_id, start_date::date, hour
+)
+SELECT 
+    d.resource_id,
+    d.date AS start_date,
+    d.hour,
+    COALESCE(b.booked_hours, 0) AS utilization_hours
+FROM 
+    date_hour_series d
+LEFT JOIN 
+    bookings b 
+    ON d.resource_id = b.resource_id 
+    AND d.date = b.date
+    AND d.hour = b.hour
+ORDER BY 
+    d.resource_id, d.date, d.hour
+--LIMIT 100;
