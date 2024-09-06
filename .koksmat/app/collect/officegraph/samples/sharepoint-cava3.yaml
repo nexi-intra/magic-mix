@@ -1,7 +1,12 @@
 parentUrl: https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/cava3:/lists
+# Filter out the lists x and y
+parentFilter: .[] | select(.name != "EventTracking" and .name != "Desks" and .name != "Shared Mailboxes Owners" and .name != "SharedMailbox Owners"  and .name != "Workspaces" and .name != "SharePointHomeCacheList" and .name != "Miller Sessions")
+
 childUrls:
   - url: https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/cava3:/lists/{{.name}}/items?$expand=fields&top=999
-    prefix: lists
-    # childChildUrls:
-    #   - url: https://graph.microsoft.com/v1.0/sites/%s/lists/%s/items
-    #     prefix: items
+    prefix: listitems
+  # - url: https://graph.microsoft.com/v1.0/sites/christianiabpos.sharepoint.com:/sites/cava3:/lists/{{.name}}/$expand=columns&top=999
+  #   prefix: defs
+  # childChildUrls:
+  #   - url: https://graph.microsoft.com/v1.0/sites/%s/lists/%s/items
+  #     prefix: items

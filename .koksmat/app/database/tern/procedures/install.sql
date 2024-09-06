@@ -97,4 +97,16 @@ CREATE SCHEMA "proc";{{ template "connection_create_proc.sql".}}
 {{ template "history_update_proc.sql".}} 
 {{ template "history_delete_proc.sql".}} 
 {{ template "history_undo_delete_proc.sql".}} 
+{{ template "session_create_proc.sql".}} 
+{{ template "session_update_proc.sql".}} 
+{{ template "session_delete_proc.sql".}} 
+{{ template "session_undo_delete_proc.sql".}} 
+{{ template "sessionstage_create_proc.sql".}} 
+{{ template "sessionstage_update_proc.sql".}} 
+{{ template "sessionstage_delete_proc.sql".}} 
+{{ template "sessionstage_undo_delete_proc.sql".}} 
+{{ template "koksmat_model_create_proc.sql".}} 
+{{ template "koksmat_model_update_proc.sql".}} 
+{{ template "koksmat_model_delete_proc.sql".}} 
+{{ template "koksmat_model_undo_delete_proc.sql".}} 
 

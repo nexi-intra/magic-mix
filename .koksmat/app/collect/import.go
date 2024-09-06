@@ -1,6 +1,8 @@
 package collect
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -36,6 +38,55 @@ func UploadBatch(rootPath string) {
 			Data: chunk,
 		})
 		return importErr
+	}
+
+	callback := func(filePath string) error {
+		//log.Println("Uploading", filePath)
+		return LoadJSON(filePath, inserter)
+	}
+
+	if err := EnumerateFiles(rootPath, callback); err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+
+}
+
+func UploadBatch2(rootPath string, db *sql.DB) {
+	inserter := func(filePath string, chunk *string) error {
+		log.Println("Uploading", filePath, len(*chunk), "bytes")
+		ctx := context.Background()
+
+		sqlstatement := fmt.Sprintf(`
+		INSERT INTO importdata ( id,
+    created_at,
+    updated_at,
+        created_by, 
+        updated_by, 
+        tenant,
+        searchindex,
+        name,
+        description,
+        data)
+		VALUES (DEFAULT,
+        DEFAULT,
+        DEFAULT,
+        'system', 
+        'system', 
+        '',
+        '',
+        $1,
+        '',
+        $2);
+		`)
+		_, err := db.ExecContext(ctx, sqlstatement, filePath, *chunk)
+		if err != nil {
+			log.Println("Error:", err)
+			log.Printf("SQL: %s ...\n", sqlstatement[:1024])
+			return err
+		}
+
+		//rowsAffected, _ := raw.RowsAffected()
+		return nil
 	}
 
 	callback := func(filePath string) error {

@@ -49,14 +49,13 @@ type Parent struct {
 	WebURL string `json:"webUrl"`
 }
 
-type FilterFunc func([]byte) bool
-
 type DownloaderOptions struct {
 	Concurrency    int
 	ThrottleDelay  int
 	MaxPages       int
 	TokenValidTime time.Duration
-	Filter         FilterFunc
+	Filter         string
+	DryRun         bool
 }
 
 type DownloadBatchChild struct {
@@ -65,8 +64,9 @@ type DownloadBatchChild struct {
 }
 
 type DownloadBatchType struct {
-	ParentUrl string               `json:"parentUrl"`
-	ChildUrls []DownloadBatchChild `json:"childUrls"`
+	ParentUrl    string               `json:"parentUrl"`
+	ParentFilter string               `json:"parentFilter"`
+	ChildUrls    []DownloadBatchChild `json:"childUrls"`
 }
 
 type Details struct {
@@ -75,12 +75,21 @@ type Details struct {
 }
 
 func DownloadBatch(batchID string, batchType DownloadBatchType, options *DownloaderOptions) {
+	if options == nil {
+		options = &DownloaderOptions{}
+	}
+
+	options.Filter = batchType.ParentFilter
 	if len(batchType.ChildUrls) == 0 {
 		Downloader(batchID, batchType.ParentUrl, "", "", options)
 		return
 	}
 	for _, details := range batchType.ChildUrls {
 		Downloader(batchID, batchType.ParentUrl, details.Url, details.Prefix, options)
+		if options.DryRun {
+			log.Println("Dry run, skipping combining")
+			return
+		}
 		//if !DEBUG {
 		collect.CombineJsonFiles(batchID, details.Prefix, true)
 		//}
@@ -119,7 +128,8 @@ func Downloader(batchID string, parentUrl string, childUrl string, childPrefix s
 
 	// Start the initial call to get all sites
 	// Assuming you have a function getAllSites() that returns the list of site IDs
-	allParents := getParents(batchID, parentUrl, options.Filter)
+	allParents := getParents(batchID, parentUrl, options.Filter, options.DryRun)
+
 	if childUrl == "" {
 		log.Println(childPrefix, "No details requests, so done here")
 		return
@@ -136,7 +146,7 @@ func Downloader(batchID string, parentUrl string, childUrl string, childPrefix s
 	// Start worker goroutines
 	for i := 0; i < options.Concurrency; i++ {
 		wg.Add(1)
-		go worker(i, parentitem, childUrl, batchFolder, childPrefix, &wg)
+		go worker(i, parentitem, childUrl, batchFolder, childPrefix, &wg, options.DryRun)
 	}
 
 	// Send site IDs to the channel
@@ -169,7 +179,7 @@ func fileExists(filename string) bool {
 	return err == nil
 }
 
-func worker(workerId int, parentItems <-chan map[string]interface{}, childUrl string, batchFolder string, childPrefix string, wg *sync.WaitGroup) {
+func worker(workerId int, parentItems <-chan map[string]interface{}, childUrl string, batchFolder string, childPrefix string, wg *sync.WaitGroup, dryRun bool) {
 	defer wg.Done()
 
 	for parentItem := range parentItems {
@@ -185,6 +195,10 @@ func worker(workerId int, parentItems <-chan map[string]interface{}, childUrl st
 			panic(err)
 		}
 		url := b.String()
+		if dryRun {
+			log.Println(url)
+			continue
+		}
 		fileid := strings.ReplaceAll(url[8:], "/", "-")
 		filename := filepath.Join(batchFolder, fmt.Sprintf("%s-%s.json", childPrefix, fileid))
 		if fileExists(filename) {
@@ -267,7 +281,7 @@ func getRetryAfter(header http.Header) int {
 	return throttleDelay
 }
 
-func getParents(batchID string, parentUrl string, filter FilterFunc) []map[string]interface{} {
+func getParents(batchID string, parentUrl string, filter string, checkFilter bool) []map[string]interface{} {
 	// token, err := getToken("Sites.FullControl.All")
 	// if err != nil {
 	// 	log.Fatal("Getting auth token", err)
@@ -292,6 +306,22 @@ func getParents(batchID string, parentUrl string, filter FilterFunc) []map[strin
 		if marsshallErr != nil {
 			log.Fatal("Unmarshalling parents data", marsshallErr)
 		}
+
+		if filter != "" {
+
+			if checkFilter {
+				filteredData := FilterJSONArray(parents, filter)
+				data, _ := json.Marshal(filteredData)
+				filename := filepath.Join(batchFolder, "parents.filtered.json")
+				if err := os.WriteFile(filename, data, 0644); err != nil {
+					log.Fatal("Writing parent filtered data", err)
+				}
+				log.Println("Filtered parents data written to", filename)
+
+			}
+			return FilterJSONArray(parents, filter)
+		}
+
 		return parents
 
 	}
@@ -303,10 +333,27 @@ func getParents(batchID string, parentUrl string, filter FilterFunc) []map[strin
 	}
 
 	data := []byte(*siteData)
+	if err := os.WriteFile(filename, data, 0644); err != nil {
+		log.Fatal("Writing parent data", err)
+	}
 	var parents []map[string]interface{}
 	marsshallErr := json.Unmarshal(data, &parents)
 	if marsshallErr != nil {
 		log.Fatal("Unmarshalling parent data", marsshallErr)
+	}
+
+	if filter != "" {
+
+		if checkFilter {
+			filteredData := FilterJSONArray(parents, filter)
+			data, _ := json.Marshal(filteredData)
+			filename := filepath.Join(batchFolder, "parents.filtered.json")
+			if err := os.WriteFile(filename, data, 0644); err != nil {
+				log.Fatal("Writing parent filtered data", err)
+			}
+			log.Println("Filtered parents data written to", filename)
+		}
+		return FilterJSONArray(parents, filter)
 	}
 
 	return parents

@@ -375,6 +375,45 @@ entities:
       - name: metadata
         type: json
         required: false
+  session: &session
+    name: session
+    description: Session
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: user
+        type: reference
+        entity: *user
+        required: true
+      - name: data
+        type: json
+        required: false
+  sessionstage: &sessionstage
+    name: sessionstage
+    description: Session Stage
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: session
+        type: reference
+        entity: *session
+        required: true
+      - name: sortorder
+        type: string
+        required: true
+      - name: data
+        type: json
+        required: false
+  koksmat_model: &koksmat_model
+    name: koksmat_model
+    description: Koksmat model
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: data
+        type: json
+        required: true
+      # - name: session
+      #   type: reference
+      #   entity: *session
+      #   required: true
 models:
   itemMethods: &itemMethods
     - name: read
@@ -643,4 +682,31 @@ services:
       model: history
       objectname: History
       entity: *history
+    methods: *itemMethods
+
+  - name: session
+    description: Manage sessions
+    entity:
+      type: session
+      model: session
+      objectname: Session
+      entity: *session
+    methods: *itemMethods
+
+  - name: sessionstage
+    description: Manage session stages
+    entity:
+      type: sessionstage
+      model: sessionstage
+      objectname: SessionStage
+      entity: *sessionstage
+    methods: *itemMethods
+
+  - name: koksmat_model
+    description: Manage Koksmat model
+    entity:
+      type: koksmat_model
+      model: koksmat_model
+      objectname: KoksmatModel
+      entity: *koksmat_model
     methods: *itemMethods

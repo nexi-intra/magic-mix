@@ -1,7 +1,6 @@
 package officegraph
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 )
@@ -23,15 +22,7 @@ type Site struct {
 func TestDownloadSharePointPermissions(t *testing.T) {
 	options := &DownloaderOptions{
 		MaxPages: 1,
-		Filter: func(item []byte) bool {
-			site := &Site{}
-			json.Unmarshal(item, site)
-			if site.IsPersonalSite {
-				return false
-			}
-
-			return true
-		},
+		Filter:   "",
 	}
 	Downloader("site-permissions-3", "https://graph.microsoft.com/v1.0/sites", "https://graph.microsoft.com/v1.0/sites/%s/permissions", "permissions", options)
 }

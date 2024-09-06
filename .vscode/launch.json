@@ -59,6 +59,15 @@
             "args": ["download","batch","sharepoint-cava3","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/sharepoint-cava3.yaml"]
         }, 
         {
+            "name": "Download batch - cava3 - dryrun",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",                          
+            "args": ["download","batch","sharepoint-cava3","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/sharepoint-cava3.yaml","--dryrun"]
+        }, 
+        {
             "name": "Download batch - roomscalendarview",
             "type": "go",
             "request": "launch",
@@ -84,6 +93,15 @@
             "cwd": "${workspaceFolder}/.koksmat/workdir",
             "program": "${workspaceFolder}/.koksmat/app",                          
             "args": ["download","groups-only","${workspaceFolder}/.koksmat/app/collect/officegraph/samples/groups-only.json"]
+        }, 
+        {
+            "name": "Upload batch - sharepoint-cava3",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/workdir",
+            "program": "${workspaceFolder}/.koksmat/app",                          
+            "args": ["upload","sharepoint-cava3","meetings"]
         }, 
         {
             "name": "Upload batch - audit",

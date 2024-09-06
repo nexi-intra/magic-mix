@@ -45,10 +45,14 @@ magic-mix download batch groups groupdata.yaml
 the format of the YAML file is
 
 url: https://graph.microsoft.com/v1.0/groups
+# Optional filter to remove unwanted data
+parentFilter: ->
+  .[] | select(.name != "Events" )
+
 childUrls:
-	- url: https://graph.microsoft.com/v1.0/groups/%s/owners
+	- url: https://graph.microsoft.com/v1.0/groups/{{.id}}/owners
 	  prefix: owners
-	- url: https://graph.microsoft.com/v1.0/groups/%s/members
+	- url: https://graph.microsoft.com/v1.0/groups/{{.id}}/members
 	  prefix: members
 			
 
@@ -73,11 +77,18 @@ childUrls:
 
 			json.Unmarshal(batchData, &batch)
 			log.Println("Preparing download of batch", batchID)
-			officegraph.DownloadBatch(batchID, batch, nil)
+
+			// Check for dryrun flag
+			dryrun, _ := cmd.Flags().GetBool("dryrun")
+			options := &officegraph.DownloaderOptions{
+				DryRun: dryrun,
+				Filter: batch.ParentFilter,
+			}
+			officegraph.DownloadBatch(batchID, batch, options)
 
 		},
 	}
-
+	downloadBatch.Flags().Bool("dryrun", false, "Simulate the batch download without actually downloading files")
 	downloadAuditLog := &cobra.Command{
 		Use:   "auditlog [destination folder] [[year]] [[month]] [[day]]",
 		Short: "Download audit logs for a given day",

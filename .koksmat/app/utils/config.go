@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"strings"
@@ -109,9 +108,9 @@ func DatabaseName() string {
 func Setup(envPath string) {
 	viper.SetConfigFile(envPath)
 	viper.AutomaticEnv()
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Println("Viper setup", err)
-	}
+	viper.ReadInConfig()
+	// if err != nil {
+	// 	log.Println("Viper setup", err)
+	// }
 
 }
