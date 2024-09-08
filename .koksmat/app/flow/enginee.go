@@ -149,3 +149,10 @@ func (fe *FlowEngine) LoadFlow(id string) error {
 
 	return fe.AddFlow(id, flowJSON)
 }
+
+func (fe *FlowEngine) GetFlows() map[string]*Flow {
+	fe.mu.RLock()
+	defer fe.mu.RUnlock()
+
+	return fe.flows
+}
