@@ -23,6 +23,15 @@
             "args": ["service"]
         }, 
         {
+            "name": "Magic Flow",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "${workspaceFolder}/.koksmat/app",
+            "program": "${workspaceFolder}/.koksmat/app",
+            "args": ["flow"]
+        }, 
+        {
             "name": "Download batch - office365groups-prefixed-test",
             "type": "go",
             "request": "launch",

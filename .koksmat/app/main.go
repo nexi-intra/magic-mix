@@ -33,6 +33,7 @@ description: Describe the main purpose of this kitchen
 	magicapp.RegisterCopyCmd()
 	magicapp.RegisterSQLCmd()
 	magicapp.RegisterParserCmd()
+	magicapp.RegisterFlowCmd()
 	utils.RootCmd.PersistentFlags().BoolVarP(&utils.Verbose, "verbose", "v", false, "verbose output")
 
 	magicapp.Execute(name, "magic-mix", "")

@@ -16,7 +16,7 @@ func NewNATSEmitter() *NATSEmitter {
 
 // Emit sends an event to a NATS subject
 func (e *NATSEmitter) Emit(event string, data interface{}) {
-	log.Fatal("not implemented")
+	log.Println("not implemented")
 	// dataJSON, err := json.Marshal(data)
 	// if err != nil {
 	// 	log.Printf("failed to marshal event data: %v", err)

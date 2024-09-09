@@ -38,6 +38,7 @@ func HandleFlowRequests(req micro.Request) {
 
 func StartFlowService() {
 	// Parent context cancels connecting/reconnecting altogether.
+	log.Println("Starting Flow Service")
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 

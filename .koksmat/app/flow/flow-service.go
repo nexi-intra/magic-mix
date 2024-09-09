@@ -3,6 +3,7 @@ package flow
 import (
 	"encoding/json"
 	"errors"
+	"log"
 )
 
 // Request struct to determine which FlowEngine method to call
@@ -43,7 +44,7 @@ func (s *FlowEngineService) HandleRequest(requestJSON []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("Flow Request type: ", req.Type)
 	// Switch case on request type and get the response from each handler
 	switch req.Type {
 	case "add_flow":
@@ -76,7 +77,8 @@ func (s *FlowEngineService) handleAddFlow(payload json.RawMessage) ([]byte, erro
 
 	err = s.engine.AddFlow(addFlowPayload.ID, addFlowPayload.FlowJSON)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return a JSON response
@@ -93,7 +95,8 @@ func (s *FlowEngineService) handleStartFlow(payload json.RawMessage) ([]byte, er
 
 	err = s.engine.StartFlow(startFlowPayload.ID)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return a JSON response
@@ -110,7 +113,8 @@ func (s *FlowEngineService) handlePauseFlow(payload json.RawMessage) ([]byte, er
 
 	err = s.engine.PauseFlow(pauseFlowPayload.ID)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return a JSON response
@@ -127,7 +131,8 @@ func (s *FlowEngineService) handleStopFlow(payload json.RawMessage) ([]byte, err
 
 	err = s.engine.StopFlow(stopFlowPayload.ID)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return a JSON response
@@ -144,7 +149,8 @@ func (s *FlowEngineService) handleDeleteFlow(payload json.RawMessage) ([]byte, e
 
 	err = s.engine.DeleteFlow(deleteFlowPayload.ID)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return a JSON response
@@ -161,7 +167,8 @@ func (s *FlowEngineService) handleGetFlow(payload json.RawMessage) ([]byte, erro
 
 	flow, err := s.engine.GetFlow(getFlowPayload.ID)
 	if err != nil {
-		return nil, err
+		resp := map[string]string{"error": err.Error()}
+		return json.Marshal(resp)
 	}
 
 	// Return the flow as JSON
