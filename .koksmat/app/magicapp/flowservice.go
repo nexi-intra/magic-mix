@@ -11,6 +11,7 @@ package magicapp
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"time"
 
@@ -21,10 +22,13 @@ import (
 
 	"github.com/magicbutton/magic-mix/drivers"
 	"github.com/magicbutton/magic-mix/flow"
+	"github.com/magicbutton/magic-mix/subscription"
 )
 
 var flowEngine *flow.FlowEngine
 var flowEngineeService *flow.FlowEngineService
+var eventStore subscription.SubscriptionStore
+var eventMessagingService *subscription.SubscriptionService
 
 func HandleFlowRequests(req micro.Request) {
 	response, err := flowEngineeService.HandleRequest(req.Data())
@@ -32,6 +36,28 @@ func HandleFlowRequests(req micro.Request) {
 		req.Respond([]byte(err.Error()))
 	} else {
 		req.Respond([]byte(response))
+	}
+
+}
+
+func HandleEventRequests(req micro.Request) {
+	var req1 map[string]interface{}
+
+	// Unmarshal the generic request
+	err := json.Unmarshal(req.Data(), &req1)
+	if err != nil {
+		req.Respond([]byte(err.Error()))
+	}
+	response, err := eventMessagingService.HandleRequest(req1)
+	if err != nil {
+		req.Respond([]byte(err.Error()))
+	} else {
+		var b []byte
+		b, err = json.Marshal(response)
+		if err != nil {
+			req.Respond([]byte(err.Error()))
+		}
+		req.Respond(b)
 	}
 
 }
@@ -101,9 +127,15 @@ WaitForEstablishedConnection:
 	// Create a DBStorage driver that implements flow.Storage
 	var storage flow.Storage = drivers.NewDBStorage()
 
-	var emitter flow.Emitter = drivers.NewNATSEmitter()
+	var emitter flow.Emitter = drivers.NewNATSEmitter(nc)
 	flowEngine := flow.NewFlowEngine(storage, emitter)
 	flowEngineeService = flow.NewFlowEngineService(flowEngine)
+	eventStore, err = drivers.NewJetStreamSubscriptionStore(nc, "workflow_events", "workflow.events.*")
+	if err != nil {
+		panic(err)
+	}
+
+	//eventMessagingService = subscription.NewSubscriptionService(nc, 60)
 
 	// utils.Setup("./.env")
 
@@ -121,6 +153,7 @@ WaitForEstablishedConnection:
 	root := srv.AddGroup(name)
 
 	root.AddEndpoint("flow", micro.HandlerFunc(HandleFlowRequests))
+	root.AddEndpoint("event", micro.HandlerFunc(HandleFlowRequests))
 
 	for {
 		if nc.IsClosed() {
