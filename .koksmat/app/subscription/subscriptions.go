@@ -102,20 +102,20 @@ func NewDefaultTTLManager(tracker LastSeenTracker, store SubscriptionStore, ttlS
 
 // CheckExpiredSubscriptions checks and handles subscriptions that have exceeded their TTL.
 func (m *DefaultTTLManager) CheckExpiredSubscriptions(subscriptions []*Subscription) {
-	// m.mu.Lock()
-	// defer m.mu.Unlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-	// for _, sub := range subscriptions {
-	// 	if m.tracker.HasExpired(sub.ID, m.ttl) {
-	// 		// Remove the expired subscription from the store
-	// 		err := m.store.Remove(sub.ID)
-	// 		if err != nil {
-	// 			fmt.Printf("Failed to remove expired subscription %s: %v\n", sub.ID, err)
-	// 		} else {
-	// 			fmt.Printf("Subscription %s has expired and was removed\n", sub.ID)
-	// 		}
-	// 	}
-	// }
+	for _, sub := range subscriptions {
+		if m.tracker.HasExpired(sub.ID, m.ttl) {
+			// Remove the expired subscription from the store
+			err := m.store.Remove(sub.ID)
+			if err != nil {
+				fmt.Printf("Failed to remove expired subscription %s: %v\n", sub.ID, err)
+			} else {
+				fmt.Printf("Subscription %s has expired and was removed\n", sub.ID)
+			}
+		}
+	}
 }
 
 // SubscriptionService manages subscriptions and their lifecycle.
@@ -282,10 +282,10 @@ func (s *SubscriptionService) handleGetMessages(req map[string]interface{}) (int
 		return nil, fmt.Errorf("invalid 'id' field")
 	}
 
-	timeout, ok := req["timeout"].(float64) // Assuming timeout is sent as a number of seconds
-	if !ok || timeout <= 0 {
-		return nil, fmt.Errorf("invalid or missing 'timeout' field")
-	}
+	// timeout, ok := req["timeout"].(float64) // Assuming timeout is sent as a number of seconds
+	// if !ok || timeout <= 0 {
+	// 	return nil, fmt.Errorf("invalid or missing 'timeout' field")
+	// }
 
 	s.mu.Lock()
 	_, err := s.store.Get(id)
@@ -294,7 +294,7 @@ func (s *SubscriptionService) handleGetMessages(req map[string]interface{}) (int
 	if err != nil {
 		return nil, fmt.Errorf("subscription not found")
 	}
-
+	s.tracker.SetLastSeen(id)
 	messages := []Message{} // Placeholder: Fetch new messages logic here
 	messageChannel := make(chan []Message)
 
@@ -318,11 +318,11 @@ func (s *SubscriptionService) handleGetMessages(req map[string]interface{}) (int
 			"status":   "success",
 			"messages": messages,
 		}, nil
-	case <-time.After(time.Duration(timeout) * time.Second):
-		return map[string]interface{}{
-			"status":   "timeout",
-			"messages": messages, // empty list
-		}, nil
+		// case <-time.After(time.Duration(timeout) * time.Second):
+		// 	return map[string]interface{}{
+		// 		"status":   "timeout",
+		// 		"messages": messages, // empty list
+		// 	}, nil
 	}
 }
 

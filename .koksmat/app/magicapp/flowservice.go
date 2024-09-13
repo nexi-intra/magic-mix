@@ -133,7 +133,7 @@ WaitForEstablishedConnection:
 	flowEngine := flow.NewFlowEngine(storage, emitter)
 	flowEngineeService = flow.NewFlowEngineService(flowEngine)
 	eventStore, err = drivers.NewJetStreamSubscriptionStore(nc, "workflow_events", "workflow.events.*")
-	eventMessagingService = subscription.NewSubscriptionService(eventStore, 600)
+	eventMessagingService = subscription.NewSubscriptionService(eventStore, 60)
 	if err != nil {
 		panic(err)
 	}
