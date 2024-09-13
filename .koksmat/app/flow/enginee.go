@@ -19,6 +19,7 @@ func NewFlowEngine(storage Storage, emitter Emitter) *FlowEngine {
 		flows:   make(map[string]*Flow),
 		storage: storage,
 		emitter: emitter,
+		mu:      sync.RWMutex{},
 	}
 }
 

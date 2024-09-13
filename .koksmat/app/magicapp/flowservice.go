@@ -55,7 +55,9 @@ func HandleEventRequests(req micro.Request) {
 		var b []byte
 		b, err = json.Marshal(response)
 		if err != nil {
-			req.Respond([]byte(err.Error()))
+			errorMessage := map[string]string{"error": err.Error()}
+			jsonResponse, _ := json.Marshal(errorMessage)
+			req.Respond(jsonResponse)
 		}
 		req.Respond(b)
 	}
@@ -131,6 +133,7 @@ WaitForEstablishedConnection:
 	flowEngine := flow.NewFlowEngine(storage, emitter)
 	flowEngineeService = flow.NewFlowEngineService(flowEngine)
 	eventStore, err = drivers.NewJetStreamSubscriptionStore(nc, "workflow_events", "workflow.events.*")
+	eventMessagingService = subscription.NewSubscriptionService(eventStore, 600)
 	if err != nil {
 		panic(err)
 	}
@@ -153,7 +156,7 @@ WaitForEstablishedConnection:
 	root := srv.AddGroup(name)
 
 	root.AddEndpoint("flow", micro.HandlerFunc(HandleFlowRequests))
-	root.AddEndpoint("event", micro.HandlerFunc(HandleFlowRequests))
+	root.AddEndpoint("event", micro.HandlerFunc(HandleEventRequests))
 
 	for {
 		if nc.IsClosed() {

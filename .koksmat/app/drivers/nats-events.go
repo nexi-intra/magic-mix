@@ -2,6 +2,7 @@ package drivers
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/magicbutton/magic-mix/subscription"
 	"github.com/nats-io/nats.go"
@@ -71,6 +72,7 @@ func (s *JetStreamSubscriptionStore) Get(id string) (*subscription.Subscription,
 func (s *JetStreamSubscriptionStore) Set(sub *subscription.Subscription) error {
 	_, err := s.js.AddConsumer(s.stream, &nats.ConsumerConfig{
 		Durable: sub.ID,
+		// InactiveThreshold: 5000,
 		// FilterSubject: sub.Subject,
 		// AckPolicy:     nats.AckExplicitPolicy, // example ack policy
 	})
@@ -110,6 +112,30 @@ func (s *JetStreamSubscriptionStore) Remove(id string) error {
 	return nil
 }
 
+// ReadMessages reads a specified number of messages from the consumer.
+func (s *JetStreamSubscriptionStore) ReadMessages(consumerID string) ([]subscription.Message, error) {
+	// Subscribe to the stream with the given consumerID using pull-based subscription
+	numMessages := 2
+	sub, err := s.js.PullSubscribe(s.subject, consumerID)
+	if err != nil {
+		return nil, fmt.Errorf("error subscribing to subject: %v", err)
+	}
+
+	// Pull the specified number of messages
+	msgs, err := sub.Fetch(numMessages, nats.MaxWait(10*time.Second))
+	var result []subscription.Message = []subscription.Message{}
+	for _, msg := range msgs {
+		fmt.Printf("Message: %s\n", string(msg.Subject))
+		result = append(result, subscription.Message{
+			Subject: msg.Subject,
+			Data:    string(msg.Data)})
+	}
+	if err != nil {
+		return nil, fmt.Errorf("error fetching messages: %v", err)
+	}
+
+	return result, nil
+}
 func main() {
 	// Example usage
 	nc, err := nats.Connect(nats.DefaultURL)

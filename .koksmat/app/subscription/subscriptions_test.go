@@ -7,7 +7,7 @@ import (
 
 func TestAddSubscription(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	req := map[string]interface{}{
@@ -35,7 +35,7 @@ func TestAddSubscription(t *testing.T) {
 
 func TestAddExistingSubscription(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	// Add a subscription
@@ -57,7 +57,7 @@ func TestAddExistingSubscription(t *testing.T) {
 
 func TestRemoveSubscription(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	// Add a subscription
@@ -93,7 +93,7 @@ func TestRemoveSubscription(t *testing.T) {
 
 func TestUpdateSubscription(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	// Add a subscription
@@ -107,7 +107,7 @@ func TestUpdateSubscription(t *testing.T) {
 	}
 
 	// Update the subscription's LastSeen time
-	time.Sleep(1 * time.Second) // Simulate some delay before updating
+	time.Sleep(1) // Simulate some delay before updating
 	req = map[string]interface{}{
 		"action": "update",
 		"id":     "test_subscription_4",
@@ -134,7 +134,7 @@ func TestUpdateSubscription(t *testing.T) {
 
 func TestListSubscriptions(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	// Add subscriptions
@@ -166,7 +166,7 @@ func TestListSubscriptions(t *testing.T) {
 
 func TestSubscriptionTTL(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 2 * time.Second
+	ttl := 2
 	service := NewSubscriptionService(store, ttl)
 
 	// Add a subscription
@@ -180,7 +180,7 @@ func TestSubscriptionTTL(t *testing.T) {
 	}
 
 	// Wait for the TTL to expire
-	time.Sleep(5 * time.Second)
+	time.Sleep(5)
 
 	// Check if the subscription was automatically removed
 	_, err = store.Get("test_subscription_ttl")
@@ -191,7 +191,7 @@ func TestSubscriptionTTL(t *testing.T) {
 
 func TestGetMessages(t *testing.T) {
 	store := NewInMemorySubscriptionStore()
-	ttl := 5 * time.Minute
+	ttl := 5
 	service := NewSubscriptionService(store, ttl)
 
 	// Add a subscription
