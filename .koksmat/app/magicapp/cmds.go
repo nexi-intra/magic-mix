@@ -33,7 +33,7 @@ func StartAPIServer(title string, version string, description string, port int) 
 
 	// sharedSettings(s)
 	endpoints.AddEndpoints(s, Authenticator)
-	// addAdminEndpoints(s, Authenticator)
+	//addAdminEndpoints(s, Authenticator)
 	// addExchangeEndpoints(s, Authenticator)
 	// addCoreEndpoints(s, Authenticator)
 	s.Docs(docs, swgui.New)

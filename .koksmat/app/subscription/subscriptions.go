@@ -3,6 +3,7 @@ package subscription
 import (
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 	"time"
 )
@@ -102,20 +103,20 @@ func NewDefaultTTLManager(tracker LastSeenTracker, store SubscriptionStore, ttlS
 
 // CheckExpiredSubscriptions checks and handles subscriptions that have exceeded their TTL.
 func (m *DefaultTTLManager) CheckExpiredSubscriptions(subscriptions []*Subscription) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
+	// m.mu.Lock()
+	// defer m.mu.Unlock()
 
-	for _, sub := range subscriptions {
-		if m.tracker.HasExpired(sub.ID, m.ttl) {
-			// Remove the expired subscription from the store
-			err := m.store.Remove(sub.ID)
-			if err != nil {
-				fmt.Printf("Failed to remove expired subscription %s: %v\n", sub.ID, err)
-			} else {
-				fmt.Printf("Subscription %s has expired and was removed\n", sub.ID)
-			}
-		}
-	}
+	// for _, sub := range subscriptions {
+	// 	if m.tracker.HasExpired(sub.ID, m.ttl) {
+	// 		// Remove the expired subscription from the store
+	// 		err := m.store.Remove(sub.ID)
+	// 		if err != nil {
+	// 			fmt.Printf("Failed to remove expired subscription %s: %v\n", sub.ID, err)
+	// 		} else {
+	// 			fmt.Printf("Subscription %s has expired and was removed\n", sub.ID)
+	// 		}
+	// 	}
+	// }
 }
 
 // SubscriptionService manages subscriptions and their lifecycle.
@@ -160,7 +161,7 @@ func (s *SubscriptionService) HandleRequest(req map[string]interface{}) (interfa
 		fmt.Println("Error:", err)
 		return nil, err
 	}
-
+	log.Println("SubscriptionService.HandleRequest.Action:", action)
 	// Switch statement to handle different actions.
 	switch action {
 	case "add":
@@ -286,13 +287,22 @@ func (s *SubscriptionService) handleGetMessages(req map[string]interface{}) (int
 	// if !ok || timeout <= 0 {
 	// 	return nil, fmt.Errorf("invalid or missing 'timeout' field")
 	// }
-
+	log.Println("Getting messages for subscription:", id)
 	s.mu.Lock()
 	_, err := s.store.Get(id)
+
 	s.mu.Unlock()
 
 	if err != nil {
-		return nil, fmt.Errorf("subscription not found")
+		sub := &Subscription{
+			ID: id,
+		}
+
+		err := s.store.Set(sub)
+		if err != nil {
+			return nil, fmt.Errorf("failed to add subscription: %v", err)
+		}
+		log.Println("Created subscription for:", id)
 	}
 	s.tracker.SetLastSeen(id)
 	messages := []Message{} // Placeholder: Fetch new messages logic here

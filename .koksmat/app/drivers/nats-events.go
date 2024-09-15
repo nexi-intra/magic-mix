@@ -22,13 +22,16 @@ import (
 // }
 
 type JetStreamSubscriptionStore struct {
-	js      nats.JetStreamContext
+	//js      nats.JetStreamContext
+	nc      *nats.Conn
 	stream  string
 	subject string
 }
 
 // Ensure the stream exists on instantiation
-func NewJetStreamSubscriptionStore(nc *nats.Conn, streamName, subjectName string) (*JetStreamSubscriptionStore, error) {
+func NewJetStreamSubscriptionStore(initialNc *nats.Conn, streamName, subjectName string) (*JetStreamSubscriptionStore, error) {
+	nc := initialNc
+
 	js, err := nc.JetStream()
 	if err != nil {
 		return nil, err
@@ -37,9 +40,11 @@ func NewJetStreamSubscriptionStore(nc *nats.Conn, streamName, subjectName string
 	// Ensure the stream exists
 	_, err = js.StreamInfo(streamName)
 	if err == nats.ErrStreamNotFound {
+
 		_, err = js.AddStream(&nats.StreamConfig{
 			Name:     streamName,
 			Subjects: []string{subjectName},
+			MaxAge:   600 * time.Second,
 		})
 		if err != nil {
 			return nil, fmt.Errorf("error creating stream: %v", err)
@@ -49,7 +54,8 @@ func NewJetStreamSubscriptionStore(nc *nats.Conn, streamName, subjectName string
 	}
 
 	return &JetStreamSubscriptionStore{
-		js:      js,
+		//js:      js,
+		nc:      nc,
 		stream:  streamName,
 		subject: subjectName,
 	}, nil
@@ -57,7 +63,12 @@ func NewJetStreamSubscriptionStore(nc *nats.Conn, streamName, subjectName string
 
 // Get a subscription by ID (maps to NATS consumer info)
 func (s *JetStreamSubscriptionStore) Get(id string) (*subscription.Subscription, error) {
-	consumerInfo, err := s.js.ConsumerInfo(s.stream, id)
+	js, err := s.nc.JetStream()
+	if err != nil {
+		return nil, err
+	}
+
+	consumerInfo, err := js.ConsumerInfo(s.stream, id)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +81,12 @@ func (s *JetStreamSubscriptionStore) Get(id string) (*subscription.Subscription,
 
 // Set a subscription (maps to creating a durable consumer)
 func (s *JetStreamSubscriptionStore) Set(sub *subscription.Subscription) error {
-	_, err := s.js.AddConsumer(s.stream, &nats.ConsumerConfig{
+	js, err := s.nc.JetStream()
+	if err != nil {
+		return err
+	}
+
+	_, err = js.AddConsumer(s.stream, &nats.ConsumerConfig{
 		Durable: sub.ID,
 		// InactiveThreshold: 5000,
 		// FilterSubject: sub.Subject,
@@ -85,7 +101,12 @@ func (s *JetStreamSubscriptionStore) Set(sub *subscription.Subscription) error {
 // List all subscriptions (maps to listing consumers)
 func (s *JetStreamSubscriptionStore) List() ([]*subscription.Subscription, error) {
 	// Consumers returns a channel, so we need to iterate over it
-	consumerCh := s.js.Consumers(s.stream)
+	js, err := s.nc.JetStream()
+	if err != nil {
+		return nil, err
+	}
+
+	consumerCh := js.Consumers(s.stream)
 
 	var subscriptions []*subscription.Subscription
 
@@ -105,7 +126,12 @@ func (s *JetStreamSubscriptionStore) List() ([]*subscription.Subscription, error
 
 // Remove a subscription (maps to deleting a NATS consumer)
 func (s *JetStreamSubscriptionStore) Remove(id string) error {
-	err := s.js.DeleteConsumer(s.stream, id)
+	js, err := s.nc.JetStream()
+	if err != nil {
+		return err
+	}
+
+	err = js.DeleteConsumer(s.stream, id)
 	if err != nil {
 		return err
 	}
@@ -115,14 +141,28 @@ func (s *JetStreamSubscriptionStore) Remove(id string) error {
 // ReadMessages reads a specified number of messages from the consumer.
 func (s *JetStreamSubscriptionStore) ReadMessages(consumerID string) ([]subscription.Message, error) {
 	// Subscribe to the stream with the given consumerID using pull-based subscription
-	numMessages := 2
-	sub, err := s.js.PullSubscribe(s.subject, consumerID)
+	js, err := s.nc.JetStream()
+
+	if err != nil {
+		return nil, err
+	}
+	_, err = js.AddConsumer(s.stream, &nats.ConsumerConfig{
+		Durable: consumerID,
+		// InactiveThreshold: 5000,
+		// FilterSubject: sub.Subject,
+		// AckPolicy:     nats.AckExplicitPolicy, // example ack policy
+	})
+	if err != nil {
+		return nil, err
+	}
+	numMessages := 1
+	sub, err := js.PullSubscribe(s.subject, consumerID)
 	if err != nil {
 		return nil, fmt.Errorf("error subscribing to subject: %v", err)
 	}
 
 	// Pull the specified number of messages
-	msgs, err := sub.Fetch(numMessages, nats.MaxWait(10*time.Second))
+	msgs, err := sub.Fetch(numMessages, nats.MaxWait(30*time.Second))
 	var result []subscription.Message = []subscription.Message{}
 	for _, msg := range msgs {
 		fmt.Printf("Message: %s\n", string(msg.Subject))
@@ -131,55 +171,60 @@ func (s *JetStreamSubscriptionStore) ReadMessages(consumerID string) ([]subscrip
 			Data:    string(msg.Data)})
 	}
 	if err != nil {
-		return nil, fmt.Errorf("error fetching messages: %v", err)
+		if err == nats.ErrTimeout {
+			return result, nil
+		} else {
+			return nil, fmt.Errorf("error fetching messages: %v", err)
+		}
 	}
 
 	return result, nil
 }
-func main() {
-	// Example usage
-	nc, err := nats.Connect(nats.DefaultURL)
-	if err != nil {
-		panic(err)
-	}
-	defer nc.Close()
 
-	// Instantiate the subscription store
-	store, err := NewJetStreamSubscriptionStore(nc, "SUBSCRIPTIONS", "subscriptions.*")
-	if err != nil {
-		panic(err)
-	}
+// func main() {
+// 	// Example usage
+// 	nc, err := nats.Connect(nats.DefaultURL)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer nc.Close()
 
-	// Add a subscription
-	sub := &subscription.Subscription{
-		ID: "sub1",
-		//Subject: "subscriptions.example",
-	}
-	err = store.Set(sub)
-	if err != nil {
-		fmt.Println("Error setting subscription:", err)
-	}
+// 	// Instantiate the subscription store
+// 	store, err := NewJetStreamSubscriptionStore(nc, "SUBSCRIPTIONS", "subscriptions.*")
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	// List subscriptions
-	subs, err := store.List()
-	if err != nil {
-		fmt.Println("Error listing subscriptions:", err)
-	}
-	for _, s := range subs {
-		fmt.Printf("Subscription ID: %ss\n", s.ID)
-	}
+// 	// Add a subscription
+// 	sub := &subscription.Subscription{
+// 		ID: "sub1",
+// 		//Subject: "subscriptions.example",
+// 	}
+// 	err = store.Set(sub)
+// 	if err != nil {
+// 		fmt.Println("Error setting subscription:", err)
+// 	}
 
-	// Get a specific subscription
-	subDetails, err := store.Get("sub1")
-	if err != nil {
-		fmt.Println("Error getting subscription:", err)
-	} else {
-		fmt.Printf("Fetched Subscription: %+v\n", subDetails)
-	}
+// 	// List subscriptions
+// 	subs, err := store.List()
+// 	if err != nil {
+// 		fmt.Println("Error listing subscriptions:", err)
+// 	}
+// 	for _, s := range subs {
+// 		fmt.Printf("Subscription ID: %ss\n", s.ID)
+// 	}
 
-	// Remove a subscription
-	err = store.Remove("sub1")
-	if err != nil {
-		fmt.Println("Error removing subscription:", err)
-	}
-}
+// 	// Get a specific subscription
+// 	subDetails, err := store.Get("sub1")
+// 	if err != nil {
+// 		fmt.Println("Error getting subscription:", err)
+// 	} else {
+// 		fmt.Printf("Fetched Subscription: %+v\n", subDetails)
+// 	}
+
+// 	// Remove a subscription
+// 	err = store.Remove("sub1")
+// 	if err != nil {
+// 		fmt.Println("Error removing subscription:", err)
+// 	}
+// }
