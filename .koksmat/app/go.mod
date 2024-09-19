@@ -105,6 +105,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/itchyny/gojq v0.12.16
+	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/lestrrat-go/jwx v1.2.30
 	github.com/nats-io/nats.go v1.37.0
