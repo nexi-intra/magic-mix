@@ -162,7 +162,7 @@ func (s *JetStreamSubscriptionStore) ReadMessages(consumerID string) ([]subscrip
 	}
 
 	// Pull the specified number of messages
-	msgs, err := sub.Fetch(numMessages, nats.MaxWait(30*time.Second))
+	msgs, err := sub.Fetch(numMessages, nats.MaxWait(5*time.Second))
 	var result []subscription.Message = []subscription.Message{}
 	for _, msg := range msgs {
 		fmt.Printf("Message: %s\n", string(msg.Subject))

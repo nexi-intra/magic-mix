@@ -21,6 +21,7 @@ import (
 
 	"github.com/magicbutton/magic-mix/drivers"
 	"github.com/magicbutton/magic-mix/flow"
+	"github.com/magicbutton/magic-mix/utils"
 )
 
 var flowEngine *flow.FlowEngine
@@ -99,7 +100,8 @@ WaitForEstablishedConnection:
 
 	OpenDatabase()
 	// Create a DBStorage driver that implements flow.Storage
-	var storage flow.Storage = drivers.NewDBStorage()
+
+	var storage flow.Storage = drivers.NewDBStorage(utils.Db.DB)
 
 	var emitter flow.Emitter = drivers.NewNATSEmitter(nc)
 	flowEngine := flow.NewFlowEngine(storage, emitter)
@@ -121,7 +123,9 @@ WaitForEstablishedConnection:
 			break
 		}
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(100 * time.Millisecond)
+
+		flowEngine.Tick()
 	}
 
 	// Disconnect and flush pending messages

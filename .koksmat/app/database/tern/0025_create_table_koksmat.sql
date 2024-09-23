@@ -9,7 +9,7 @@ keep: false
 
 -- sure sild
 
-CREATE TABLE public.koksmat_model
+CREATE TABLE public.koksmat
 (
     id SERIAL PRIMARY KEY,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -42,5 +42,5 @@ CREATE TABLE public.koksmat_model
 
 ---- create above / drop below ----
 
-DROP TABLE public.koksmat_model;
+DROP TABLE public.koksmat;
 

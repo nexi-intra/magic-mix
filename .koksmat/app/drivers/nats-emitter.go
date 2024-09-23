@@ -28,7 +28,7 @@ func (e *NATSEmitter) Emit(event string, data interface{}) {
 		return
 	}
 
-	err = e.nc.Publish("workflow.event."+event, dataJSON)
+	err = e.nc.Publish("workflow.events."+event, dataJSON)
 	if err != nil {
 		log.Printf("failed to emit event: %v", err)
 	}

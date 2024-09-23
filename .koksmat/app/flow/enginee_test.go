@@ -1,6 +1,7 @@
 package flow
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,14 +13,18 @@ type MockStorage struct {
 	mock.Mock
 }
 
-func (m *MockStorage) Save(id string, flowJSON string) error {
+func (m *MockStorage) Save(id string, flowJSON json.RawMessage) error {
 	args := m.Called(id, flowJSON)
 	return args.Error(0)
 }
 
-func (m *MockStorage) Load(id string) (string, error) {
+func (m *MockStorage) Load(id string) (json.RawMessage, error) {
 	args := m.Called(id)
-	return args.String(0), args.Error(1)
+	return []byte(`{"steps":[{"name":"step1"}]}`), args.Error(1)
+}
+func (m *MockStorage) GetEvents() ([]interface{}, error) {
+
+	return nil, nil
 }
 
 // MockEmitter is a mock implementation of the Emitter interface
@@ -37,7 +42,7 @@ func TestFlowEngine_AddFlow(t *testing.T) {
 	engine := NewFlowEngine(storage, emitter)
 
 	flowID := "test-flow"
-	flowJSON := `{"steps":[{"name":"step1"}]}`
+	flowJSON := []byte(`{"steps":[{"name":"step1"}]}`)
 	emitter.On("Emit", "FlowAdded", mock.Anything).Once()
 
 	err := engine.AddFlow(flowID, flowJSON)
@@ -58,7 +63,7 @@ func TestFlowEngine_AddFlow_DuplicateFlow(t *testing.T) {
 	engine := NewFlowEngine(storage, emitter)
 
 	flowID := "duplicate-flow"
-	flowJSON := `{"steps":[{"name":"step1"}]}`
+	flowJSON := []byte(`{"steps":[{"name":"step1"}]}`)
 	emitter.On("Emit", "FlowAdded", mock.Anything).Once()
 	err := engine.AddFlow(flowID, flowJSON)
 	assert.NoError(t, err)
@@ -75,7 +80,7 @@ func TestFlowEngine_StartFlow(t *testing.T) {
 	engine := NewFlowEngine(storage, emitter)
 
 	flowID := "start-flow"
-	flowJSON := `{"steps":[{"name":"step1"}]}`
+	flowJSON := []byte(`{"steps":[{"name":"step1"}]}`)
 	emitter.On("Emit", "FlowAdded", mock.Anything).Once()
 	engine.AddFlow(flowID, flowJSON)
 
@@ -103,7 +108,7 @@ func TestFlowEngine_DeleteFlow(t *testing.T) {
 	engine := NewFlowEngine(storage, emitter)
 
 	flowID := "delete-flow"
-	flowJSON := `{"steps":[{"name":"step1"}]}`
+	flowJSON := []byte(`{"steps":[{"name":"step1"}]}`)
 	emitter.On("Emit", "FlowAdded", mock.Anything).Once()
 	engine.AddFlow(flowID, flowJSON)
 
@@ -127,9 +132,9 @@ func TestFlowEngine_GetFlows(t *testing.T) {
 
 	// Add some flows
 	flowID1 := "flow1"
-	flowJSON1 := `{"steps":[{"name":"step1"}]}`
+	flowJSON1 := []byte(`{"steps":[{"name":"step1"}]}`)
 	flowID2 := "flow2"
-	flowJSON2 := `{"steps":[{"name":"step2"}]}`
+	flowJSON2 := []byte(`{"steps":[{"name":"step2"}]}`)
 
 	emitter.On("Emit", "FlowAdded", mock.Anything).Twice()
 

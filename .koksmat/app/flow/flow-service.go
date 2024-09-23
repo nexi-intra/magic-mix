@@ -14,8 +14,8 @@ type Request struct {
 
 // AddFlowPayload represents the payload for adding a flow
 type AddFlowPayload struct {
-	ID       string `json:"id"`
-	FlowJSON string `json:"flow_json"`
+	ID       string          `json:"id"`
+	FlowJSON json.RawMessage `json:"flow_json"`
 }
 
 // StartFlowPayload represents the payload for starting a flow

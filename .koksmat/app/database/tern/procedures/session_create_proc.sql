@@ -8,10 +8,11 @@ keep: false
 
 
 -- tomat sild
-
+-- TODO: Figure out why i had this in the public schmea and not in the proc schema 
 CREATE OR REPLACE FUNCTION proc.create_session(
     p_actor_name VARCHAR,
-    p_params JSONB
+    p_params JSONB,
+    p_koksmat_sync JSONB DEFAULT NULL
    
 )
 RETURNS JSONB LANGUAGE plpgsql 
@@ -29,6 +30,7 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     p_auditlog_params jsonb;
 
 BEGIN
+    RAISE NOTICE 'Actor % Input % ', p_actor_name,p_params;
     v_tenant := p_params->>'tenant';
     v_searchindex := p_params->>'searchindex';
     v_name := p_params->>'name';
@@ -36,7 +38,7 @@ BEGIN
     v_user_id := p_params->>'user_id';
     v_data := p_params->>'data';
          
-
+    
     INSERT INTO public.session (
     id,
     created_at,
@@ -64,6 +66,8 @@ BEGIN
         v_data
     )
     RETURNING id INTO v_id;
+
+    
 
        p_auditlog_params := jsonb_build_object(
         'tenant', '',

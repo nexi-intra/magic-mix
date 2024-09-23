@@ -15,7 +15,7 @@ func main() {
 	engine := flow.NewFlowEngine(storage, emitter)
 
 	// Add a new flow
-	err := engine.AddFlow("flow1", `{"name": "example flow"}`)
+	err := engine.AddFlow("flow1", []byte(`{"name": "example flow"}`))
 	if err != nil {
 		fmt.Println("Error adding flow:", err)
 		return

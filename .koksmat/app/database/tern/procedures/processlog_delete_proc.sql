@@ -11,7 +11,8 @@ keep: false
 
 CREATE OR REPLACE FUNCTION proc.delete_processlog(
     p_actor_name VARCHAR,
-    p_params JSONB
+    p_params JSONB,
+    p_koksmat_sync JSONB DEFAULT NULL
    
 )
 RETURNS JSONB LANGUAGE plpgsql 
@@ -25,6 +26,7 @@ DECLARE
 
 
 BEGIN
+    RAISE NOTICE 'Actor % Input % ', p_actor_name,p_params;
     v_id := p_params->>'id';
     v_hard := p_params->>'hard';
   

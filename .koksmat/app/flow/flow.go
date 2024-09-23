@@ -1,17 +1,20 @@
 package flow
 
 import (
+	"encoding/json"
 	"errors"
+	"log"
 	"time"
 )
 
 // Flow represents a single flow instance
 type Flow struct {
-	ID         string        // Unique ID for the flow
-	Status     string        // Current status of the flow
-	Lease      time.Duration // Lease duration for the flow
-	LeaseStart time.Time     // Start time of the lease
-	FlowJSON   string        // Flow definition in JSON format
+	ID         string          // Unique ID for the flow
+	Status     string          // Current status of the flow
+	Lease      time.Duration   // Lease duration for the flow
+	LeaseStart time.Time       // Start time of the lease
+	FlowJSON   json.RawMessage // Flow definition in JSON format
+	Recipe     RecipeV1        // Flow recipe
 }
 
 // Possible statuses for a flow
@@ -23,11 +26,14 @@ const (
 )
 
 // NewFlow creates a new flow instance with default values
-func NewFlow(id string, flowJSON string) *Flow {
+func NewFlow(id string, flowJSON json.RawMessage) *Flow {
+	receipe := RecipeV1{}
+	json.Unmarshal([]byte(flowJSON), &receipe)
 	return &Flow{
 		ID:       id,
 		Status:   StatusStopped,
 		FlowJSON: flowJSON,
+		Recipe:   receipe,
 	}
 }
 
@@ -94,7 +100,7 @@ func (f *Flow) ReleaseLease() {
 }
 
 // LoadFlowJSON loads a flow configuration from a JSON string
-func (f *Flow) LoadFlowJSON(json string) error {
+func (f *Flow) LoadFlowJSON(json json.RawMessage) error {
 	if f.Status == StatusRunning {
 		return errors.New("cannot load flow while running")
 	}
@@ -103,6 +109,33 @@ func (f *Flow) LoadFlowJSON(json string) error {
 }
 
 // GetFlowJSON returns the flow configuration as a JSON string
-func (f *Flow) GetFlowJSON() string {
+func (f *Flow) GetFlowJSON() json.RawMessage {
 	return f.FlowJSON
 }
+
+// onTick is called on every tick of the flow
+
+// use for evaluating it the flow should continue  being in memory or put to sleep
+
+func (f *Flow) onTick() error {
+	log.Println("Tick", f.Recipe.Definition.ID, f.Recipe.Definition.Name)
+	return nil
+}
+
+// This function is used to decide if a flow should come active or not
+// The koksmat_event table decides this
+
+/*
+
+Example case to illustrate the flow using the Pizza order process
+
+Phase 1 - Feeling hungry - Registering a new order in table Orders with status "Posted" triggers the flow to start
+
+The koksmat trigger will make a lookup in the koksmat_model table to find if the is a flow for the table, if so it will
+insert a new event in the koksmat_event table with the name of the table, the id and a snapshot of the record as a JSONB structure.
+
+SQL trigger on Order insert/update in Orders table add event to koksmat_event table with status "Active" and event "OrderPosted"
+Ticker runs select * from koksmat_event where event = "OrderPosted" and status = "Active"
+
+
+*/

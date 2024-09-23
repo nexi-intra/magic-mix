@@ -402,8 +402,8 @@ entities:
       - name: data
         type: json
         required: false
-  koksmat_model: &koksmat_model
-    name: koksmat_model
+  koksmat: &koksmat
+    name: koksmat
     description: Koksmat model
     baselineattributes: *recordAttributes
     additionalattributes:
@@ -414,6 +414,21 @@ entities:
       #   type: reference
       #   entity: *session
       #   required: true
+  pizzaorder: &pizzaorder
+    name: pizzaorder
+    description: Pizza Order
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: status
+        type: string
+        required: true
+      - name: size
+        type: string
+        required: true
+      - name: toppings
+        type: string
+        required: false
+
 models:
   itemMethods: &itemMethods
     - name: read
@@ -702,11 +717,20 @@ services:
       entity: *sessionstage
     methods: *itemMethods
 
-  - name: koksmat_model
+  - name: koksmat
     description: Manage Koksmat model
     entity:
-      type: koksmat_model
-      model: koksmat_model
-      objectname: KoksmatModel
-      entity: *koksmat_model
+      type: koksmat
+      model: koksmat
+      objectname: Koksmat
+      entity: *koksmat
+    methods: *itemMethods
+
+  - name: pizzaorder
+    description: Manage Pizza Orders
+    entity:
+      type: pizzaorder
+      model: pizzaorder
+      objectname: PizzaOrder
+      entity: *pizzaorder
     methods: *itemMethods

@@ -22,6 +22,7 @@ DECLARE
 
 
 BEGIN
+    RAISE NOTICE 'Actor % Input % ', p_actor_name,p_params;
     v_id := p_params->>'id';
     
         

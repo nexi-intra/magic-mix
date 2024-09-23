@@ -11,7 +11,8 @@ keep: false
 
 CREATE OR REPLACE FUNCTION proc.update_role(
     p_actor_name VARCHAR,
-    p_params JSONB
+    p_params JSONB,
+    p_koksmat_sync JSONB DEFAULT NULL
    
 )
 RETURNS JSONB LANGUAGE plpgsql 
@@ -29,6 +30,7 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
 
     
 BEGIN
+    RAISE NOTICE 'Actor % Input % ', p_actor_name,p_params;
     v_id := p_params->>'id';
     v_tenant := p_params->>'tenant';
     v_searchindex := p_params->>'searchindex';
@@ -37,6 +39,7 @@ BEGIN
     v_connection_id := p_params->>'connection_id';
          
     
+
         
     UPDATE public.role
     SET updated_by = p_actor_name,

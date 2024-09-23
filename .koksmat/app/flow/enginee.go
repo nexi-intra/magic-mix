@@ -1,6 +1,7 @@
 package flow
 
 import (
+	"encoding/json"
 	"errors"
 	"sync"
 )
@@ -11,6 +12,7 @@ type FlowEngine struct {
 	storage Storage
 	emitter Emitter
 	mu      sync.RWMutex
+	loops   int
 }
 
 // NewFlowEngine creates a new FlowEngine instance
@@ -24,7 +26,7 @@ func NewFlowEngine(storage Storage, emitter Emitter) *FlowEngine {
 }
 
 // AddFlow adds a new flow to the engine and emits an event
-func (fe *FlowEngine) AddFlow(id string, flowJSON string) error {
+func (fe *FlowEngine) AddFlow(id string, flowJSON json.RawMessage) error {
 	fe.mu.Lock()
 	defer fe.mu.Unlock()
 
@@ -32,10 +34,15 @@ func (fe *FlowEngine) AddFlow(id string, flowJSON string) error {
 		return errors.New("flow with the given ID already exists")
 	}
 
+	receipe := RecipeV1{}
+
+	json.Unmarshal(flowJSON, &receipe.Definition)
+
 	flow := &Flow{
 		ID:       id,
 		FlowJSON: flowJSON,
 		Status:   StatusStopped,
+		Recipe:   receipe,
 	}
 
 	fe.flows[id] = flow
@@ -156,4 +163,35 @@ func (fe *FlowEngine) GetFlows() map[string]*Flow {
 	defer fe.mu.RUnlock()
 
 	return fe.flows
+}
+
+func (fe *FlowEngine) Tick() error {
+	if (fe.loops % 100) == 0 {
+		fe.emitter.Emit("EngineeTick", fe.loops)
+		fe.loops = 0 //reset the loop counter
+	}
+	fe.loops++
+
+	events, err := fe.storage.GetEvents()
+	if err != nil {
+		return err
+	}
+
+	for _, event := range events {
+		fe.emitter.Emit("Event", event)
+	}
+
+	//for each flow in the engine
+	for _, flow := range fe.flows {
+		if flow.Status == StatusRunning {
+			flow.onTick()
+
+			// err := nil
+			// if err != nil {
+			// 	return err
+			// }
+		}
+	}
+	return nil
+
 }
