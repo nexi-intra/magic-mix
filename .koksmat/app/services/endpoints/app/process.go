@@ -34,7 +34,7 @@ func callWithNotification(connectionString string, procName string, who string, 
 		return "", pingErr
 	}
 
-	sqlStatement := `SELECT * FROM proc.update_sqlquery($1::text, $2::jsonb, $3::jsonb)`
+	sqlStatement := fmt.Sprintf(`SELECT * FROM proc.%s($1::text, $2::jsonb, $3::jsonb)`, procName)
 
 	rows, err := db.Query(sqlStatement, who, payload, nil)
 	if err != nil {
