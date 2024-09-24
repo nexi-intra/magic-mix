@@ -38,8 +38,8 @@ func Process2(args []string) (*SelectResponse, error) {
 	}
 
 	upn := claims["upn"].(string)
-	log.Println("Process", args[1], upn, json.RawMessage(args[3]))
-	rows, err := call(*conn, args[1], upn, json.RawMessage(args[3]))
+	log.Println("calling callWithNotification", args[1], upn)
+	rows, err := callWithNotification(*conn, args[1], upn, json.RawMessage(args[3]))
 	if err != nil {
 		return nil, err
 	}
