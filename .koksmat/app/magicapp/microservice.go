@@ -96,7 +96,7 @@ WaitForEstablishedConnection:
 		Description: "Magic People",
 	})
 	root := srv.AddGroup(name)
-	RegisterServiceEndpoints(root)
+	RegisterServiceEndpoints(root, nc)
 
 	for {
 		if nc.IsClosed() {

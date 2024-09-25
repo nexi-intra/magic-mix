@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/micro"
 
 	"github.com/magicbutton/magic-mix/services/endpoints/connection"
@@ -20,7 +21,7 @@ import (
 	. "github.com/magicbutton/magic-mix/utils"
 )
 
-func HandleConnectionRequests(req micro.Request) {
+func HandleConnectionRequests(req micro.Request, nc *nats.Conn) {
 
 	rawRequest := string(req.Data())
 	if rawRequest == "ping" {

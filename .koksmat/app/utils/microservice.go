@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/micro"
 )
 
@@ -54,12 +55,12 @@ func ServiceResponseError(req micro.Request, errorMessage string) {
 	})
 }
 
-func ProcessAppRequest[T interface{}](req micro.Request, process func([]string) (*T, error)) {
+func ProcessAppRequest[T interface{}](req micro.Request, nc *nats.Conn, process func([]string, *nats.Conn) (*T, error)) {
 
 	var payload ServiceRequest
 	_ = json.Unmarshal([]byte(req.Data()), &payload)
 	args := payload.Args[1:]
-	result, err := process(args)
+	result, err := process(args, nc)
 	if err != nil {
 		log.Println("Error", err)
 		ServiceResponseError(req, fmt.Sprintf("%s", err))
@@ -70,4 +71,3 @@ func ProcessAppRequest[T interface{}](req micro.Request, process func([]string) 
 	ServiceResponse(req, result)
 
 }
-

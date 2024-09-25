@@ -22,6 +22,7 @@ func AddEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handler) {
 			r.Method(http.MethodPost, "/health/ping", nethttp.NewHandler(HealthPingPost()))
 			r.Method(http.MethodPost, "/health/coreversion", nethttp.NewHandler(HealthCoreversionPost()))
 			r.Method(http.MethodPost, "/subscription", nethttp.NewHandler(GetEvents()))
+			r.Method(http.MethodPost, "/changes", nethttp.NewHandler(GetChanges()))
 		})
 	})
 

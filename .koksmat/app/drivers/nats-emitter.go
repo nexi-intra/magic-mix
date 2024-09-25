@@ -21,6 +21,12 @@ func NewNATSEmitter(nc *nats.Conn) *NATSEmitter {
 
 // Emit sends an event to a NATS subject
 func (e *NATSEmitter) Emit(event string, data interface{}) {
+	e.Emit2(`workflow.events`, event, data)
+
+}
+
+// Emit sends an event to a NATS subject
+func (e *NATSEmitter) Emit2(subject string, event string, data interface{}) {
 
 	dataJSON, err := json.Marshal(data)
 	if err != nil {
@@ -28,7 +34,7 @@ func (e *NATSEmitter) Emit(event string, data interface{}) {
 		return
 	}
 
-	err = e.nc.Publish("workflow.events."+event, dataJSON)
+	err = e.nc.Publish(subject+"."+event, dataJSON)
 	if err != nil {
 		log.Printf("failed to emit event: %v", err)
 	}

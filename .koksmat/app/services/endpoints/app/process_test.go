@@ -7,7 +7,7 @@ import (
 
 func TestProcessNull(t *testing.T) {
 
-	_, err := Process([]string{})
+	_, err := Process([]string{}, nil)
 	if err == nil {
 		t.Errorf("Expected error, got nil")
 	}
@@ -17,7 +17,7 @@ func TestProcessNull(t *testing.T) {
 func TestProcessUnknown(t *testing.T) {
 	log.Println("TestProcessUnknown")
 
-	_, err := Process([]string{"unknown"})
+	_, err := Process([]string{"unknown"}, nil)
 	if err == nil {
 		t.Errorf("Expected error, got nil")
 	}

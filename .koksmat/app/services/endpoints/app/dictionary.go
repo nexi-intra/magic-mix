@@ -13,9 +13,10 @@ import (
 	"fmt"
 
 	"github.com/magicbutton/magic-mix/query"
+	"github.com/nats-io/nats.go"
 )
 
-func Dictionary(args []string) (*SelectResponse, error) {
+func Dictionary(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 2 {
 		return nil, fmt.Errorf("Expected 1 arguments")
 	}

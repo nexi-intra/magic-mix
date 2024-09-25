@@ -8,13 +8,23 @@ keep: true
 package magicapp
 
 import (
+	nats "github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/micro"
 
 	"github.com/magicbutton/magic-mix/services"
 )
 
-func RegisterServiceEndpoints(root micro.Group) {
-	root.AddEndpoint("app", micro.HandlerFunc(services.HandleAppRequests))
-	root.AddEndpoint("connection", micro.HandlerFunc(services.HandleConnectionRequests))
-	root.AddEndpoint("importdata", micro.HandlerFunc(services.HandleImportDataRequests))
+func RegisterServiceEndpoints(root micro.Group, nc *nats.Conn) {
+	//root.AddEndpoint("app", micro.HandlerFunc(services.HandleAppRequests))
+	root.AddEndpoint("app", micro.HandlerFunc(func(req micro.Request) {
+		services.HandleAppRequests(req, nc)
+	}))
+
+	root.AddEndpoint("connection", micro.HandlerFunc(func(req micro.Request) {
+		services.HandleConnectionRequests(req, nc)
+	}))
+	root.AddEndpoint("importdata", micro.HandlerFunc(func(req micro.Request) {
+		services.HandleImportDataRequests(req, nc)
+	}))
+
 }

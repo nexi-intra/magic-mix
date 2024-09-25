@@ -17,6 +17,7 @@ import (
 
 	"github.com/magicbutton/magic-mix/services/endpoints/connection"
 	"github.com/magicbutton/magic-mix/utils"
+	"github.com/nats-io/nats.go"
 )
 
 func GetConnectionString(name string) (*string, error) {
@@ -36,7 +37,7 @@ func GetConnectionString(name string) (*string, error) {
 	return &connectionRecord.Items[0].Connectionstring, nil
 }
 
-func Select2(args []string) (*SelectResponse, error) {
+func Select2(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 2 {
 		return nil, fmt.Errorf("Expected 1 arguments")
 	}

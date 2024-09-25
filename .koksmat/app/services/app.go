@@ -11,13 +11,14 @@ package services
 import (
 	"encoding/json"
 
+	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/micro"
 
 	"github.com/magicbutton/magic-mix/services/endpoints/app"
 	. "github.com/magicbutton/magic-mix/utils"
 )
 
-func HandleAppRequests(req micro.Request) {
+func HandleAppRequests(req micro.Request, nc *nats.Conn) {
 
 	rawRequest := string(req.Data())
 	if rawRequest == "ping" {
@@ -38,15 +39,15 @@ func HandleAppRequests(req micro.Request) {
 	// macd.2
 
 	case "select":
-		ProcessAppRequest(req, app.Select)
+		ProcessAppRequest(req, nc, app.Select)
 	case "query":
-		ProcessAppRequest(req, app.Select2)
+		ProcessAppRequest(req, nc, app.Select2)
 	case "dictionary":
-		ProcessAppRequest(req, app.Dictionary)
+		ProcessAppRequest(req, nc, app.Dictionary)
 	case "process":
-		ProcessAppRequest(req, app.Process)
+		ProcessAppRequest(req, nc, app.Process)
 	case "execute":
-		ProcessAppRequest(req, app.Process2)
+		ProcessAppRequest(req, nc, app.Process2)
 	default:
 		ServiceResponseError(req, "Unknown command")
 	}

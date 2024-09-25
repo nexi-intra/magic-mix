@@ -8,7 +8,9 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/stdlib"
+	"github.com/magicbutton/magic-mix/drivers"
 	"github.com/magicbutton/magic-mix/utils"
+	"github.com/nats-io/nats.go"
 	"github.com/spf13/viper"
 )
 
@@ -16,7 +18,7 @@ type Result struct {
 	Data string `json:"data"`
 }
 
-func callWithNotification(connectionString string, procName string, who string, payload json.RawMessage) (string, error) {
+func callWithNotification(connectionString string, procName string, who string, payload json.RawMessage, nc *nats.Conn, database string) (string, error) {
 
 	config, err := pgx.ParseConfig(connectionString)
 	if err != nil {
@@ -51,11 +53,30 @@ func callWithNotification(connectionString string, procName string, who string, 
 			return "", err
 		}
 	}
+	// Define a map with the data you want to send as JSON
+	type DataOperation struct {
+		Who          string          `json:"who"`
+		SqlStatement string          `json:"sqlStatement"`
+		Output       json.RawMessage `json:"output"`
+	}
+	data := &DataOperation{
+		Who:          who,
+		SqlStatement: sqlStatement,
+		Output:       json.RawMessage(pOutput),
+	}
 
+	// Marshal the map into JSON
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+
+		log.Printf("Error marshalling data to JSON: %v", err)
+	}
+
+	drivers.NewNATSEmitter(nc).Emit2("database", database, jsonData)
 	return pOutput, nil
 }
 
-func Process(args []string) (*SelectResponse, error) {
+func Process(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 3 {
 		return nil, fmt.Errorf("Expected arguments")
 	}
@@ -70,7 +91,7 @@ func Process(args []string) (*SelectResponse, error) {
 	connectionString := viper.GetString("POSTGRES_DB")
 	upn := claims["upn"].(string)
 	//log.Println("Process", args[0], upn, json.RawMessage(args[2]))
-	rows, err := callWithNotification(connectionString, args[0], upn, json.RawMessage(args[2]))
+	rows, err := callWithNotification(connectionString, args[0], upn, json.RawMessage(args[2]), nc, "mix")
 	if err != nil {
 		return nil, err
 	}

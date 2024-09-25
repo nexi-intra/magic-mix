@@ -15,13 +15,14 @@ import (
 	"fmt"
 
 	"github.com/magicbutton/magic-mix/utils"
+	"github.com/nats-io/nats.go"
 )
 
 type SelectResponse struct {
 	Result json.RawMessage `bun:"result"`
 }
 
-func Select(args []string) (*SelectResponse, error) {
+func Select(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 1 {
 		return nil, fmt.Errorf("Expected 1 arguments")
 	}

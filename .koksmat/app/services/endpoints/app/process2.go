@@ -15,9 +15,10 @@ import (
 	"log"
 
 	"github.com/magicbutton/magic-mix/utils"
+	"github.com/nats-io/nats.go"
 )
 
-func Process2(args []string) (*SelectResponse, error) {
+func Process2(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 4 {
 		return nil, fmt.Errorf("Expected arguments")
 	}
@@ -39,7 +40,7 @@ func Process2(args []string) (*SelectResponse, error) {
 
 	upn := claims["upn"].(string)
 	log.Println("calling callWithNotification", args[1], upn)
-	rows, err := callWithNotification(*conn, args[1], upn, json.RawMessage(args[3]))
+	rows, err := callWithNotification(*conn, args[1], upn, json.RawMessage(args[3]), nc, dbName)
 	if err != nil {
 		return nil, err
 	}
