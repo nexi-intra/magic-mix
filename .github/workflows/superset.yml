@@ -1,6 +1,6 @@
 # v1.0
 
-name: Build Web
+name: Build Superset
 
 on:
   push:
@@ -40,6 +40,6 @@ jobs:
           context: .
           file: ./Dockerfile.superset
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          tags: ghcr.io/magicbutton/superset:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
