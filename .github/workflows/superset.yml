@@ -40,6 +40,6 @@ jobs:
           context: .
           file: ./Dockerfile.superset
           push: true
-          tags: ghcr.io/magicbutton/superset:latest
+          tags: ghcr.io/magicbutton/superset:dockerize
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -1,5 +1,5 @@
 # Use the official Apache Superset image
-FROM apache/superset:latest
+FROM apache/superset:dockerize
 
 # Install missing dependencies
 RUN pip install --no-cache-dir authlib
