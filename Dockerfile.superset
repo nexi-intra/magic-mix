@@ -1,0 +1,9 @@
+# Use the official Apache Superset image
+FROM apache/superset:latest
+
+# Install missing dependencies
+RUN pip install --no-cache-dir authlib
+
+# If there are more dependencies, you can add them here
+
+# Continue with the rest of your setup
