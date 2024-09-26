@@ -1,9 +1,14 @@
 # Use the official Apache Superset image
-FROM apache/superset:dockerize
+FROM apache/superset:latest
 
-# Install missing dependencies
+# Install dockerize
+ENV DOCKERIZE_VERSION v0.6.1
+RUN apt-get update && apt-get install -y wget \
+  && wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+  && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+  && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
+
+# Install missing Python dependencies
 RUN pip install --no-cache-dir authlib
 
-# If there are more dependencies, you can add them here
-
-# Continue with the rest of your setup
+# Continue with the rest of your setup (e.g., copying your app or config)
