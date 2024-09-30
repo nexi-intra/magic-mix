@@ -9,7 +9,7 @@ keep: false
 
 -- tomat sild
 -- TODO: Figure out why i had this in the public schmea and not in the proc schema 
-CREATE OR REPLACE FUNCTION proc.create_pizzaorder(
+CREATE OR REPLACE FUNCTION proc.create_magicbutton(
     p_actor_name VARCHAR,
     p_params JSONB,
     p_koksmat_sync JSONB DEFAULT NULL
@@ -24,8 +24,8 @@ v_tenant VARCHAR COLLATE pg_catalog."default" ;
     v_name VARCHAR COLLATE pg_catalog."default" ;
     v_description VARCHAR COLLATE pg_catalog."default";
     v_status VARCHAR;
-    v_size VARCHAR;
-    v_toppings VARCHAR;
+    v_icon VARCHAR;
+    v_metadata JSONB;
     v_id INTEGER;
         v_audit_id integer;  -- Variable to hold the OUT parameter value
     p_auditlog_params jsonb;
@@ -37,11 +37,11 @@ BEGIN
     v_name := p_params->>'name';
     v_description := p_params->>'description';
     v_status := p_params->>'status';
-    v_size := p_params->>'size';
-    v_toppings := p_params->>'toppings';
+    v_icon := p_params->>'icon';
+    v_metadata := p_params->>'metadata';
          
     
-    INSERT INTO public.pizzaorder (
+    INSERT INTO public.magicbutton (
     id,
     created_at,
     updated_at,
@@ -52,8 +52,8 @@ BEGIN
         name,
         description,
         status,
-        size,
-        toppings
+        icon,
+        metadata
     )
     VALUES (
         DEFAULT,
@@ -66,8 +66,8 @@ BEGIN
         v_name,
         v_description,
         v_status,
-        v_size,
-        v_toppings
+        v_icon,
+        v_metadata
     )
     RETURNING id INTO v_id;
 
@@ -76,11 +76,11 @@ BEGIN
        p_auditlog_params := jsonb_build_object(
         'tenant', '',
         'searchindex', '',
-        'name', 'create_pizzaorder',
+        'name', 'create_magicbutton',
         'status', 'success',
         'description', '',
-        'action', 'create_pizzaorder',
-        'entity', 'pizzaorder',
+        'action', 'create_magicbutton',
+        'entity', 'magicbutton',
         'entityid', -1,
         'actor', p_actor_name,
         'metadata', p_params
@@ -92,7 +92,7 @@ BEGIN
    
   "type": "object",
 
-  "title": "Create PizzaOrder",
+  "title": "Create MagicButton",
   "description": "Create operation",
 
   "properties": {
@@ -112,11 +112,11 @@ BEGIN
     "status": { 
     "type": "string",
     "description":"" },
-    "size": { 
+    "icon": { 
     "type": "string",
     "description":"" },
-    "toppings": { 
-    "type": "string",
+    "metadata": { 
+    "type": "object",
     "description":"" }
 
     }

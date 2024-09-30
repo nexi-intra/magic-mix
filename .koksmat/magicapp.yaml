@@ -428,6 +428,20 @@ entities:
       - name: toppings
         type: string
         required: false
+  magicbutton: &magicbutton
+    name: magicbutton
+    description: Magic Buttons
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: status
+        type: string
+        required: true
+      - name: icon
+        type: string
+        required: true
+      - name: metadata
+        type: json
+        required: false
 
 models:
   itemMethods: &itemMethods
@@ -733,4 +747,13 @@ services:
       model: pizzaorder
       objectname: PizzaOrder
       entity: *pizzaorder
+    methods: *itemMethods
+
+  - name: magicbutton
+    description: Manage Magic Buttons
+    entity:
+      type: magicbutton
+      model: magicbutton
+      objectname: MagicButton
+      entity: *magicbutton
     methods: *itemMethods
