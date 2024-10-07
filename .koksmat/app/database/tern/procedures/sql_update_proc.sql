@@ -106,6 +106,8 @@ BEGIN
     }
 }
 ##MAGICAPP-END##*/
+    -- Call the create_auditlog procedure
+    CALL proc.create_auditlog(p_actor_name, p_auditlog_params, v_audit_id);
 
     return jsonb_build_object(
     'comment','updated',

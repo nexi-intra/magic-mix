@@ -442,6 +442,45 @@ entities:
       - name: metadata
         type: json
         required: false
+  feature: &feature
+    name: feature
+    description: Feature
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: status
+        type: string
+        required: true
+  app: &app
+    name: app
+    description: App
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: status
+        type: string
+        required: true
+      - name: icon
+        type: string
+        required: true
+      - name: metadata
+        type: json
+        required: false
+      - name: features
+        type: array
+        entity: *feature
+        required: false
+  featureset: &featureset
+    name: featureset
+    description: Feature Set
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: features
+        type: array
+        entity: *feature
+        required: false
+      - name: members
+        type: array
+        entity: *role
+        required: false
 
 models:
   itemMethods: &itemMethods
@@ -756,4 +795,31 @@ services:
       model: magicbutton
       objectname: MagicButton
       entity: *magicbutton
+    methods: *itemMethods
+
+  - name: feature
+    description: Manage Features
+    entity:
+      type: feature
+      model: feature
+      objectname: Feature
+      entity: *feature
+    methods: *itemMethods
+
+  - name: app
+    description: Manage Apps
+    entity:
+      type: app
+      model: app
+      objectname: App
+      entity: *app
+    methods: *itemMethods
+
+  - name: featureset
+    description: Manage Feature Sets
+    entity:
+      type: featureset
+      model: featureset
+      objectname: FeatureSet
+      entity: *featureset
     methods: *itemMethods
