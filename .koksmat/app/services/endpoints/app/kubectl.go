@@ -18,7 +18,7 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-func Process2(args []string, nc *nats.Conn) (*SelectResponse, error) {
+func Kubectl(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if len(args) < 4 {
 		return nil, fmt.Errorf("Expected arguments")
 	}
@@ -37,15 +37,10 @@ func Process2(args []string, nc *nats.Conn) (*SelectResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	upn := ""
-	if claims["upn"] != nil {
-		upn = claims["upn"].(string)
-	}
-	if upn == "" && claims["email"] != nil {
-		upn = claims["email"].(string)
 
-	}
-	if upn == "" && claims["app_displayname"] != nil {
+	upn := claims["upn"].(string)
+
+	if upn == "" {
 		upn = claims["app_displayname"].(string)
 
 	}

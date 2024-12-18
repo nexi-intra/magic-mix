@@ -48,6 +48,8 @@ func HandleAppRequests(req micro.Request, nc *nats.Conn) {
 		ProcessAppRequest(req, nc, app.Process)
 	case "execute":
 		ProcessAppRequest(req, nc, app.Process2)
+	case "kubectl":
+		ProcessAppRequest(req, nc, app.Kubectl)
 	default:
 		ServiceResponseError(req, "Unknown command")
 	}
