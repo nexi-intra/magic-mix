@@ -10,10 +10,9 @@ package endpoints
 
 import (
 	"context"
+	"log"
 
 	"github.com/swaggest/usecase"
-
-	"github.com/magicbutton/magic-mix/execution"
 )
 
 func HealthPingPost() usecase.Interactor {
@@ -21,17 +20,13 @@ func HealthPingPost() usecase.Interactor {
 		Pong string `query:"pong" binding:"required"`
 	}
 	u := usecase.NewInteractor(func(ctx context.Context, input Request, output *string) error {
+		log.Printf("Ping: %s", input.Pong)
+		*output = input.Pong
 
-		_, err := execution.ExecutePowerShell("john", "*", "magic-mix", "00-health", "10-ping.ps1", "", "-pong", input.Pong)
-		if err != nil {
-			return err
-		}
-
-		return err
+		return nil
 
 	})
 	u.SetTitle("Ping")
-	// u.SetExpectedErrors(status.InvalidArgument)
 	u.SetTags("Health")
 	return u
 }

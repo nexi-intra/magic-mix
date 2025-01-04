@@ -93,7 +93,26 @@ spec:
     port: 4321
     targetPort: 8080
   selector:
-    app: $appname
+    app: $appname-api
+---    
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: $appname-api
+spec:
+  rules:
+  - host: api.intra.nexigroup.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: $appname-api
+            port:
+              number: 4321
+              
+
 "@
 
 write-host "Applying config" -ForegroundColor Green

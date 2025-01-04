@@ -22,7 +22,7 @@ description: Describe the main purpose of this kitchen
 # magic-mix
 `
 	utils.Setup(".env")
-	magicapp.RegisterServeCmd("magic-mix", description, "0.0.1", 8080)
+	magicapp.RegisterServeCmd("magic-mix", description, "0.0.1", 4321)
 	magicapp.RegisterCmds()
 	magicapp.RegisterServiceCmd()
 	magicapp.RegisterConvertCmd()

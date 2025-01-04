@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	chi "github.com/go-chi/chi/v5"
+	"github.com/magicbutton/magic-mix/github"
 	"github.com/swaggest/rest/nethttp"
 	"github.com/swaggest/rest/web"
 )
@@ -23,6 +24,8 @@ func AddEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handler) {
 			r.Method(http.MethodPost, "/health/coreversion", nethttp.NewHandler(HealthCoreversionPost()))
 			r.Method(http.MethodPost, "/subscription", nethttp.NewHandler(GetEvents()))
 			r.Method(http.MethodPost, "/changes", nethttp.NewHandler(GetChanges()))
+			r.Method(http.MethodPost, "/github", nethttp.NewHandler(github.GitHubWebhook()))
+
 		})
 	})
 
