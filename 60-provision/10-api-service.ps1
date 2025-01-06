@@ -66,7 +66,7 @@ spec:
   selector:
     matchLabels:
       app: $appname-api
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -91,7 +91,7 @@ spec:
   ports:
   - name: http
     port: 4321
-    targetPort: 8080
+    targetPort: 4321
   selector:
     app: $appname-api
 ---    

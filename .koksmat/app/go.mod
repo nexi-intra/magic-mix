@@ -17,8 +17,11 @@ require (
 require (
 	github.com/frankban/quicktest v1.14.6 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/google/btree v1.1.3 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-github/v64 v64.0.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/itchyny/timefmt-go v0.1.6 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.3 // indirect
@@ -43,6 +46,7 @@ require (
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+	golang.org/x/oauth2 v0.23.0 // indirect
 	mellium.im/sasl v0.3.2 // indirect
 )
 
@@ -102,11 +106,14 @@ require (
 
 require (
 	github.com/Knetic/govaluate v3.0.0+incompatible
+	github.com/bradleyfalzon/ghinstallation/v2 v2.13.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/google/go-github/v68 v68.0.0
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/itchyny/gojq v0.12.16
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.18.3
+	github.com/jferrl/go-githubauth v1.1.1
 	github.com/lestrrat-go/jwx v1.2.30
 	github.com/nats-io/nats.go v1.37.0
 	github.com/spf13/pflag v1.0.5 // indirect
