@@ -8,7 +8,7 @@ export default function UpgradeKoksmat() {
     const load = async () => {
       const ui = await streamProcess(
         "go",
-        ["install", "github.com/koksmat-com/koksmat@v2.1.5.19"],
+        ["install", "github.com/magicbutton/magic-mix@v2.1.5.19"],
         2,
         {}
       );

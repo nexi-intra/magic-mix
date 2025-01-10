@@ -13,6 +13,7 @@ import (
 	swgui "github.com/swaggest/swgui/v4emb"
 
 	"github.com/magicbutton/magic-mix/endpoints"
+	"github.com/magicbutton/magic-mix/restapi"
 	"github.com/magicbutton/magic-mix/utils"
 )
 
@@ -49,7 +50,10 @@ func RegisterServeCmd(title string, description string, version string, port int
 		Short: "Serve the API",
 		Long:  `Serve the API`,
 		Run: func(cmd *cobra.Command, args []string) {
-			StartAPIServer(title, version, description, port)
+			restapi.All()
+			// s := web.DefaultService()
+			// endpoints.AddEndpoints(s, Authenticator)
+			// StartAPIServer(title, version, description, port)
 		},
 	}
 	utils.RootCmd.AddCommand(listCmd)

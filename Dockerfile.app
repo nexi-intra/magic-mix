@@ -9,7 +9,7 @@ ENV GOBIN="/usr/local/bin"
 ENV PATH="/usr/lib/go-1.21/bin:${PATH}"
 
 ENV KITCHEN_HOME="/kitchens"
-RUN go install github.com/koksmat-com/koksmat@v2.1.1.15
+RUN go install github.com/magicbutton/magic-mix@v2.1.1.15
 RUN koksmat context init sharepoint
 WORKDIR /kitchens
 COPY ./.koksmat/kitchenroot .

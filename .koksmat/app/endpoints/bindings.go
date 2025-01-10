@@ -9,6 +9,7 @@ import (
 
 	chi "github.com/go-chi/chi/v5"
 	"github.com/magicbutton/magic-mix/github"
+
 	"github.com/swaggest/rest/nethttp"
 	"github.com/swaggest/rest/web"
 )
