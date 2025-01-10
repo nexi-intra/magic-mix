@@ -6,7 +6,7 @@ try {
     
   . "$PSScriptRoot/../.koksmat/pwsh/build-env.ps1"
   . "$PSScriptRoot/temp.ps1"
-  #. "$PSScriptRoot/run.ps1"
+  . "$PSScriptRoot/run.ps1"
 }
 catch {
   write-host "Error: $_" -ForegroundColor:Red

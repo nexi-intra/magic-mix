@@ -105,6 +105,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: $appname-api
+  labels:
+    koksmat-service-level: critical
+  annotations
+    documentation: | 
+      ## This is the ingress for the $appname-api
+
+
 spec:
   rules:
   - host: api.intra.nexigroup.com
