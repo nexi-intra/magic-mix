@@ -8,6 +8,6 @@
   "appname": "magic-mix",
   "dnsprod": "magicboxes.intra.nexigroup.com",
   "dnstest": "magicboxes-test.intra.nexigroup.com",
-  "imagename": "ghcr.io/magicbutton/magic-mix",
+  "imagename": "ghcr.io/nexi-intra/magic-mix",
   "port": 4348
 }
