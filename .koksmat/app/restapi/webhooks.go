@@ -23,6 +23,7 @@ func validateSubscription(w http.ResponseWriter, r *http.Request) {
 
 	token := r.URL.Query().Get("validationToken")
 	if token != "" {
+		fmt.Println("Confirming subscription")
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.WriteHeader(200)
@@ -41,7 +42,8 @@ func validateSubscription(w http.ResponseWriter, r *http.Request) {
 
 	//_, authToken, _ := officegraph.GetClient()
 	for _, v := range p.Value {
-		model.SaveWebhookEvent(v)
+		fmt.Println(v)
+		//model.SaveWebhookEvent(v)
 		// if v.ClientState == "room" {
 		// 	req, err := http.NewRequest("GET", fmt.Sprintf("https://graph.microsoft.com/v1.0/%s?$select=subject,body,bodyPreview,organizer,attendees,start,end,location", v.Resource), nil)
 		// 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", authToken))

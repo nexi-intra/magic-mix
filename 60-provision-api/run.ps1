@@ -107,9 +107,13 @@ metadata:
   name: $appname-api
   labels:
     koksmat-service-level: critical
-  annotations
+    
+  annotations:
+    weburl: https://api.intra.nexigroup.com/openapi/all
     documentation: | 
-      ## This is the ingress for the $appname-api
+      This is the ingress for the $appname-api
+
+      [API Documentation](https://api.intra.nexigroup.com/openapi/all)
 
 
 spec:
