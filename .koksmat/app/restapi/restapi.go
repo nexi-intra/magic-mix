@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/go-chi/httplog"
 	"github.com/go-chi/httprate"
+	"github.com/magicbutton/magic-mix/github"
 	"github.com/magicbutton/magic-mix/model"
 	"github.com/swaggest/rest/nethttp"
 	"github.com/swaggest/rest/response/gzip"
@@ -236,7 +237,7 @@ func addAdminEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handler) 
 			r.Method(http.MethodPost, "/user/", nethttp.NewHandler(addUser()))
 			r.Method(http.MethodPatch, "/user/{upn}/credentials", nethttp.NewHandler(updateUserCredentials()))
 			r.MethodFunc(http.MethodPost, "/powershell", executePowerShell)
-
+			r.Method(http.MethodPost, "/github", nethttp.NewHandler(github.GitHubWebhook()))
 		})
 	})
 
