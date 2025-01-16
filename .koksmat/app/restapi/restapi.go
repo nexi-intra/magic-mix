@@ -207,7 +207,7 @@ func addExchangeEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handle
 }
 func addCoreEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handler) {
 	s.Method(http.MethodGet, "/blob/{tag}", nethttp.NewHandler(getBlob()))
-
+	s.Method(http.MethodPost, "/api/v1/github", nethttp.NewHandler(github.GitHubWebhook()))
 	//s.Use(rateLimitByAppId(50))
 	s.MethodFunc(http.MethodPost, "/api/v1/subscription/notify", validateSubscription)
 	s.Route("/v1/webhooks", func(r chi.Router) {
@@ -237,7 +237,7 @@ func addAdminEndpoints(s *web.Service, jwtAuth func(http.Handler) http.Handler) 
 			r.Method(http.MethodPost, "/user/", nethttp.NewHandler(addUser()))
 			r.Method(http.MethodPatch, "/user/{upn}/credentials", nethttp.NewHandler(updateUserCredentials()))
 			r.MethodFunc(http.MethodPost, "/powershell", executePowerShell)
-			r.Method(http.MethodPost, "/github", nethttp.NewHandler(github.GitHubWebhook()))
+
 		})
 	})
 
