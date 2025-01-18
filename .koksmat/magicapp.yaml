@@ -481,6 +481,20 @@ entities:
         type: array
         entity: *role
         required: false
+  event: &event
+    name: event
+    description: Event
+    baselineattributes: *recordAttributes
+    additionalattributes:
+      - name: source
+        type: string
+        required: true
+      - name: tag
+        type: string
+        required: true
+      - name: payload
+        type: json
+        required: false
 
 models:
   itemMethods: &itemMethods
@@ -822,4 +836,13 @@ services:
       model: featureset
       objectname: FeatureSet
       entity: *featureset
+    methods: *itemMethods
+
+  - name: event
+    description: Manage Events
+    entity:
+      type: event
+      model: event
+      objectname: Event
+      entity: *event
     methods: *itemMethods
